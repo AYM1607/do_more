@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>854370768062-bsmn2u8jngin4g6ior8crnir42t8p9u4.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.854370768062-bsmn2u8jngin4g6ior8crnir42t8p9u4</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDkGpZ50jB0NlKMR1c2OmZlwKQbDaFK-lg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>854370768062</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>consulting.mabby.domore</string>
+	<key>PROJECT_ID</key>
+	<string>do-more-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>do-more-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true></true>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false></false>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:854370768062:ios:4a5a9a9b5503a9ae</string>
+	<key>DATABASE_URL</key>
+	<string>https://do-more-app.firebaseio.com</string>
+</dict>
+</plist>
