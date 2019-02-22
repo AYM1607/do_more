@@ -1,6 +1,7 @@
 import 'package:meta/meta.dart';
 
 class EventModel {
+  final String id;
   final String name;
   final int pendigTasks;
   final List<bool> when;
@@ -11,6 +12,7 @@ class EventModel {
   final int lowPriority;
 
   EventModel({
+    @required this.id,
     @required this.name,
     @required this.pendigTasks,
     @required this.when,
@@ -21,8 +23,9 @@ class EventModel {
     @required this.lowPriority,
   });
 
-  EventModel.fromFirestore(Map<String, dynamic> firestoreMap)
-      : name = firestoreMap["name"],
+  EventModel.fromFirestore(Map<String, dynamic> firestoreMap, String id)
+      : id = id,
+        name = firestoreMap["name"],
         pendigTasks = firestoreMap["pendingTasks"],
         when = firestoreMap["when"].cast<bool>(),
         media = firestoreMap["media"].cast<String>(),

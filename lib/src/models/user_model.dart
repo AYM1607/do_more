@@ -4,6 +4,7 @@ import 'summary_model.dart';
 ///
 /// Represents all of a users data.
 class UserModel {
+  final String id;
   final String username;
   final List<int> tasks;
   final SummaryModel summary;
@@ -13,6 +14,7 @@ class UserModel {
   final int pendingLow;
 
   UserModel({
+    this.id,
     this.username,
     this.tasks,
     this.summary,
@@ -20,7 +22,8 @@ class UserModel {
     this.pendingHigh,
     this.pendingMedium,
     this.pendingLow,
-  })  : assert(username != null),
+  })  : assert(id != null),
+        assert(username != null),
         assert(tasks != null),
         assert(summary != null),
         assert(userId != null),
@@ -29,8 +32,9 @@ class UserModel {
         assert(pendingLow != null);
 
   ///Returns a [UserModel] from a map.
-  UserModel.fromFirestore(Map<String, dynamic> firestoreMap)
-      : username = firestoreMap["username"],
+  UserModel.fromFirestore(Map<String, dynamic> firestoreMap, String id)
+      : id = id,
+        username = firestoreMap["username"],
         tasks = firestoreMap["tasks"].cast<int>(),
         summary =
             SummaryModel.fromMap(firestoreMap["summary"].cast<String, int>()),
