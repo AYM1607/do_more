@@ -39,4 +39,19 @@ class SummaryModel {
     completedFriday = map["completedFriday"];
     addedFriday = map["addedFriday"];
   }
+
+  Map<String, int> toMap() {
+    return <String, int>{
+      "completedMonday": completedMonday,
+      "addedMonday": addedMonday,
+      "completedTuesday": completedTuesday,
+      "addedTuesday": addedTuesday,
+      "completedWednesday": completedWednesday,
+      "addedWednesday": addedWednesday,
+      "completedThursday": completedThursday,
+      "addedThursday": addedThursday,
+      "completedFriday": completedFriday,
+      "addedFriday": addedFriday,
+    };
+  }
 }

@@ -24,4 +24,14 @@ class TaskModel {
         ownerUsername = firestoreMap["ownerUsername"],
         done = firestoreMap["done"],
         event = firestoreMap["event"];
+
+  Map<String, dynamic> toFirestoreMap() {
+    return <String, dynamic>{
+      "text": text,
+      "priority": priority,
+      "ownerUsername": ownerUsername,
+      "done": done,
+      "event": event,
+    };
+  }
 }
