@@ -38,10 +38,16 @@ class FirestoreProvider {
 
   //-------------------------Task related operations----------------------------
 
+  /// Adds a task to the tasks collection in firestore.
+  Future<void> addTask(TaskModel task) async {
+    final dataMap = task.toFirestoreMap();
+    await firestore.collection('tasks').add(dataMap);
+  }
+
   /// Returns a stream of [List<Task>]
   ///
-  /// The [event] parameter is used to query tasks that only are part of a
-  /// certain event.
+  /// The [event] parameter is used to query tasks that are part of a certain
+  /// event.
   Observable<List<TaskModel>> getUserTasks(String username, {String event}) {
     Query query = firestore
         .collection('tasks')
