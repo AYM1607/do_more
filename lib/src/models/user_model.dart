@@ -32,7 +32,7 @@ class UserModel {
         assert(pendingLow != null);
 
   ///Returns a [UserModel] from a map.
-  UserModel.fromFirestore(Map<String, dynamic> firestoreMap, String id)
+  UserModel.fromFirestore(Map<String, dynamic> firestoreMap, {String id})
       : id = id,
         username = firestoreMap["username"],
         tasks = firestoreMap["tasks"].cast<int>(),

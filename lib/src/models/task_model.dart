@@ -9,7 +9,7 @@ class TaskModel {
   final String event;
 
   TaskModel({
-    @required this.id,
+    this.id,
     @required this.text,
     @required this.priority,
     @required this.ownerUsername,
@@ -17,7 +17,7 @@ class TaskModel {
     @required this.event,
   });
 
-  TaskModel.fromFirestore(Map<String, dynamic> firestoreMap, String id)
+  TaskModel.fromFirestore(Map<String, dynamic> firestoreMap, {String id})
       : id = id,
         text = firestoreMap["text"],
         priority = firestoreMap["priority"],

@@ -12,7 +12,7 @@ class EventModel {
   final int lowPriority;
 
   EventModel({
-    @required this.id,
+    this.id,
     @required this.name,
     @required this.pendigTasks,
     @required this.when,
@@ -23,7 +23,7 @@ class EventModel {
     @required this.lowPriority,
   });
 
-  EventModel.fromFirestore(Map<String, dynamic> firestoreMap, String id)
+  EventModel.fromFirestore(Map<String, dynamic> firestoreMap, {String id})
       : id = id,
         name = firestoreMap["name"],
         pendigTasks = firestoreMap["pendingTasks"],

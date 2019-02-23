@@ -6,6 +6,8 @@ import '../models/user_model.dart';
 import '../models/task_model.dart';
 
 /// A connection to the Cloud Firestore database
+///
+/// Implempents CRUD operations for users, tasks and events.
 class FirestoreProvider {
   final Firestore firestore = Firestore.instance;
 
@@ -26,11 +28,15 @@ class FirestoreProvider {
         }
         final userSnapshot = snapshot.documents.first;
         return UserModel.fromFirestore(
-            userSnapshot.data, userSnapshot.documentID);
+          userSnapshot.data,
+          id: userSnapshot.documentID,
+        );
       },
     );
     return Observable(mappedStream);
   }
+
+  //-------------------------Task related operations----------------------------
 
   /// Returns a stream of [List<Task>]
   ///
@@ -50,7 +56,10 @@ class FirestoreProvider {
       (QuerySnapshot snapshot) {
         return snapshot.documents.map(
           (DocumentSnapshot document) {
-            return TaskModel.fromFirestore(document.data, document.documentID);
+            return TaskModel.fromFirestore(
+              document.data,
+              id: document.documentID,
+            );
           },
         ).toList();
       },
@@ -63,12 +72,17 @@ class FirestoreProvider {
     final mappedStream =
         firestore.collection('tasks').document(id).snapshots().map(
       (DocumentSnapshot snapshot) {
-        return TaskModel.fromFirestore(snapshot.data, snapshot.documentID);
+        return TaskModel.fromFirestore(
+          snapshot.data,
+          id: snapshot.documentID,
+        );
       },
     );
 
     return Observable(mappedStream);
   }
+
+  //-----------------------Event related operations-----------------------------
 
   // TODO: Change the Events collction name to 'events'
   Observable<List<EventModel>> getUserEvents(String userDocumentId) {
@@ -81,7 +95,9 @@ class FirestoreProvider {
       (QuerySnapshot snapshot) {
         return snapshot.documents.map((DocumentSnapshot documentSnapshot) {
           return EventModel.fromFirestore(
-              documentSnapshot.data, documentSnapshot.documentID);
+            documentSnapshot.data,
+            id: documentSnapshot.documentID,
+          );
         }).toList();
       },
     );
