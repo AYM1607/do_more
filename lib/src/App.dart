@@ -5,7 +5,7 @@ import './models/task_model.dart';
 import './models/user_model.dart';
 import './resources/firestore_provider.dart';
 
-class App extends StatelessWidget {
+/* class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final fire = FirestoreProvider();
     return MaterialApp(
@@ -19,9 +19,8 @@ class App extends StatelessWidget {
       ),
     );
   }
-}
+} */
 
-/* 
 class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final fire = FirestoreProvider();
@@ -43,7 +42,22 @@ class App extends StatelessWidget {
             }
             final children = <Widget>[
               MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  final task = TaskModel(
+                    ownerUsername: 'mariano159357',
+                    text: 'I dont know what to put',
+                    priority: 2,
+                    done: false,
+                    event: 'Math',
+                  );
+
+                  fire.updateTask(
+                    '-LZRNhS9mX-SO0XgfQIM',
+                    done: true,
+                    text: 'Hellloooooo',
+                    priority: 1,
+                  );
+                },
                 child: Text('Add task'),
               ),
             ];
@@ -62,4 +76,3 @@ class App extends StatelessWidget {
     );
   }
 }
- */

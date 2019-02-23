@@ -5,6 +5,12 @@ import '../models/event_model.dart';
 import '../models/user_model.dart';
 import '../models/task_model.dart';
 
+/**
+* TODO: the cloud firestore plugin currently throws an error when calling
+* methods that modify documents. Wait for a fix.
+* https://github.com/flutter/flutter/issues/28103
+*/
+
 /// A connection to the Cloud Firestore database
 ///
 /// Implempents CRUD operations for users, tasks and events.
@@ -14,6 +20,7 @@ class FirestoreProvider {
   FirestoreProvider() {
     firestore.settings(timestampsInSnapshotsEnabled: true);
   }
+  //-----------------------User related operations------------------------------
 
   /// Returns a stream of [UserModel].
   Observable<UserModel> getUser(String username) {
@@ -38,13 +45,66 @@ class FirestoreProvider {
 
   //-------------------------Task related operations----------------------------
 
-  /// Adds a task to the tasks collection in firestore.
+  /// Adds a task to firestore.
   Future<void> addTask(TaskModel task) async {
-    final dataMap = task.toFirestoreMap();
-    await firestore.collection('tasks').add(dataMap);
+    try {
+      final dataMap = task.toFirestoreMap();
+      await firestore.collection('tasks').add(dataMap);
+    } catch (e) {
+      print('Error adding task to firestore: $e');
+    }
   }
 
-  /// Returns a stream of [List<Task>]
+  /// Returns a Stream of a single task from an id.
+  Observable<TaskModel> getTask(String id) {
+    final mappedStream =
+        firestore.collection('tasks').document(id).snapshots().map(
+      (DocumentSnapshot snapshot) {
+        return TaskModel.fromFirestore(
+          snapshot.data,
+          id: snapshot.documentID,
+        );
+      },
+    );
+
+    return Observable(mappedStream);
+  }
+
+  /// Deletes a task from firestore.
+  Future<void> deleteTask(String id) async {
+    try {
+      final documentReference = firestore.collection('tasks').document(id);
+      await documentReference.delete();
+    } catch (e) {
+      print('Error deleting task from firestore: $e');
+    }
+  }
+
+  /// Updates a task in firestore.
+  ///
+  /// Only the [text], [priority] and [done] attributes can be update.
+  /// Provide at least one of these values.
+  Future<void> updateTask(
+    String id, {
+    String text,
+    int priority,
+    bool done,
+  }) async {
+    final newData = <String, dynamic>{
+      'text': text,
+      'priority': priority,
+      'done': done,
+    };
+    newData.removeWhere((key, value) => value == null);
+    try {
+      final documentReference = firestore.collection('tasks').document(id);
+      await documentReference.setData(newData, merge: true);
+    } catch (e) {
+      print('Error updating task in firestore: $e');
+    }
+  }
+
+  /// Returns a stream of [List<Task>] that correspond to a particular user.
   ///
   /// The [event] parameter is used to query tasks that are part of a certain
   /// event.
@@ -74,23 +134,9 @@ class FirestoreProvider {
     return Observable(mappedStream);
   }
 
-  Observable<TaskModel> getTask(String id) {
-    final mappedStream =
-        firestore.collection('tasks').document(id).snapshots().map(
-      (DocumentSnapshot snapshot) {
-        return TaskModel.fromFirestore(
-          snapshot.data,
-          id: snapshot.documentID,
-        );
-      },
-    );
-
-    return Observable(mappedStream);
-  }
-
   //-----------------------Event related operations-----------------------------
 
-  // TODO: Change the Events collction name to 'events'
+  // TODO: Change the Events collction name to 'events' in forestore.
   Observable<List<EventModel>> getUserEvents(String userDocumentId) {
     final mappedStream = firestore
         .collection('users')
