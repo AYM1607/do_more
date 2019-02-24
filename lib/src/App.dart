@@ -5,7 +5,7 @@ import './models/task_model.dart';
 import './models/user_model.dart';
 import './resources/firestore_provider.dart';
 
-/* class App extends StatelessWidget {
+class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final fire = FirestoreProvider();
     return MaterialApp(
@@ -19,9 +19,9 @@ import './resources/firestore_provider.dart';
       ),
     );
   }
-} */
+}
 
-class App extends StatelessWidget {
+/* class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final fire = FirestoreProvider();
     return MaterialApp(
@@ -32,9 +32,9 @@ class App extends StatelessWidget {
           title: Text('DO>'),
         ),
         body: StreamBuilder(
-          stream: fire.getUserEvents('vBOvtmTeC8iPg8L4Hixh'),
-          builder: (BuildContext context,
-              AsyncSnapshot<List<EventModel>> userSnapshot) {
+          stream: fire.getEvent('vBOvtmTeC8iPg8L4Hixh', '-LZReccofbHpw9UfOTMk'),
+          builder:
+              (BuildContext context, AsyncSnapshot<EventModel> userSnapshot) {
             if (!userSnapshot.hasData) {
               return Center(
                 child: CircularProgressIndicator(),
@@ -51,11 +51,21 @@ class App extends StatelessWidget {
                     event: 'Math',
                   );
 
-                  fire.updateTask(
-                    '-LZRNhS9mX-SO0XgfQIM',
-                    done: true,
-                    text: 'Hellloooooo',
-                    priority: 1,
+                  final event = EventModel(
+                    name: 'Langs and trans',
+                    tasks: <String>[],
+                    highPriority: 0,
+                    mediumPriority: 0,
+                    lowPriority: 0,
+                    media: <String>[],
+                    when: <bool>[],
+                    pendigTasks: 0,
+                  );
+
+                  fire.updateEvent(
+                    'vBOvtmTeC8iPg8L4Hixh',
+                    '-LZReccofbHpw9UfOTMk',
+                    name: 'kjhahslkdjhf',
                   );
                 },
                 child: Text('Add task'),
@@ -63,9 +73,11 @@ class App extends StatelessWidget {
             ];
             //children.add(Text(userSnapshot.data.text));
 
-            userSnapshot.data.forEach((EventModel task) {
-              children.add(Text(task.name));
-            });
+            //userSnapshot.data.forEach((EventModel task) {
+            //  children.add(Text(task.name));
+            //});
+
+            children.add(Text(userSnapshot.data.name));
 
             return Column(
               children: children,
@@ -75,4 +87,4 @@ class App extends StatelessWidget {
       ),
     );
   }
-}
+} */

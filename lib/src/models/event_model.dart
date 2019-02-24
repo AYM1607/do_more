@@ -33,4 +33,17 @@ class EventModel {
         highPriority = firestoreMap["highPriority"],
         mediumPriority = firestoreMap["mediumPriority"],
         lowPriority = firestoreMap["lowPriority"];
+
+  Map<String, dynamic> toFirestoreMap() {
+    return <String, dynamic>{
+      "name": name,
+      "pendingTasks": pendigTasks,
+      "when": when,
+      "media": media,
+      "tasks": tasks,
+      "highPriority": highPriority,
+      "mediumPriority": mediumPriority,
+      "lowPriority": lowPriority,
+    };
+  }
 }
