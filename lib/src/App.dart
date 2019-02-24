@@ -7,7 +7,6 @@ import './resources/firestore_provider.dart';
 
 class App extends StatelessWidget {
   Widget build(BuildContext context) {
-    final fire = FirestoreProvider();
     return MaterialApp(
       title: 'Do more',
       //home: Text('Start'),

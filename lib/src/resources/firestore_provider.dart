@@ -84,7 +84,8 @@ class FirestoreProvider {
   /// Updates a task in firestore.
   ///
   /// Only the [text], [priority] and [done] attributes can be update.
-  /// Provide at least one of these values.
+  /// Provide at least one of these values or this operation won't have any
+  /// effect.
   Future<void> updateTask(
     String id, {
     String text,
@@ -97,6 +98,12 @@ class FirestoreProvider {
       'done': done,
     };
     newData.removeWhere((key, value) => value == null);
+
+    // No need to call firestore if there's no new data to update.
+    if (newData.isEmpty) {
+      return;
+    }
+
     try {
       final documentReference = firestore.collection('tasks').document(id);
       await documentReference.setData(newData, merge: true);
@@ -166,6 +173,9 @@ class FirestoreProvider {
     return Observable(mappedStream);
   }
 
+  /// Deletes an event from firestore.
+  ///
+  /// It does not delete all the dependent items, this includes tasks and media.
   Future<void> deleteEvent(String userId, String eventId) async {
     try {
       final documentReference =
@@ -176,6 +186,11 @@ class FirestoreProvider {
     }
   }
 
+  /// Updates and event with the provided data.
+  ///
+  /// At least one of the following has to be provided (otherwise this
+  /// operation has no effect): [name], [pendingTasks], [meida], [tasks],
+  /// [highPriority], [mediumPriority] or [lowPriority].
   Future<void> updateEvent(
     String userId,
     String eventId, {
@@ -197,6 +212,11 @@ class FirestoreProvider {
       'lowPriority': lowPriority,
     };
     newData.removeWhere((_, value) => value == null);
+
+    // No need to call firestore if there's no new data to update.
+    if (newData.isEmpty) {
+      return;
+    }
 
     try {
       final documentReference =
