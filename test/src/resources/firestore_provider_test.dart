@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:do_more/src/models/event_model.dart';
+import 'package:do_more/src/models/summary_model.dart';
 import 'package:do_more/src/models/task_model.dart';
+import 'package:do_more/src/models/user_model.dart';
 import 'package:do_more/src/resources/firestore_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:rxdart/rxdart.dart';
 
 class MockFirestore extends Mock implements Firestore {}
 
@@ -48,7 +49,38 @@ main() {
     lowPriority: 0,
   );
 
+  final summary = SummaryModel();
+
+  final user = UserModel(
+    id: '123',
+    tasks: <String>[],
+    pendingHigh: 0,
+    pendingMedium: 0,
+    pendingLow: 0,
+    username: 'testUser',
+    summary: summary,
+  );
+
   group('FirestoreProvider', () {
+    test('should listen to updates of a single user object', () {
+      final firestore = MockFirestore();
+      final collection = MockCollectionReference();
+      final query = MockQuery();
+      final querySnapshot = MockQuerySnapshot();
+      final snapshot = MockDocumentSnapshot(user.toFirestoreMap());
+      final snapshots = Stream.fromIterable([querySnapshot]);
+      final provider = FirestoreProvider(firestore);
+
+      when(firestore.collection('users')).thenReturn(collection);
+      when(collection.where('username', isEqualTo: user.username))
+          .thenReturn(query);
+      when(query.snapshots()).thenAnswer((_) => snapshots);
+      when(querySnapshot.documents).thenReturn([snapshot]);
+      when(snapshot.documentID).thenReturn(user.id);
+
+      expect(provider.getUser(user.username), emits(user));
+    });
+
     test('should create task in firestore', () {
       final firestore = MockFirestore();
       final collection = MockCollectionReference();
