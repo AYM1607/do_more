@@ -22,14 +22,7 @@ class UserModel {
     this.pendingHigh,
     this.pendingMedium,
     this.pendingLow,
-  })  : assert(id != null),
-        assert(username != null),
-        assert(tasks != null),
-        assert(summary != null),
-        assert(userId != null),
-        assert(pendingHigh != null),
-        assert(pendingMedium != null),
-        assert(pendingLow != null);
+  });
 
   ///Returns a [UserModel] from a map.
   UserModel.fromFirestore(Map<String, dynamic> firestoreMap, {String id})
@@ -42,4 +35,29 @@ class UserModel {
         pendingHigh = firestoreMap["pendingHigh"],
         pendingMedium = firestoreMap["pendingMedium"],
         pendingLow = firestoreMap["pendingLow"];
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      username.hashCode ^
+      tasks.hashCode ^
+      summary.hashCode ^
+      userId.hashCode ^
+      pendingHigh.hashCode ^
+      pendingMedium.hashCode ^
+      pendingLow.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is UserModel &&
+          id == other.id &&
+          username == other.username &&
+          tasks == other.tasks &&
+          summary == other.summary &&
+          userId == other.userId &&
+          pendingHigh == other.pendingHigh &&
+          pendingMedium == other.pendingMedium &&
+          pendingLow == other.pendingLow;
 }

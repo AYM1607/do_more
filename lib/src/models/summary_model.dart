@@ -54,4 +54,33 @@ class SummaryModel {
       "addedFriday": addedFriday,
     };
   }
+
+  @override
+  int get hashCode =>
+      completedMonday.hashCode ^
+      addedMonday.hashCode ^
+      completedTuesday.hashCode ^
+      addedTuesday.hashCode ^
+      completedWednesday.hashCode ^
+      addedWednesday.hashCode ^
+      completedThursday.hashCode ^
+      addedThursday.hashCode ^
+      completedFriday.hashCode ^
+      addedFriday.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SummaryModel &&
+          runtimeType == other.runtimeType &&
+          completedMonday == other.completedMonday &&
+          addedMonday == other.addedMonday &&
+          completedTuesday == other.completedTuesday &&
+          addedTuesday == other.addedTuesday &&
+          completedWednesday == other.completedWednesday &&
+          addedWednesday == other.addedWednesday &&
+          completedThursday == other.completedThursday &&
+          addedThursday == other.addedThursday &&
+          completedFriday == other.completedFriday &&
+          addedFriday == other.addedFriday;
 }
