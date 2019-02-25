@@ -59,6 +59,7 @@ class EventModel {
       mediumPriority.hashCode ^
       lowPriority.hashCode;
 
+  //  TODO: find a way to compare the 3 commented properties.
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -67,9 +68,9 @@ class EventModel {
           id == other.id &&
           name == other.name &&
           pendigTasks == other.pendigTasks &&
-          when == other.when &&
-          media == other.media &&
-          tasks == other.tasks &&
+          //when == other.when &&
+          //media == other.media &&
+          //tasks == other.tasks &&
           highPriority == other.highPriority &&
           mediumPriority == other.mediumPriority &&
           lowPriority == other.lowPriority;
