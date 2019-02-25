@@ -53,7 +53,6 @@ main() {
       final provider = FirestoreProvider(firestore);
 
       when(firestore.collection('tasks')).thenReturn(collection);
-
       provider.addTask(task);
 
       verify(collection.add(task.toFirestoreMap()));
@@ -73,6 +72,21 @@ main() {
       when(snapshot.documentID).thenReturn(task.id);
 
       expectLater(provider.getTask('1'), emits(task));
+    });
+
+    test('should delete task from firestore', () {
+      final firestore = MockFirestore();
+      final collection = MockCollectionReference();
+      final document = MockDocumentReference();
+      final provider = FirestoreProvider(firestore);
+
+      when(firestore.collection('tasks')).thenReturn(collection);
+      when(collection.document(task.id)).thenReturn(document);
+      when(document.delete()).thenAnswer((_) => Future<void>.value());
+
+      provider.deleteTask(task.id);
+
+      verify(document.delete());
     });
   });
 }
