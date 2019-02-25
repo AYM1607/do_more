@@ -34,4 +34,25 @@ class TaskModel {
       "event": event,
     };
   }
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      text.hashCode ^
+      priority.hashCode ^
+      ownerUsername.hashCode ^
+      done.hashCode ^
+      event.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      runtimeType == other.runtimeType &&
+          other is TaskModel &&
+          id == other.id &&
+          text == other.text &&
+          priority == other.priority &&
+          ownerUsername == other.ownerUsername &&
+          done == other.done &&
+          event == other.event;
 }
