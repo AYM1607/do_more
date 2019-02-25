@@ -15,9 +15,10 @@ import '../models/task_model.dart';
 ///
 /// Implempents CRUD operations for users, tasks and events.
 class FirestoreProvider {
-  final Firestore firestore = Firestore.instance;
+  final Firestore firestore;
 
-  FirestoreProvider() {
+  FirestoreProvider([Firestore firestore])
+      : this.firestore = firestore ?? Firestore.instance {
     firestore.settings(timestampsInSnapshotsEnabled: true);
   }
   //-----------------------User related operations------------------------------
