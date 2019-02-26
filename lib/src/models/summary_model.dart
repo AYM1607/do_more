@@ -14,26 +14,17 @@ class SummaryModel {
   int addedFriday;
 
   SummaryModel({
-    int completedMonday,
-    int addedMonday,
-    int completedTuesday,
-    int addedTuesday,
-    int completedWednesday,
-    int addedWednesday,
-    int completedThursday,
-    int addedThursday,
-    int completedFriday,
-    int addedFriday,
-  })  : completedMonday = completedMonday ?? 0,
-        addedMonday = addedMonday ?? 0,
-        completedTuesday = completedTuesday ?? 0,
-        addedTuesday = addedTuesday ?? 0,
-        completedWednesday = completedWednesday ?? 0,
-        addedWednesday = addedWednesday ?? 0,
-        completedThursday = completedThursday ?? 0,
-        addedThursday = addedThursday ?? 0,
-        completedFriday = completedFriday ?? 0,
-        addedFriday = addedFriday ?? 0;
+    this.completedMonday = 0,
+    this.addedMonday = 0,
+    this.completedTuesday = 0,
+    this.addedTuesday = 0,
+    this.completedWednesday = 0,
+    this.addedWednesday = 0,
+    this.completedThursday = 0,
+    this.addedThursday = 0,
+    this.completedFriday = 0,
+    this.addedFriday = 0,
+  });
 
   /// Returns a [SummaryModel] from a map.
   SummaryModel.fromMap(Map<String, dynamic> map) {
