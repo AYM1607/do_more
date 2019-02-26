@@ -5,7 +5,7 @@ import './models/task_model.dart';
 import './models/user_model.dart';
 import './resources/firestore_provider.dart';
 
-class App extends StatelessWidget {
+/* class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Do more',
@@ -18,9 +18,9 @@ class App extends StatelessWidget {
       ),
     );
   }
-}
+} */
 
-/* class App extends StatelessWidget {
+class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final fire = FirestoreProvider();
     return MaterialApp(
@@ -64,7 +64,7 @@ class App extends StatelessWidget {
                   fire.updateEvent(
                     'vBOvtmTeC8iPg8L4Hixh',
                     '-LZReccofbHpw9UfOTMk',
-                    name: 'kjhahslkdjhf',
+                    name: 'Custom Task',
                   );
                 },
                 child: Text('Add task'),
@@ -86,4 +86,4 @@ class App extends StatelessWidget {
       ),
     );
   }
-} */
+}

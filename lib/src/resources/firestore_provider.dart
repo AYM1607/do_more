@@ -5,20 +5,14 @@ import '../models/event_model.dart';
 import '../models/user_model.dart';
 import '../models/task_model.dart';
 
-/**
-* TODO: the cloud firestore plugin currently throws an error when calling
-* methods that modify documents. Wait for a fix.
-* https://github.com/flutter/flutter/issues/28103
-*/
-
 /// A connection to the Cloud Firestore database
 ///
 /// Implempents CRUD operations for users, tasks and events.
 class FirestoreProvider {
   final Firestore firestore;
 
-  FirestoreProvider([Firestore firestore])
-      : this.firestore = firestore ?? Firestore.instance {
+  FirestoreProvider([Firestore injectedFirestore])
+      : firestore = injectedFirestore ?? Firestore.instance {
     firestore.settings(timestampsInSnapshotsEnabled: true);
   }
   //-----------------------User related operations------------------------------
