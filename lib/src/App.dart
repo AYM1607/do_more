@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import './models/event_model.dart';
+import './models/summary_model.dart';
+import './models/task_model.dart';
+import './models/user_model.dart';
+import './resources/google_login_provider.dart';
 
 class App extends StatelessWidget {
   Widget build(BuildContext context) {
-    final fire = FirestoreProvider();
+    final gLogin = GoogleSignInProvider();
     return MaterialApp(
       title: 'Do more',
       //home: Text('Start'),
@@ -10,7 +15,17 @@ class App extends StatelessWidget {
         appBar: AppBar(
           title: Text('DO>'),
         ),
-        body: StreamBuilder(
+        body: Column(
+          children: <Widget>[
+            Text('Tasks'),
+            MaterialButton(
+              child: Text('Google Sign In'),
+              onPressed: gLogin.signIn,
+            ),
+          ],
+        ),
+
+        /* StreamBuilder(
           stream: fire.getEvent('vBOvtmTeC8iPg8L4Hixh', '-LZReccofbHpw9UfOTMk'),
           builder:
               (BuildContext context, AsyncSnapshot<EventModel> userSnapshot) {
@@ -62,7 +77,7 @@ class App extends StatelessWidget {
               children: children,
             );
           },
-        ),
+        ), */
       ),
     );
   }
