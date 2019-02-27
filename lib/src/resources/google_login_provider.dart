@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,3 +27,6 @@ class GoogleSignInProvider {
     return user;
   }
 }
+=======
+import 'package:firebase_auth/firebase_auth.dart';
+>>>>>>> Added necessary dependencies for google sing in, created the google_sign_in provider, modified Info.plist to work with google sign in
