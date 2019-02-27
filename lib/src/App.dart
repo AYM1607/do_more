@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import './models/event_model.dart';
 import './models/summary_model.dart';
 import './models/task_model.dart';
 import './models/user_model.dart';
-import './resources/google_login_provider.dart';
+import './resources/google_sign_in_provider.dart';
 
 class App extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -21,6 +22,24 @@ class App extends StatelessWidget {
             MaterialButton(
               child: Text('Google Sign In'),
               onPressed: gLogin.signIn,
+            ),
+            MaterialButton(
+              child: Text('Google Current User'),
+              onPressed: gLogin.getCurrentUser,
+            ),
+            MaterialButton(
+              child: Text('Google Sign out'),
+              onPressed: gLogin.signOut,
+            ),
+            StreamBuilder(
+              stream: gLogin.onAuthStateChange,
+              builder:
+                  (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
+                if (!snapshot.hasData) {
+                  return Text('no user');
+                }
+                return Text(snapshot.data.displayName);
+              },
             ),
           ],
         ),
