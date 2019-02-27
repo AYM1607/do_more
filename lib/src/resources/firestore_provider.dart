@@ -9,17 +9,17 @@ import '../models/task_model.dart';
 ///
 /// Implempents CRUD operations for users, tasks and events.
 class FirestoreProvider {
-  final Firestore firestore;
+  final Firestore _firestore;
 
-  FirestoreProvider([Firestore injectedFirestore])
-      : firestore = injectedFirestore ?? Firestore.instance {
+  FirestoreProvider([Firestore firestore])
+      : _firestore = firestore ?? Firestore.instance {
     firestore.settings(timestampsInSnapshotsEnabled: true);
   }
   //-----------------------User related operations------------------------------
 
   /// Returns a stream of [UserModel].
   Observable<UserModel> getUser(String username) {
-    final mappedStream = firestore
+    final mappedStream = _firestore
         .collection('users')
         .where('username', isEqualTo: username)
         .snapshots()
@@ -45,7 +45,7 @@ class FirestoreProvider {
   Future<void> addTask(TaskModel task) async {
     try {
       final dataMap = task.toFirestoreMap();
-      await firestore.collection('tasks').add(dataMap);
+      await _firestore.collection('tasks').add(dataMap);
     } catch (e) {
       print('Error adding task to firestore: $e');
     }
@@ -54,7 +54,7 @@ class FirestoreProvider {
   /// Returns a Stream of a single task from an id.
   Observable<TaskModel> getTask(String id) {
     final mappedStream =
-        firestore.collection('tasks').document(id).snapshots().map(
+        _firestore.collection('tasks').document(id).snapshots().map(
       (DocumentSnapshot snapshot) {
         return TaskModel.fromFirestore(
           snapshot.data,
@@ -69,7 +69,7 @@ class FirestoreProvider {
   /// Deletes a task from firestore.
   Future<void> deleteTask(String id) async {
     try {
-      final documentReference = firestore.collection('tasks').document(id);
+      final documentReference = _firestore.collection('tasks').document(id);
       await documentReference.delete();
     } catch (e) {
       print('Error deleting task from firestore: $e');
@@ -100,7 +100,7 @@ class FirestoreProvider {
     }
 
     try {
-      final documentReference = firestore.collection('tasks').document(id);
+      final documentReference = _firestore.collection('tasks').document(id);
       await documentReference.setData(newData, merge: true);
     } catch (e) {
       print('Error updating task in firestore: $e');
@@ -112,7 +112,7 @@ class FirestoreProvider {
   /// The [event] parameter is used to query tasks that are part of a certain
   /// event.
   Observable<List<TaskModel>> getUserTasks(String username, {String event}) {
-    Query query = firestore
+    Query query = _firestore
         .collection('tasks')
         .where('ownerUsername', isEqualTo: username)
         .where('done', isEqualTo: false);
@@ -144,7 +144,7 @@ class FirestoreProvider {
   Future<void> addEvent(String userId, EventModel event) async {
     try {
       final dataMap = event.toFirestoreMap();
-      await firestore.collection('users/$userId/Events').add(dataMap);
+      await _firestore.collection('users/$userId/Events').add(dataMap);
     } catch (e) {
       print('Error adding Event to firestore: $e');
     }
@@ -152,7 +152,7 @@ class FirestoreProvider {
 
   /// Returns a Stream of a single event.
   Observable<EventModel> getEvent(String userId, String eventId) {
-    final mappedStream = firestore
+    final mappedStream = _firestore
         .collection('users/$userId/Events')
         .document(eventId)
         .snapshots()
@@ -174,7 +174,7 @@ class FirestoreProvider {
   Future<void> deleteEvent(String userId, String eventId) async {
     try {
       final documentReference =
-          firestore.document('users/$userId/Events/$eventId');
+          _firestore.document('users/$userId/Events/$eventId');
       await documentReference.delete();
     } catch (e) {
       print('Error deleting event in firestore: $e');
@@ -215,7 +215,7 @@ class FirestoreProvider {
 
     try {
       final documentReference =
-          firestore.document('users/$userId/Events/$eventId');
+          _firestore.document('users/$userId/Events/$eventId');
       await documentReference.setData(newData, merge: true);
     } catch (e) {
       print('Error while updating Event in Firestore: $e');
@@ -226,7 +226,7 @@ class FirestoreProvider {
   /// a particular user.
   Observable<List<EventModel>> getUserEvents(String userDocumentId) {
     final mappedStream =
-        firestore.collection('users/$userDocumentId/Events').snapshots().map(
+        _firestore.collection('users/$userDocumentId/Events').snapshots().map(
       (QuerySnapshot snapshot) {
         return snapshot.documents.map((DocumentSnapshot documentSnapshot) {
           return EventModel.fromFirestore(
