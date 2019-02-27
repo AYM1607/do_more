@@ -39,6 +39,7 @@ class GoogleSignInProvider {
   }
 
   Future<void> signOut() async {
+    await _googleSignIn.disconnect();
     await _auth.signOut();
   }
 }

@@ -38,11 +38,13 @@ main() {
 
     test('should sign out a user', () {
       final auth = MockFirebaseAuth();
-      final provider = GoogleSignInProvider(null, auth);
+      final googleSignIn = MockGoogleSignIn();
+      final provider = GoogleSignInProvider(googleSignIn, auth);
 
       when(auth.signOut()).thenAnswer((_) => Future.value());
 
       expect(provider.signOut(), completes);
+      verify(googleSignIn.disconnect());
     });
   });
 }
