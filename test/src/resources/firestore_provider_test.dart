@@ -9,24 +9,6 @@ import 'package:do_more/src/resources/firestore_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-class MockFirestore extends Mock implements Firestore {}
-
-class MockCollectionReference extends Mock implements CollectionReference {}
-
-class MockDocumentReference extends Mock implements DocumentReference {}
-
-class MockDocumentSnapshot extends Mock implements DocumentSnapshot {
-  final Map<String, dynamic> data;
-
-  MockDocumentSnapshot([this.data]);
-
-  dynamic operator [](String key) => data[key];
-}
-
-class MockQuerySnapshot extends Mock implements QuerySnapshot {}
-
-class MockQuery extends Mock implements Query {}
-
 main() {
   final task = TaskModel(
     id: '1',
@@ -253,3 +235,21 @@ main() {
     });
   });
 }
+
+class MockFirestore extends Mock implements Firestore {}
+
+class MockCollectionReference extends Mock implements CollectionReference {}
+
+class MockDocumentReference extends Mock implements DocumentReference {}
+
+class MockDocumentSnapshot extends Mock implements DocumentSnapshot {
+  final Map<String, dynamic> data;
+
+  MockDocumentSnapshot([this.data]);
+
+  dynamic operator [](String key) => data[key];
+}
+
+class MockQuerySnapshot extends Mock implements QuerySnapshot {}
+
+class MockQuery extends Mock implements Query {}
