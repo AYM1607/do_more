@@ -29,6 +29,7 @@ dependencies:
   firebase_auth: ^0.8.1
   firebase_ml_vision: ^0.6.0
   firebase_storage: ^2.0.1
+  google_sign_in: ^4.0.1+1
 
 dev_dependencies:
   flutter_test:
