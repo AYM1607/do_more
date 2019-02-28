@@ -28,4 +28,9 @@ class FirebaseStorageProvider {
         _storage.child('$folder/$fileId.$type');
     return fileReference.putFile(file);
   }
+
+  /// Deletes a file from the firebase storage bucket given its path.
+  Future<void> deleteFile(String path) {
+    return _storage.child(path).delete();
+  }
 }
