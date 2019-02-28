@@ -56,9 +56,17 @@ class AppState extends State<App> {
   Widget buildFromTask() {
     if (task == null) {
       return Text('No task yet');
-    } else if (task.isComplete) {
-      return Icon(Icons.check);
     }
-    return CircularProgressIndicator();
+    return StreamBuilder(
+      stream: task.events,
+      builder: (context, AsyncSnapshot<StorageTaskEvent> snapshot) {
+        if (!snapshot.hasData) {
+          return Text('No task yet');
+        } else if (task.isComplete) {
+          return Icon(Icons.check);
+        }
+        return CircularProgressIndicator();
+      },
+    );
   }
 }
