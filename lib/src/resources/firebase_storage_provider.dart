@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
+export 'package:firebase_storage/firebase_storage.dart' show StorageUploadTask;
 
 class FirebaseStorageProvider {
   final StorageReference _storage;

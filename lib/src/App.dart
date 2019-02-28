@@ -1,14 +1,21 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import './models/event_model.dart';
-import './models/summary_model.dart';
-import './models/task_model.dart';
-import './models/user_model.dart';
 import './resources/google_sign_in_provider.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import './resources/firebase_storage_provider.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
+  AppState createState() => AppState();
+}
+
+class AppState extends State<App> {
+  File image;
+  FirebaseStorageProvider provider = FirebaseStorageProvider();
+  StorageUploadTask task;
+
   Widget build(BuildContext context) {
-    final gLogin = GoogleSignInProvider();
     return MaterialApp(
       title: 'Do more',
       //home: Text('Start'),
@@ -20,84 +27,38 @@ class App extends StatelessWidget {
           children: <Widget>[
             Text('Tasks'),
             MaterialButton(
-              child: Text('Google Sign In'),
-              onPressed: gLogin.signIn,
+              child: Text('Upload Picture'),
+              onPressed: uploadPicture,
             ),
-            MaterialButton(
-              child: Text('Google Current User'),
-              onPressed: gLogin.getCurrentUser,
-            ),
-            MaterialButton(
-              child: Text('Google Sign out'),
-              onPressed: gLogin.signOut,
-            ),
-            StreamBuilder(
-              stream: gLogin.onAuthStateChange,
-              builder:
-                  (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
-                if (!snapshot.hasData) {
-                  return Text('no user');
-                }
-                return Text(snapshot.data.displayName);
-              },
-            ),
+            buildImage(),
+            buildFromTask(),
           ],
         ),
-
-        /* StreamBuilder(
-          stream: fire.getEvent('vBOvtmTeC8iPg8L4Hixh', '-LZReccofbHpw9UfOTMk'),
-          builder:
-              (BuildContext context, AsyncSnapshot<EventModel> userSnapshot) {
-            if (!userSnapshot.hasData) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            final children = <Widget>[
-              MaterialButton(
-                onPressed: () {
-                  final task = TaskModel(
-                    ownerUsername: 'mariano159357',
-                    text: 'I dont know what to put',
-                    priority: 2,
-                    done: false,
-                    event: 'Math',
-                  );
-
-                  final event = EventModel(
-                    name: 'Langs and trans',
-                    tasks: <String>[],
-                    highPriority: 0,
-                    mediumPriority: 0,
-                    lowPriority: 0,
-                    media: <String>[],
-                    when: <bool>[],
-                    pendigTasks: 0,
-                  );
-
-                  fire.updateEvent(
-                    'vBOvtmTeC8iPg8L4Hixh',
-                    '-LZReccofbHpw9UfOTMk',
-                    name: 'Custom Task',
-                  );
-                },
-                child: Text('Add task'),
-              ),
-            ];
-            //children.add(Text(userSnapshot.data.text));
-
-            //userSnapshot.data.forEach((EventModel task) {
-            //  children.add(Text(task.name));
-            //});
-
-            children.add(Text(userSnapshot.data.name));
-
-            return Column(
-              children: children,
-            );
-          },
-        ), */
       ),
     );
+  }
+
+  Future<void> uploadPicture() async {
+    final imageTaken = await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      image = imageTaken;
+    });
+    task = provider.uploadFile(imageTaken);
+  }
+
+  Widget buildImage() {
+    if (image == null) {
+      return Text('No image yet');
+    }
+    return Image.file(image);
+  }
+
+  Widget buildFromTask() {
+    if (task == null) {
+      return Text('No task yet');
+    } else if (task.isComplete) {
+      return Icon(Icons.check);
+    }
+    return CircularProgressIndicator();
   }
 }
