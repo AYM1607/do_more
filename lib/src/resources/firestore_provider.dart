@@ -61,6 +61,9 @@ class FirestoreProvider {
     return querySnapshot.documents.length > 0;
   }
 
+  /// Updates a user's data in Firestore.
+  ///
+  /// Updates are only pushed if at least one property is provided.
   Future<void> updateUser(
     String id, {
     List<String> tasks,
@@ -70,7 +73,6 @@ class FirestoreProvider {
     int pendingLow,
   }) async {
     final newData = <String, dynamic>{
-      'id': id,
       'tasks': tasks,
       'summary': summary,
       'pendingHigh': pendingHigh,

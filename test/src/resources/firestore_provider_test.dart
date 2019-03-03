@@ -44,6 +44,32 @@ main() {
   );
 
   group('FirestoreProvider', () {
+    test('should create a user', () {
+      final firestore = MockFirestore();
+      final collection = MockCollectionReference();
+      final provider = FirestoreProvider(firestore);
+
+      when(firestore.collection('users')).thenReturn(collection);
+
+      provider.createUser(user);
+
+      verify(collection.add(user.toFirestoreMap()));
+    });
+
+    test('should update the information of a user', () {
+      final firestore = MockFirestore();
+      final collection = MockCollectionReference();
+      final document = MockDocumentReference();
+      final provider = FirestoreProvider(firestore);
+
+      when(firestore.collection('users')).thenReturn(collection);
+      when(collection.document(user.id)).thenReturn(document);
+
+      provider.updateUser(user.id, pendingHigh: 1);
+
+      verify(document.setData({'pendingHigh': 1}, merge: true));
+    });
+
     test('should listen to updates of a single user object', () {
       final firestore = MockFirestore();
       final collection = MockCollectionReference();
@@ -63,7 +89,7 @@ main() {
       expect(provider.getUser(user.username), emits(user));
     });
 
-    test('should create task in firestore', () {
+    test('should create task', () {
       final firestore = MockFirestore();
       final collection = MockCollectionReference();
       final provider = FirestoreProvider(firestore);
@@ -90,7 +116,7 @@ main() {
       expectLater(provider.getTask('1'), emits(task));
     });
 
-    test('should delete a task from firestore', () {
+    test('should delete a task', () {
       final firestore = MockFirestore();
       final collection = MockCollectionReference();
       final document = MockDocumentReference();
@@ -105,7 +131,7 @@ main() {
       verify(document.delete());
     });
 
-    test('should update a task in firestore', () {
+    test('should update a task', () {
       final firestore = MockFirestore();
       final collection = MockCollectionReference();
       final document = MockDocumentReference();
@@ -163,7 +189,7 @@ main() {
       });
     });
 
-    test('should create event in firestore', () {
+    test('should create event', () {
       final firestore = MockFirestore();
       final collection = MockCollectionReference();
       final provider = FirestoreProvider(firestore);
@@ -191,7 +217,7 @@ main() {
       expectLater(provider.getEvent('123', event.id), emits(event));
     });
 
-    test('should delete an event from firestore', () {
+    test('should delete an event', () {
       final firestore = MockFirestore();
       final document = MockDocumentReference();
       final provider = FirestoreProvider(firestore);
@@ -205,7 +231,7 @@ main() {
       verify(document.delete());
     });
 
-    test('should update an event in firestore', () {
+    test('should update an event', () {
       final firestore = MockFirestore();
       final document = MockDocumentReference();
       final provider = FirestoreProvider(firestore);
