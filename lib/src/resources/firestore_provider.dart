@@ -41,6 +41,8 @@ class FirestoreProvider {
     return Observable(mappedStream);
   }
 
+  Future<void> createUser(String username) {}
+
   //-------------------------Task related operations----------------------------
 
   /// Adds a task to firestore.

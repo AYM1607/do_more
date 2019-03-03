@@ -5,12 +5,25 @@ import 'summary_model.dart';
 ///
 /// Represents all of a users data.
 class UserModel {
+  /// The document id that corresponds to the user in the database.
   final String id;
+
+  /// The users email address.
   final String username;
+
+  /// An array of task ids.
   final List<String> tasks;
+
+  /// Added and finished tasks for the current week.
   final SummaryModel summary;
+
+  /// Pending high priority tasks.
   final int pendingHigh;
+
+  /// Pendign medium priority tasks.
   final int pendingMedium;
+
+  /// Pending low priority tasks.
   final int pendingLow;
 
   UserModel({
