@@ -41,7 +41,14 @@ class FirestoreProvider {
     return Observable(mappedStream);
   }
 
-  Future<void> createUser(String username) {}
+  Future<void> createUser(UserModel user) async {
+    try {
+      final dataMap = user.toFirestoreMap();
+      await _firestore.collection('users').add(dataMap);
+    } catch (e) {
+      print('Error creating user: $e');
+    }
+  }
 
   //-------------------------Task related operations----------------------------
 
