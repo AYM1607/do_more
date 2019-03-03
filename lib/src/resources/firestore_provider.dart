@@ -5,6 +5,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../models/event_model.dart';
 import '../models/user_model.dart';
+import '../models/summary_model.dart';
 import '../models/task_model.dart';
 
 /// A connection to the Cloud Firestore database
@@ -41,6 +42,7 @@ class FirestoreProvider {
     return Observable(mappedStream);
   }
 
+  /// Creates a new instance of a user in Firestore.
   Future<void> createUser(UserModel user) async {
     try {
       final dataMap = user.toFirestoreMap();
@@ -50,12 +52,43 @@ class FirestoreProvider {
     }
   }
 
+  /// Verifies if a user with the given username is already in the database.
   Future<bool> userExists(String username) async {
     final querySnapshot = await _firestore
         .collection('users')
         .where('username', isEqualTo: username)
         .getDocuments();
     return querySnapshot.documents.length > 0;
+  }
+
+  Future<void> updateUser(
+    String id, {
+    List<String> tasks,
+    SummaryModel summary,
+    int pendingHigh,
+    int pendingMedium,
+    int pendingLow,
+  }) async {
+    final newData = <String, dynamic>{
+      'id': id,
+      'tasks': tasks,
+      'summary': summary,
+      'pendingHigh': pendingHigh,
+      'pendingMedium': pendingMedium,
+      'pendingLow': pendingLow,
+    };
+    newData.removeWhere((key, value) => value == null);
+
+    if (newData.isEmpty) {
+      return;
+    }
+
+    try {
+      final documentReference = _firestore.collection('users').document(id);
+      await documentReference.setData(newData, merge: true);
+    } catch (e) {
+      print('Error trying to update user data: $e');
+    }
   }
 
   //-------------------------Task related operations----------------------------
