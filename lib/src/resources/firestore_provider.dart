@@ -50,6 +50,14 @@ class FirestoreProvider {
     }
   }
 
+  Future<bool> userExists(String username) async {
+    final querySnapshot = await _firestore
+        .collection('users')
+        .where('username', isEqualTo: username)
+        .getDocuments();
+    return querySnapshot.documents.length > 0;
+  }
+
   //-------------------------Task related operations----------------------------
 
   /// Adds a task to firestore.
