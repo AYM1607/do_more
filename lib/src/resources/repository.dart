@@ -5,23 +5,15 @@ import 'package:rxdart/rxdart.dart';
 
 import './firebase_storage_provider.dart';
 import './firestore_provider.dart';
-import './google_sign_in_provider.dart';
 import '../models/event_model.dart';
 import '../models/task_model.dart';
 import '../models/summary_model.dart';
-import '../models/user_model.dart';
 
 class Repository {
   final _storageProvider = FirebaseStorageProvider();
   final _firestoreProvider = FirestoreProvider();
-  final _googleSignInProvider = GoogleSignInProvider();
 
   //--------------------------------CRUD----------------------------------------
-
-  Observable<UserModel> getUser(String username) {
-    return _firestoreProvider.getUser(username);
-  }
-
   Future<void> updateUser(
     String id, {
     List<String> tasks,
@@ -102,32 +94,6 @@ class Repository {
 
   Observable<List<EventModel>> getUserEvents(String userId) {
     return _firestoreProvider.getUserEvents(userId);
-  }
-
-  //-----------------------------------AUTH-------------------------------------
-
-  Future<FirebaseUser> googleLoginAndSignup() async {
-    final user = await _googleSignInProvider.signIn();
-    if (user == null) {
-      return null;
-    }
-    // Create a new user in Firestore if this is the first time signing in.
-    if (!await _firestoreProvider.userExists(user.email)) {
-      final newUserModel = UserModel(
-        username: user.email,
-        tasks: <String>[],
-        summary: SummaryModel(),
-        pendingHigh: 0,
-        pendingMedium: 0,
-        pendingLow: 0,
-      );
-      await _firestoreProvider.createUser(newUserModel, user.uid);
-    }
-    return user;
-  }
-
-  Future<void> signOut() {
-    return _googleSignInProvider.signOut();
   }
 
   //---------------------------------STORAGE------------------------------------
