@@ -279,9 +279,9 @@ class FirestoreProvider {
 
   /// Returns a stream of [List<EventModel] that correspond to
   /// a particular user.
-  Observable<List<EventModel>> getUserEvents(String userDocumentId) {
+  Observable<List<EventModel>> getUserEvents(String userId) {
     final mappedStream =
-        _firestore.collection('users/$userDocumentId/Events').snapshots().map(
+        _firestore.collection('users/$userId/Events').snapshots().map(
       (QuerySnapshot snapshot) {
         return snapshot.documents.map((DocumentSnapshot documentSnapshot) {
           return EventModel.fromFirestore(

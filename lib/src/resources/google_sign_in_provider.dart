@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rxdart/rxdart.dart';
 
+export 'package:firebase_auth/firebase_auth.dart' show FirebaseUser;
+
 /// A Google authentication provider.
 ///
 /// Connects to both Google and Firebase to authenticate a user.
