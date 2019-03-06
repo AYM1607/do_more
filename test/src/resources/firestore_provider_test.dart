@@ -47,13 +47,15 @@ main() {
     test('should create a user', () {
       final firestore = MockFirestore();
       final collection = MockCollectionReference();
+      final document = MockDocumentReference();
       final provider = FirestoreProvider(firestore);
 
       when(firestore.collection('users')).thenReturn(collection);
+      when(collection.document('123')).thenReturn(document);
 
-      provider.createUser(user);
+      provider.createUser(user, '123');
 
-      verify(collection.add(user.toFirestoreMap()));
+      verify(document.setData(user.toFirestoreMap()));
     });
 
     test('should update the information of a user', () {

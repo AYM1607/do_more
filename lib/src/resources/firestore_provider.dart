@@ -43,10 +43,11 @@ class FirestoreProvider {
   }
 
   /// Creates a new instance of a user in Firestore.
-  Future<void> createUser(UserModel user) async {
+  Future<void> createUser(UserModel user, String uid) async {
     try {
       final dataMap = user.toFirestoreMap();
-      await _firestore.collection('users').add(dataMap);
+      final documentReference = _firestore.collection('users').document(uid);
+      await documentReference.setData(dataMap);
     } catch (e) {
       print('Error creating user: $e');
     }

@@ -12,5 +12,9 @@ class Repository {
   final _firestoreProvider = FirestoreProvider();
   final _googleSignInProvider = GoogleSignInProvider();
 
-  Observable<UserModel> getUser(String username) {}
+  Observable<UserModel> getUser(String username) {
+    return _firestoreProvider.getUser(username);
+  }
+
+  Future<void> createUser(UserModel user) {}
 }
