@@ -8,18 +8,12 @@ import '../models/summary_model.dart';
 import '../models/user_model.dart';
 
 class AuthService {
-  Observable<UserModel> user;
+  final _user = BehaviorSubject<FirebaseUser>();
+
+  Observable<FirebaseUser> get userStream => _user.stream;
 
   AuthService() {
-    _googleSignInProvider.onAuthStateChange.listen(onUserChanged);
-  }
-
-  Future<void> onUserChanged(FirebaseUser firebaseUser) async {
-    if (firebaseUser == null) {
-      user = null;
-      return;
-    }
-    user = _firestoreProvider.getUser(firebaseUser.email);
+    _googleSignInProvider.onAuthStateChange.pipe(_user);
   }
 
   final _googleSignInProvider = GoogleSignInProvider();
@@ -44,6 +38,10 @@ class AuthService {
 
   Future<void> signOut() {
     return _googleSignInProvider.signOut();
+  }
+
+  void dispose() {
+    _user.close();
   }
 }
 
