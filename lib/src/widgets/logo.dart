@@ -8,7 +8,7 @@ class Logo extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Container(
-      width: 165,
+      width: 158,
       child: Stack(
         children: <Widget>[
           Text(

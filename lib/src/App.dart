@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
-import 'widgets/logo.dart';
+import 'screens/login_screen.dart';
 
 class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Do more',
       //home: Text('Start'),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('DO>'),
-        ),
-        body: Container(
-          color: Colors.blue,
-          child: Logo(),
-        ),
+      home: LoginScreen(),
+      theme: ThemeData(
+        canvasColor: Color.fromRGBO(23, 25, 29, 1.0),
       ),
     );
   }
