@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/logo.dart';
+import '../widgets/gradient_button.dart';
 
 class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -16,7 +17,9 @@ class LoginScreen extends StatelessWidget {
               flex: 4,
             ),
             Expanded(
-              child: Text('Login Buton'),
+              child: Center(
+                child: GradientButton(),
+              ),
               flex: 1,
             ),
           ],
