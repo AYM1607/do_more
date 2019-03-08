@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'widgets/logo.dart';
 
 class App extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -9,7 +10,10 @@ class App extends StatelessWidget {
         appBar: AppBar(
           title: Text('DO>'),
         ),
-        body: Text('Tasks'),
+        body: Container(
+          color: Colors.blue,
+          child: Logo(),
+        ),
       ),
     );
   }
