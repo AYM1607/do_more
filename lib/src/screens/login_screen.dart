@@ -23,7 +23,7 @@ class LoginScreen extends StatelessWidget {
             Expanded(
               child: Center(
                 child: GradientButton(
-                  onTap: _authService.googleLoginAndSignup(),
+                  onTap: () => _authService.googleLoginAndSignup(),
                   height: 50,
                   width: 310,
                   radius: 25,

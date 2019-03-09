@@ -1,13 +1,21 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class GradientButton extends StatelessWidget {
+  /// The border radius of the button.
   final double radius;
+
+  /// The Widget to be contained inside the button.
   final Widget child;
+
+  /// Height of the button.
   final double height;
+
+  /// Width of the button.
   final double width;
-  final onTap;
+
+  /// Function to be called when the button is pressed.
+  final VoidCallback onTap;
+
   GradientButton({
     this.radius = 4,
     @required this.child,
