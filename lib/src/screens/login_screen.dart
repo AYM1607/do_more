@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../widgets/logo.dart';
 import '../widgets/gradient_button.dart';
@@ -14,11 +15,14 @@ class LoginScreen extends StatelessWidget {
               child: Center(
                 child: Logo(),
               ),
-              flex: 3,
+              flex: 2,
             ),
             Expanded(
               child: Center(
                 child: GradientButton(
+                  height: 50,
+                  width: 310,
+                  radius: 25,
                   child: getButtonBody(),
                 ),
               ),
@@ -32,6 +36,8 @@ class LoginScreen extends StatelessWidget {
 
   Widget getButtonBody() {
     return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text(
           'LOGIN',
@@ -40,6 +46,14 @@ class LoginScreen extends StatelessWidget {
             fontSize: 15,
             fontWeight: FontWeight.w600,
           ),
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Icon(
+          FontAwesomeIcons.google,
+          color: Colors.white,
+          size: 24,
         ),
       ],
     );
