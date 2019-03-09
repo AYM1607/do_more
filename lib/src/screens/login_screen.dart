@@ -14,11 +14,20 @@ class LoginScreen extends StatelessWidget {
               child: Center(
                 child: Logo(),
               ),
-              flex: 4,
+              flex: 3,
             ),
             Expanded(
               child: Center(
-                child: GradientButton(),
+                child: GradientButton(
+                  child: Text(
+                    'LOGIN',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
               ),
               flex: 1,
             ),

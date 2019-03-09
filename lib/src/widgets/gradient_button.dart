@@ -1,17 +1,33 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class GradientButton extends StatelessWidget {
+  final double radius;
+  final Widget child;
+  final double height;
+  final double width;
+  GradientButton({
+    this.radius = 4,
+    @required this.child,
+    this.height,
+    this.width,
+  });
+
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: const BoxConstraints(minWidth: 88.0, minHeight: 36.0),
       child: Container(
+        width: width,
+        height: height,
         padding: EdgeInsets.all(5),
         child: Center(
           widthFactor: 1.0,
           heightFactor: 1.0,
-          child: Text('My custom Button'),
+          child: child,
         ),
         decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(radius),
           gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,

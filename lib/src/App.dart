@@ -9,6 +9,7 @@ class App extends StatelessWidget {
       home: LoginScreen(),
       theme: ThemeData(
         canvasColor: Color.fromRGBO(23, 25, 29, 1.0),
+        fontFamily: 'IBM Plex Sans',
       ),
     );
   }
