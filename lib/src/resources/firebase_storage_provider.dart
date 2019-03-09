@@ -34,3 +34,5 @@ class FirebaseStorageProvider {
     return _storage.child(path).delete();
   }
 }
+
+final storageProvider = FirebaseStorageProvider();

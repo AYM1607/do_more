@@ -62,3 +62,5 @@ class GoogleSignInProvider {
     await _auth.signOut();
   }
 }
+
+final signInProvider = GoogleSignInProvider();

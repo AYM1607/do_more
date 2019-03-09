@@ -295,3 +295,5 @@ class FirestoreProvider {
     return Observable(mappedStream);
   }
 }
+
+final firestoreProvider = FirestoreProvider();

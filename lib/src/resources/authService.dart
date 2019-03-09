@@ -8,8 +8,8 @@ import '../models/summary_model.dart';
 import '../models/user_model.dart';
 
 class AuthService {
-  final _googleSignInProvider = GoogleSignInProvider();
-  final _firestoreProvider = FirestoreProvider();
+  final GoogleSignInProvider _googleSignInProvider = signInProvider;
+  final FirestoreProvider _firestoreProvider = firestoreProvider;
   final _user = BehaviorSubject<FirebaseUser>();
 
   Observable<FirebaseUser> get userStream => _user.stream;

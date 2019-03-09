@@ -10,8 +10,8 @@ import '../models/task_model.dart';
 import '../models/summary_model.dart';
 
 class Repository {
-  final _storageProvider = FirebaseStorageProvider();
-  final _firestoreProvider = FirestoreProvider();
+  final FirebaseStorageProvider _storageProvider = storageProvider;
+  final FirestoreProvider _firestoreProvider = firestoreProvider;
 
   //--------------------------------CRUD----------------------------------------
   Future<void> updateUser(
