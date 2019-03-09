@@ -16,7 +16,7 @@ class FirestoreProvider {
 
   FirestoreProvider([Firestore firestore])
       : _firestore = firestore ?? Firestore.instance {
-    firestore.settings(timestampsInSnapshotsEnabled: true);
+    _firestore.settings(timestampsInSnapshotsEnabled: true);
   }
   //-----------------------User related operations------------------------------
 

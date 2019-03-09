@@ -7,7 +7,7 @@ class GradientButton extends StatelessWidget {
   final Widget child;
   final double height;
   final double width;
-  final VoidCallback onTap;
+  final onTap;
   GradientButton({
     this.radius = 4,
     @required this.child,

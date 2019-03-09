@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../resources/authService.dart';
 import '../widgets/logo.dart';
 import '../widgets/gradient_button.dart';
 
 class LoginScreen extends StatelessWidget {
+  final AuthService _authService = authService;
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -20,6 +23,7 @@ class LoginScreen extends StatelessWidget {
             Expanded(
               child: Center(
                 child: GradientButton(
+                  onTap: _authService.googleLoginAndSignup(),
                   height: 50,
                   width: 310,
                   radius: 25,
