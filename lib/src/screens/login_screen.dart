@@ -19,14 +19,7 @@ class LoginScreen extends StatelessWidget {
             Expanded(
               child: Center(
                 child: GradientButton(
-                  child: Text(
-                    'LOGIN',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                  child: getButtonBody(),
                 ),
               ),
               flex: 1,
@@ -34,6 +27,21 @@ class LoginScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget getButtonBody() {
+    return Row(
+      children: <Widget>[
+        Text(
+          'LOGIN',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
     );
   }
 }
