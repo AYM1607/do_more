@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 import '../resources/authService.dart';
 
@@ -28,7 +28,15 @@ class InitialLoadingScreen extends StatelessWidget {
               redirectUser(context);
             }
             return Center(
-              child: CupertinoActivityIndicator(),
+              child: Container(
+                height: 150,
+                width: 150,
+                child: FlareActor(
+                  'assets/animations/loading_logo.flr',
+                  animation: 'Flip',
+                  fit: BoxFit.contain,
+                ),
+              ),
             );
           },
         ),
