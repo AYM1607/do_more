@@ -22,9 +22,12 @@ class AuthService {
     _googleSignInProvider.onAuthStateChange.pipe(_user);
   }
 
-  Future<void> googleLoginAndSignup() async {
+  Future<FirebaseUser> googleLoginAndSignup() async {
     final user = await _googleSignInProvider.signIn();
 
+    if (user == null) {
+      return null;
+    }
     // Create a new user in Firestore if this is the first time signing in.
     if (!await _firestoreProvider.userExists(user.email)) {
       final newUserModel = UserModel(
@@ -37,6 +40,8 @@ class AuthService {
       );
       await _firestoreProvider.createUser(newUserModel, user.uid);
     }
+
+    return user;
   }
 
   Future<void> signOut() {
