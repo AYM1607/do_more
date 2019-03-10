@@ -7,12 +7,16 @@ import './google_sign_in_provider.dart';
 import '../models/summary_model.dart';
 import '../models/user_model.dart';
 
+export './google_sign_in_provider.dart' show FirebaseUser;
+
 class AuthService {
   final GoogleSignInProvider _googleSignInProvider = signInProvider;
   final FirestoreProvider _firestoreProvider = firestoreProvider;
   final _user = BehaviorSubject<FirebaseUser>();
 
   Observable<FirebaseUser> get userStream => _user.stream;
+  Future<FirebaseUser> get currentUser =>
+      _googleSignInProvider.getCurrentUser();
 
   AuthService() {
     _googleSignInProvider.onAuthStateChange.pipe(_user);
