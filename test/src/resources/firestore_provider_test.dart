@@ -10,14 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 main() {
-  final task = TaskModel(
-    id: '1',
-    text: 'A task',
-    done: false,
-    ownerUsername: 'testUser',
-    event: 'testEvent',
-    priority: 1,
-  );
+  final task = TaskModel.sample();
 
   final event = EventModel(
     id: '1',

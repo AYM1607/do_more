@@ -54,7 +54,8 @@ class TaskModel {
   static TaskModel sample() {
     return TaskModel(
       id: '1',
-      text: 'A task',
+      text:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.',
       done: false,
       ownerUsername: 'testUser',
       event: 'testEvent',
