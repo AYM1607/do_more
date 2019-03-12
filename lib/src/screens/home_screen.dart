@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../resources/authService.dart';
+import '../widgets/task_list_tile.dart';
 
 class HomeScreen extends StatelessWidget {
   final _auth = authService;
@@ -10,15 +11,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Main Screen'),
       ),
-      body: MaterialButton(
-        onPressed: () => _auth.signOut(),
-        child: Text(
-          'SignOut',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-      ),
+      body: TaskListTile(),
     );
   }
 }

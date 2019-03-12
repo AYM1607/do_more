@@ -12,6 +12,7 @@ class App extends StatelessWidget {
       onGenerateRoute: routes,
       theme: ThemeData(
         canvasColor: Color.fromRGBO(23, 25, 29, 1.0),
+        cardColor: Color.fromRGBO(36, 39, 44, 1.0),
         fontFamily: 'IBM Plex Sans',
       ),
     );

@@ -43,7 +43,7 @@ class LoginScreen extends StatelessWidget {
   Future<void> onLoginButtonTap(BuildContext context) async {
     final user = await _authService.googleLoginAndSignup();
     if (user != null) {
-      Navigator.of(context).pushNamed('home/');
+      Navigator.of(context).pushReplacementNamed('home/');
     }
   }
 
