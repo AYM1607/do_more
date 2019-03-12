@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 
+import '../models/task_model.dart';
+
 class TaskListTile extends StatelessWidget {
+  final TaskModel task;
+
+  TaskListTile({@required this.task});
+
   Widget build(BuildContext context) {
+    String getTaskPriority() {}
+
     return FractionallySizedBox(
       widthFactor: .9,
       child: Container(

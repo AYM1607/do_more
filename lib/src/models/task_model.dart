@@ -35,6 +35,22 @@ class TaskModel {
     };
   }
 
+  String getPriorityText() {
+    switch (priority) {
+      case 0:
+        return 'Low';
+        break;
+      case 1:
+        return 'Medium';
+        break;
+      case 2:
+        return 'High';
+        break;
+      default:
+        return 'None';
+    }
+  }
+
   @override
   int get hashCode =>
       id.hashCode ^
