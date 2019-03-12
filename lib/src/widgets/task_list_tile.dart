@@ -8,8 +8,6 @@ class TaskListTile extends StatelessWidget {
   TaskListTile({@required this.task});
 
   Widget build(BuildContext context) {
-    String getTaskPriority() {}
-
     return FractionallySizedBox(
       widthFactor: .9,
       child: Container(
@@ -27,6 +25,9 @@ class TaskListTile extends StatelessWidget {
                   borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(14),
                   ),
+                ),
+                child: Center(
+                  child: Text(task.getPriorityText()),
                 ),
               ),
             )

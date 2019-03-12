@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../models/task_model.dart';
 import '../resources/authService.dart';
 import '../widgets/task_list_tile.dart';
 
@@ -11,7 +12,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Main Screen'),
       ),
-      body: TaskListTile(),
+      body: TaskListTile(task: TaskModel.sample()),
     );
   }
 }

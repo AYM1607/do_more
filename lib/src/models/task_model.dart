@@ -51,6 +51,17 @@ class TaskModel {
     }
   }
 
+  static TaskModel sample() {
+    return TaskModel(
+      id: '1',
+      text: 'A task',
+      done: false,
+      ownerUsername: 'testUser',
+      event: 'testEvent',
+      priority: 1,
+    );
+  }
+
   @override
   int get hashCode =>
       id.hashCode ^
