@@ -54,13 +54,13 @@ class ActionButton extends StatelessWidget {
           color: color,
           borderRadius: BorderRadius.circular(radius),
         ),
-        child: getButtonBody(),
+        child: buildButtonBody(),
       ),
     );
   }
 
   /// Returns the button body.
-  Widget getButtonBody() {
+  Widget buildButtonBody() {
     final children = <Widget>[];
     if (leadingIconData != null) {
       children.addAll([

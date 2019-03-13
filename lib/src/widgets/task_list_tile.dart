@@ -61,6 +61,7 @@ class TaskListTile extends StatelessWidget {
     );
   }
 
+  /// Builds the section that contains the task's event and its text.
   Widget buildTextSection() {
     return Expanded(
       flex: 6,
@@ -91,6 +92,7 @@ class TaskListTile extends StatelessWidget {
     );
   }
 
+  /// Builds the section that contains the 3 buttons for the tile.
   Widget buildButtonSection() {
     return Expanded(
       flex: 5,
@@ -130,6 +132,7 @@ class TaskListTile extends StatelessWidget {
     );
   }
 
+  /// Builds the badge that showcases the tasks priority.
   Widget buildBadge() {
     final badgeColor = getColorFromPriority(task.priority);
     return Container(
