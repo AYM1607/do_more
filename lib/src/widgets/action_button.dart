@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
 
 class ActionButton extends StatelessWidget {
+  /// Function to be called when the button is pressed
   final VoidCallback onPressed;
+
+  /// Background color of the button.
   final Color color;
+
+  /// Text and icon color.
   final Color textColor;
+
+  /// Icon to be placed before the text.
   final IconData leadingIconData;
+
+  /// Icon to be placed after the text.
   final IconData trailingIconData;
+
+  /// Text for the button.
   final String text;
+
+  /// Width of the button.
   final double width;
+
+  /// Height of the button.
   final double height;
+
+  /// Border radius for the button.
   final double radius;
 
   ActionButton({
@@ -24,6 +41,26 @@ class ActionButton extends StatelessWidget {
   });
 
   Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minHeight: 25,
+        minWidth: 60,
+      ),
+      child: Container(
+        width: width,
+        height: height,
+        padding: EdgeInsets.all(2),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(radius),
+        ),
+        child: getButtonBody(),
+      ),
+    );
+  }
+
+  /// Returns the button body.
+  Widget getButtonBody() {
     final children = <Widget>[];
     if (leadingIconData != null) {
       children.addAll([
@@ -59,26 +96,11 @@ class ActionButton extends StatelessWidget {
         ),
       ]);
     }
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minHeight: 25,
-        minWidth: 60,
-      ),
-      child: Container(
-        width: width,
-        height: height,
-        padding: EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(radius),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: children,
-        ),
-      ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: children,
     );
   }
 }
