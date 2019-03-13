@@ -1,13 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../models/task_model.dart';
 import '../utils.dart';
+import '../widgets/action_button.dart';
 
 class TaskListTile extends StatelessWidget {
+  /// Task model which this card represents.
   final TaskModel task;
+
+  /// Function to be called when the "done" button is pressed.
+  final VoidCallback onDone;
+
+  /// Function to be called when the "edit" button is pressed.
+  final VoidCallback onEdit;
+
+  /// Function to be called when the "event" button is pressed.
+  final VoidCallback onEventClick;
+
+  /// Height of the priority badge.
+  ///
+  /// Also used to calculate the padding for the first section.
   static const _badgeHeight = 25.0;
 
-  TaskListTile({@required this.task});
+  /// Creates a card that represents a task.
+  ///
+  /// The task property cannot be null.
+  /// The card has 3 buttons whose callback must be provided.
+  TaskListTile({
+    @required this.task,
+    this.onDone,
+    this.onEdit,
+    this.onEventClick,
+  }) : assert(task != null);
 
   Widget build(BuildContext context) {
     return FractionallySizedBox(
@@ -23,12 +48,7 @@ class TaskListTile extends StatelessWidget {
                   width: 9,
                 ),
                 buildTextSection(),
-                Expanded(
-                  flex: 5,
-                  child: Center(
-                    child: Text('section2'),
-                  ),
-                ),
+                buildButtonSection(),
                 SizedBox(
                   width: 9,
                 ),
@@ -65,6 +85,42 @@ class TaskListTile extends StatelessWidget {
               fontSize: 10,
               fontWeight: FontWeight.w300,
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildButtonSection() {
+    return Expanded(
+      flex: 5,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          ActionButton(
+            text: 'Done',
+            trailingIconData: FontAwesomeIcons.checkCircle,
+            color: Colors.white,
+            textColor: Colors.black,
+            radius: 14,
+            width: 72,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              ActionButton(
+                text: 'Edit',
+                leadingIconData: Icons.edit,
+              ),
+              SizedBox(
+                width: 4,
+              ),
+              ActionButton(
+                text: 'Event',
+                leadingIconData: FontAwesomeIcons.calendar,
+              )
+            ],
           ),
         ],
       ),
