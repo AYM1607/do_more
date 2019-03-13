@@ -47,6 +47,8 @@ dev_dependencies:
 flutter:
   assets:
     - assets/animations/loading_logo.flr
+    - assets/animations/loading_animation_looped.flr
+    - assets/animations/loading_animation.flr
 
   fonts:
     - family: IBM Plex Sans
