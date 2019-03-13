@@ -17,20 +17,24 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Main Screen'),
       ),
-      body: StreamBuilder(
-        stream: _firestore.getUserTasks('mariano159357'),
-        builder: (BuildContext context, AsyncSnapshot<List<TaskModel>> snap) {
-          if (!snap.hasData) {
-            return Center(
-              child: LoadingIndicator(),
+      body: MediaQuery.removePadding(
+        context: context,
+        removeLeft: true,
+        child: StreamBuilder(
+          stream: _firestore.getUserTasks('mariano159357'),
+          builder: (BuildContext context, AsyncSnapshot<List<TaskModel>> snap) {
+            if (!snap.hasData) {
+              return Center(
+                child: LoadingIndicator(),
+              );
+            }
+            return ListView(
+              padding: EdgeInsets.zero,
+              children:
+                  snap.data.map((task) => TaskListTile(task: task)).toList(),
             );
-          }
-          return ListView(
-            padding: EdgeInsets.all(0.0),
-            children:
-                snap.data.map((task) => TaskListTile(task: task)).toList(),
-          );
-        },
+          },
+        ),
       ),
     );
   }
