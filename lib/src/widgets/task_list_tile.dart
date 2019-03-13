@@ -16,7 +16,7 @@ class TaskListTile extends StatelessWidget {
   final VoidCallback onEdit;
 
   /// Function to be called when the "event" button is pressed.
-  final VoidCallback onEventClick;
+  final VoidCallback onEventPressed;
 
   /// Height of the priority badge.
   ///
@@ -31,7 +31,7 @@ class TaskListTile extends StatelessWidget {
     @required this.task,
     this.onDone,
     this.onEdit,
-    this.onEventClick,
+    this.onEventPressed,
   }) : assert(task != null);
 
   Widget build(BuildContext context) {
@@ -99,6 +99,7 @@ class TaskListTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           ActionButton(
+            onPressed: onDone,
             text: 'Done',
             trailingIconData: FontAwesomeIcons.checkCircle,
             color: Colors.white,
@@ -110,6 +111,7 @@ class TaskListTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               ActionButton(
+                onPressed: onEdit,
                 text: 'Edit',
                 leadingIconData: Icons.edit,
               ),
@@ -117,6 +119,7 @@ class TaskListTile extends StatelessWidget {
                 width: 4,
               ),
               ActionButton(
+                onPressed: onEventPressed,
                 text: 'Event',
                 leadingIconData: FontAwesomeIcons.calendar,
               )

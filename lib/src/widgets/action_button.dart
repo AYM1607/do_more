@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ActionButton extends StatelessWidget {
+  final VoidCallback onPressed;
   final Color color;
   final Color textColor;
   final IconData leadingIconData;
@@ -11,6 +12,7 @@ class ActionButton extends StatelessWidget {
   final double radius;
 
   ActionButton({
+    this.onPressed,
     this.color = const Color(0xFF2C2F34),
     this.textColor = Colors.white,
     this.leadingIconData,
