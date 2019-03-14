@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 import '../models/task_model.dart';
@@ -30,8 +28,12 @@ class HomeScreen extends StatelessWidget {
             }
             return ListView(
               padding: EdgeInsets.zero,
-              children:
-                  snap.data.map((task) => TaskListTile(task: task)).toList(),
+              children: snap.data
+                  .map((task) => Container(
+                        child: TaskListTile(task: task),
+                        padding: EdgeInsets.only(bottom: 12),
+                      ))
+                  .toList(),
             );
           },
         ),
