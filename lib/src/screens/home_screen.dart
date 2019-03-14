@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 
 import '../models/task_model.dart';
-import '../resources/authService.dart';
-import '../resources/firestore_provider.dart';
+import '../blocs/home_bloc.dart';
 import '../widgets/task_list_tile.dart';
 import '../widgets/loading_indicator.dart';
 
-class HomeScreen extends StatelessWidget {
-  final _auth = authService;
-  final _firestore = firestoreProvider;
+class HomeScreen extends StatefulWidget {
+  createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final HomeBloc bloc = HomeBloc();
+
+  @override
+  initState() {
+    super.initState();
+    bloc.fetchTasks();
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +27,7 @@ class HomeScreen extends StatelessWidget {
         context: context,
         removeLeft: true,
         child: StreamBuilder(
-          stream: _firestore.getUserTasks('mariano159357'),
+          stream: bloc.userTasks,
           builder: (BuildContext context, AsyncSnapshot<List<TaskModel>> snap) {
             if (!snap.hasData) {
               return Center(
@@ -30,7 +38,10 @@ class HomeScreen extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: snap.data
                   .map((task) => Container(
-                        child: TaskListTile(task: task),
+                        child: TaskListTile(
+                          task: task,
+                          onDone: () => bloc.markTaskAsDone(task),
+                        ),
                         padding: EdgeInsets.only(bottom: 12),
                       ))
                   .toList(),
@@ -39,5 +50,11 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
   }
 }

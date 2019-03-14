@@ -46,15 +46,18 @@ class ActionButton extends StatelessWidget {
         minHeight: 25,
         minWidth: 60,
       ),
-      child: Container(
-        width: width,
-        height: height,
-        padding: EdgeInsets.all(2),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(radius),
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Container(
+          width: width,
+          height: height,
+          padding: EdgeInsets.all(2),
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(radius),
+          ),
+          child: buildButtonBody(),
         ),
-        child: buildButtonBody(),
       ),
     );
   }
