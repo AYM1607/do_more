@@ -12,7 +12,16 @@ class HomeBloc {
   final _tasks = BehaviorSubject<List<TaskModel>>();
 
   // Stream getters.
-  Observable<List<TaskModel>> get userTasks => _tasks.stream;
+  Observable<List<TaskModel>> get userTasks =>
+      _tasks.stream.transform(prioritySortTransformer());
+
+  StreamTransformer<List<TaskModel>, List<TaskModel>>
+      prioritySortTransformer() {
+    return StreamTransformer.fromHandlers(handleData: (tasksList, sink) {
+      tasksList.sort((a, b) => b.priority.compareTo(a.priority));
+      sink.add(tasksList);
+    });
+  }
 
   Future<void> fetchTasks() async {
     final user = await _auth.currentUser;
