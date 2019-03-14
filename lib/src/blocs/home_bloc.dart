@@ -19,6 +19,13 @@ class HomeBloc {
     _firestore.getUserTasks(user.email).pipe(_tasks);
   }
 
+  void markTaskAsDone(TaskModel task) async {
+    _firestore.updateTask(
+      task.id,
+      done: true,
+    );
+  }
+
   void dispose() {
     _tasks.close();
   }
