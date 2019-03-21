@@ -28,6 +28,11 @@ class HomeBloc {
     _firestore.getUserTasks(user.email).pipe(_tasks);
   }
 
+  Future<String> getUserAvatarUrl() async {
+    final user = await _auth.currentUser;
+    return user.photoUrl;
+  }
+
   void markTaskAsDone(TaskModel task) async {
     _firestore.updateTask(
       task.id,
