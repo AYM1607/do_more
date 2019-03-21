@@ -33,6 +33,11 @@ class HomeBloc {
     return user.photoUrl;
   }
 
+  Future<String> getUserDisplayName() async {
+    final user = await _auth.currentUser;
+    return user.displayName;
+  }
+
   void markTaskAsDone(TaskModel task) async {
     _firestore.updateTask(
       task.id,
