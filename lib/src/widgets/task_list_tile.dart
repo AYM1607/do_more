@@ -37,7 +37,7 @@ class TaskListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return FractionallySizedBox(
       alignment: Alignment.centerLeft,
-      widthFactor: .9,
+      widthFactor: .95,
       child: Container(
         height: 116,
         child: Stack(

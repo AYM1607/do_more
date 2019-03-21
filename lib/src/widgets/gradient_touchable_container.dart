@@ -16,12 +16,15 @@ class GradientTouchableContainer extends StatelessWidget {
   /// Function to be called when the button is pressed.
   final VoidCallback onTap;
 
+  final BoxShadow shadow;
+
   GradientTouchableContainer({
     this.radius = 4,
     @required this.child,
     this.height,
     this.width,
     this.onTap,
+    this.shadow,
   });
 
   Widget build(BuildContext context) {
@@ -39,6 +42,7 @@ class GradientTouchableContainer extends StatelessWidget {
             child: child,
           ),
           decoration: BoxDecoration(
+            boxShadow: shadow == null ? null : [shadow],
             borderRadius: BorderRadius.circular(radius),
             gradient: LinearGradient(
                 begin: Alignment.topLeft,
