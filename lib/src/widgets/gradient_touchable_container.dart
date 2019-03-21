@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class GradientButton extends StatelessWidget {
+class GradientTouchableContainer extends StatelessWidget {
   /// The border radius of the button.
   final double radius;
 
@@ -16,7 +16,7 @@ class GradientButton extends StatelessWidget {
   /// Function to be called when the button is pressed.
   final VoidCallback onTap;
 
-  GradientButton({
+  GradientTouchableContainer({
     this.radius = 4,
     @required this.child,
     this.height,

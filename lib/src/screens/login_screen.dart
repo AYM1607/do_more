@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../resources/authService.dart';
 import '../widgets/logo.dart';
-import '../widgets/gradient_button.dart';
+import '../widgets/gradient_touchable_container.dart';
 
 class LoginScreen extends StatelessWidget {
   final _authService = authService;
@@ -24,7 +24,7 @@ class LoginScreen extends StatelessWidget {
             ),
             Expanded(
               child: Center(
-                child: GradientButton(
+                child: GradientTouchableContainer(
                   onTap: () => onLoginButtonTap(context),
                   height: 50,
                   width: 310,
