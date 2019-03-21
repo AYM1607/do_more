@@ -66,6 +66,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ))
                     .toList(),
               ),
+              // This container is needed to make it seem like the search box is
+              // part of the app bar.
               Container(
                 height: _searchBoxHeight / 2,
                 width: double.infinity,
