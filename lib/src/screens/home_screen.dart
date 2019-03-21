@@ -23,31 +23,27 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text('Main Screen'),
       ),
-      body: MediaQuery.removePadding(
-        context: context,
-        removeLeft: true,
-        child: StreamBuilder(
-          stream: bloc.userTasks,
-          builder: (BuildContext context, AsyncSnapshot<List<TaskModel>> snap) {
-            if (!snap.hasData) {
-              return Center(
-                child: LoadingIndicator(),
-              );
-            }
-            return ListView(
-              padding: EdgeInsets.zero,
-              children: snap.data
-                  .map((task) => Container(
-                        child: TaskListTile(
-                          task: task,
-                          onDone: () => bloc.markTaskAsDone(task),
-                        ),
-                        padding: EdgeInsets.only(bottom: 12),
-                      ))
-                  .toList(),
+      body: StreamBuilder(
+        stream: bloc.userTasks,
+        builder: (BuildContext context, AsyncSnapshot<List<TaskModel>> snap) {
+          if (!snap.hasData) {
+            return Center(
+              child: LoadingIndicator(),
             );
-          },
-        ),
+          }
+          return ListView(
+            padding: EdgeInsets.zero,
+            children: snap.data
+                .map((task) => Container(
+                      child: TaskListTile(
+                        task: task,
+                        onDone: () => bloc.markTaskAsDone(task),
+                      ),
+                      padding: EdgeInsets.only(bottom: 12),
+                    ))
+                .toList(),
+          );
+        },
       ),
     );
   }
