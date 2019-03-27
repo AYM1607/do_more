@@ -54,18 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
           return Stack(
             overflow: Overflow.visible,
             children: <Widget>[
-              ListView(
-                padding: EdgeInsets.only(top: _searchBoxHeight + 15),
-                children: snap.data
-                    .map((task) => Container(
-                          child: TaskListTile(
-                            task: task,
-                            onDone: () => bloc.markTaskAsDone(task),
-                          ),
-                          padding: EdgeInsets.only(bottom: 12),
-                        ))
-                    .toList(),
-              ),
+              buildTasksList(snap.data),
               // This container is needed to make it seem like the search box is
               // part of the app bar.
               Container(
@@ -78,6 +67,21 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
       ),
+    );
+  }
+
+  Widget buildTasksList(List<TaskModel> tasks) {
+    return ListView(
+      padding: EdgeInsets.only(top: _searchBoxHeight + 15),
+      children: tasks
+          .map((task) => Container(
+                child: TaskListTile(
+                  task: task,
+                  onDone: () => bloc.markTaskAsDone(task),
+                ),
+                padding: EdgeInsets.only(bottom: 12),
+              ))
+          .toList(),
     );
   }
 
