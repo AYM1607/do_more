@@ -39,6 +39,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(FontAwesomeIcons.plus),
+        backgroundColor: Color(0xFF707070),
+        onPressed: () {},
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: HomeAppBar(
         avatarUrl: avatarUrl,
         subtitle: 'Hello $userDisplayName!',
@@ -81,7 +87,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 padding: EdgeInsets.only(bottom: 12),
               ))
-          .toList(),
+          .toList()
+            ..add(Container(height: 70)),
     );
   }
 
