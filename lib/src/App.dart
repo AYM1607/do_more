@@ -11,6 +11,8 @@ class App extends StatelessWidget {
       //home: Text('Start'),
       onGenerateRoute: routes,
       theme: ThemeData(
+        // Accent color is set to be used by the floating action button.
+        accentColor: Color(0xFF707070),
         canvasColor: Color.fromRGBO(23, 25, 29, 1.0),
         cardColor: Color.fromRGBO(36, 39, 44, 1.0),
         fontFamily: 'IBM Plex Sans',

@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 
 import './new-item-dialog-button.dart';
 
+/// A transparent screen that lets you choose between creating a new task or
+/// add a new picture.
 class NewItemDialogRoute extends PopupRoute {
   @override
   // TODO: implement barrierColor
@@ -19,8 +21,7 @@ class NewItemDialogRoute extends PopupRoute {
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
-    final result = _builder(context);
-    return result;
+    return _builder(context);
   }
 
   Widget _builder(BuildContext context) {

@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import './gradient_touchable_container.dart';
 
+//TODO: Add neccessary properties to be able to inform of changes in text field.
 class SearchBox extends StatelessWidget {
   final double height;
 

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+/// A card with a label and circular button.
+///
+/// Let's you specify the text shown and the action to perform when the circular
+/// button is pressed.
 class NewItemDialogButton extends StatelessWidget {
   final VoidCallback onTap;
   final String label;
@@ -35,7 +39,6 @@ class NewItemDialogButton extends StatelessWidget {
           ),
           FloatingActionButton(
             child: Icon(FontAwesomeIcons.plus),
-            backgroundColor: Color(0xFF707070),
             onPressed: () {},
           ),
         ],
