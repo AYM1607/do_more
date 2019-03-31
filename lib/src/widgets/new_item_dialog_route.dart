@@ -35,12 +35,15 @@ class NewItemDialogRoute extends PopupRoute {
           children: <Widget>[
             NewItemDialogButton(
               label: 'Task',
+              onTap: () =>
+                  Navigator.of(context).pushReplacementNamed('newTask/'),
             ),
             SizedBox(
               width: 20,
             ),
             NewItemDialogButton(
               label: 'Media',
+              onTap: () {},
             ),
           ],
         ),

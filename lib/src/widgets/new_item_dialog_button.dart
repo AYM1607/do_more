@@ -10,9 +10,9 @@ class NewItemDialogButton extends StatelessWidget {
   final String label;
 
   NewItemDialogButton({
-    this.onTap,
+    @required this.onTap,
     this.label = '',
-  });
+  }) : assert(onTap != null);
 
   Widget build(BuildContext context) {
     return Container(
@@ -39,7 +39,7 @@ class NewItemDialogButton extends StatelessWidget {
           ),
           FloatingActionButton(
             child: Icon(FontAwesomeIcons.plus),
-            onPressed: () {},
+            onPressed: onTap,
           ),
         ],
       ),
