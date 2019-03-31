@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+//TODO: add support for tabed navigation.
+
+/// A custom app bar to match the DO> design rules.
+///
+/// This app bar is meant to be usen in screens that are not the home screen.
+/// It will always contain a back button that pops the current screen.
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  /// The title for the app bar.
   final String title;
 
   CustomAppBar({this.title = ''});

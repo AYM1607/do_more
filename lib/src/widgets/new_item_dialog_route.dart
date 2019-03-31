@@ -7,15 +7,12 @@ import './new_item_dialog_button.dart';
 /// add a new picture.
 class NewItemDialogRoute extends PopupRoute {
   @override
-  // TODO: implement barrierColor
   Color get barrierColor => Color.fromRGBO(255, 255, 255, 0.5);
 
   @override
-  // TODO: implement barrierDismissible
   bool get barrierDismissible => true;
 
   @override
-  // TODO: implement barrierLabel
   String get barrierLabel => null;
 
   @override
@@ -52,6 +49,5 @@ class NewItemDialogRoute extends PopupRoute {
   }
 
   @override
-  // TODO: implement transitionDuration
   Duration get transitionDuration => Duration(milliseconds: 300);
 }
