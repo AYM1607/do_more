@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import './new-item-dialog-button.dart';
+import './new_item_dialog_button.dart';
 
 /// A transparent screen that lets you choose between creating a new task or
 /// add a new picture.

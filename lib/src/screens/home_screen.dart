@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../models/task_model.dart';
 import '../blocs/home_bloc.dart';
 import '../widgets/home_app_bar.dart';
-import '../widgets/new-item-dialog-route.dart';
+import '../widgets/new_item_dialog_route.dart';
 import '../widgets/task_list_tile.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/search-box.dart';
