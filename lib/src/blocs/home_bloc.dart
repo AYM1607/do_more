@@ -6,6 +6,8 @@ import '../models/task_model.dart';
 import '../resources/authService.dart';
 import '../resources/firestore_provider.dart';
 
+export '../resources/authService.dart' show FirebaseUser;
+
 class HomeBloc {
   final AuthService _auth = authService;
   final FirestoreProvider _firestore = firestoreProvider;
@@ -14,6 +16,8 @@ class HomeBloc {
   // Stream getters.
   Observable<List<TaskModel>> get userTasks =>
       _tasks.stream.transform(prioritySortTransformer());
+
+  Observable<FirebaseUser> get userStream => _auth.userStream;
 
   StreamTransformer<List<TaskModel>, List<TaskModel>>
       prioritySortTransformer() {

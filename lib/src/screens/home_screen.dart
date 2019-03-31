@@ -19,63 +19,64 @@ class _HomeScreenState extends State<HomeScreen> {
   static const _searchBoxHeight = 50.0;
 
   final HomeBloc bloc = HomeBloc();
-  String avatarUrl;
-  String userDisplayName;
 
   @override
   initState() {
     super.initState();
     bloc.fetchTasks();
-    setUserAttributes();
-  }
-
-  Future<void> setUserAttributes() async {
-    final url = await bloc.getUserAvatarUrl();
-    final name = await bloc.getUserDisplayName();
-    setState(() {
-      avatarUrl = url;
-      userDisplayName = name;
-    });
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(FontAwesomeIcons.plus),
-        backgroundColor: Color(0xFF707070),
-        onPressed: () => _showDialog(context),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      appBar: HomeAppBar(
-        avatarUrl: avatarUrl,
-        subtitle: 'Hello $userDisplayName!',
-      ),
-      body: StreamBuilder(
-        stream: bloc.userTasks,
-        builder: (BuildContext context, AsyncSnapshot<List<TaskModel>> snap) {
-          if (!snap.hasData) {
-            return Center(
-              child: LoadingIndicator(),
-            );
-          }
-          return Stack(
-            overflow: Overflow.visible,
-            children: <Widget>[
-              _buildTasksList(snap.data),
-              // This container is needed to make it seem like the search box is
-              // part of the app bar.
-              Container(
-                height: _searchBoxHeight / 2,
-                width: double.infinity,
-                color: Theme.of(context).cardColor,
-              ),
-              SearchBox(
-                height: 50.0,
-              ),
-            ],
-          );
-        },
-      ),
+    return StreamBuilder(
+      stream: bloc.userStream,
+      builder: (BuildContext context, AsyncSnapshot<FirebaseUser> userSnap) {
+        String userAvatarUrl, userDisplayName;
+
+        if (userSnap.hasData) {
+          userAvatarUrl = userSnap.data.photoUrl;
+          userDisplayName = userSnap.data.displayName;
+        }
+
+        return Scaffold(
+          floatingActionButton: FloatingActionButton(
+            child: Icon(FontAwesomeIcons.plus),
+            backgroundColor: Color(0xFF707070),
+            onPressed: () => _showDialog(context),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          appBar: HomeAppBar(
+            avatarUrl: userAvatarUrl,
+            subtitle: 'Hello $userDisplayName!',
+          ),
+          body: StreamBuilder(
+            stream: bloc.userTasks,
+            builder:
+                (BuildContext context, AsyncSnapshot<List<TaskModel>> snap) {
+              if (!snap.hasData) {
+                return Center(
+                  child: LoadingIndicator(),
+                );
+              }
+              return Stack(
+                overflow: Overflow.visible,
+                children: <Widget>[
+                  _buildTasksList(snap.data),
+                  // This container is needed to make it seem like the search box is
+                  // part of the app bar.
+                  Container(
+                    height: _searchBoxHeight / 2,
+                    width: double.infinity,
+                    color: Theme.of(context).cardColor,
+                  ),
+                  SearchBox(
+                    height: 50.0,
+                  ),
+                ],
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
