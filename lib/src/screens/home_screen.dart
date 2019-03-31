@@ -9,7 +9,7 @@ import '../widgets/home_app_bar.dart';
 import '../widgets/new-item-dialog-route.dart';
 import '../widgets/task_list_tile.dart';
 import '../widgets/loading_indicator.dart';
-import '../widgets/gradient_touchable_container.dart';
+import '../widgets/search-box.dart';
 
 class HomeScreen extends StatefulWidget {
   createState() => _HomeScreenState();
@@ -69,7 +69,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: double.infinity,
                 color: Theme.of(context).cardColor,
               ),
-              _buildSearchBox(),
+              SearchBox(
+                height: 50.0,
+              ),
             ],
           );
         },
@@ -78,17 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _showDialog(BuildContext context) {
-    Navigator.of(context).push(NewItemDialogRoute(
-      builder: (BuildContext context) {
-        return Center(
-          child: Container(
-            width: 100,
-            height: 100,
-            color: Colors.white,
-          ),
-        );
-      },
-    ));
+    Navigator.of(context).push(NewItemDialogRoute());
   }
 
   Widget _buildTasksList(List<TaskModel> tasks) {
@@ -104,60 +96,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ))
           .toList()
             ..add(Container(height: 70)),
-    );
-  }
-
-  Widget _buildSearchBox() {
-    return Row(
-      children: <Widget>[
-        Spacer(flex: 1),
-        Expanded(
-          flex: 8,
-          child: GradientTouchableContainer(
-            radius: _searchBoxHeight / 2,
-            height: _searchBoxHeight,
-            shadow: BoxShadow(
-              color: Color(0x20FFFFFF),
-              offset: Offset(0, 3),
-              blurRadius: 6,
-              spreadRadius: 1,
-            ),
-            child: Row(
-              children: <Widget>[
-                SizedBox(
-                  width: 10,
-                ),
-                Icon(
-                  FontAwesomeIcons.sistrix,
-                  color: Colors.white,
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Search...',
-                      hintStyle: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
-                    ),
-                    cursorColor: Colors.white,
-                    scrollPadding: EdgeInsets.zero,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Spacer(flex: 1),
-      ],
     );
   }
 
