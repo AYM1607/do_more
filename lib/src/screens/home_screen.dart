@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../models/task_model.dart';
 import '../blocs/home_bloc.dart';
 import '../widgets/home_app_bar.dart';
+import '../widgets/new-item-dialog-route.dart';
 import '../widgets/task_list_tile.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/gradient_touchable_container.dart';
@@ -42,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         child: Icon(FontAwesomeIcons.plus),
         backgroundColor: Color(0xFF707070),
-        onPressed: () {},
+        onPressed: () => _showDialog(context),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       appBar: HomeAppBar(
@@ -60,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
           return Stack(
             overflow: Overflow.visible,
             children: <Widget>[
-              buildTasksList(snap.data),
+              _buildTasksList(snap.data),
               // This container is needed to make it seem like the search box is
               // part of the app bar.
               Container(
@@ -68,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: double.infinity,
                 color: Theme.of(context).cardColor,
               ),
-              buildSearchBox(),
+              _buildSearchBox(),
             ],
           );
         },
@@ -76,7 +77,21 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildTasksList(List<TaskModel> tasks) {
+  void _showDialog(BuildContext context) {
+    Navigator.of(context).push(NewItemDialogRoute(
+      builder: (BuildContext context) {
+        return Center(
+          child: Container(
+            width: 100,
+            height: 100,
+            color: Colors.white,
+          ),
+        );
+      },
+    ));
+  }
+
+  Widget _buildTasksList(List<TaskModel> tasks) {
     return ListView(
       padding: EdgeInsets.only(top: _searchBoxHeight + 15),
       children: tasks
@@ -92,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildSearchBox() {
+  Widget _buildSearchBox() {
     return Row(
       children: <Widget>[
         Spacer(flex: 1),
