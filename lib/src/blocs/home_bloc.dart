@@ -22,7 +22,8 @@ class HomeBloc {
   StreamTransformer<List<TaskModel>, List<TaskModel>>
       prioritySortTransformer() {
     return StreamTransformer.fromHandlers(handleData: (tasksList, sink) {
-      tasksList.sort((a, b) => b.priority.compareTo(a.priority));
+      tasksList
+          .sort((a, b) => b.ecodedPriority().compareTo(a.ecodedPriority()));
       sink.add(tasksList);
     });
   }

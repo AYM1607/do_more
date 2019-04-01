@@ -3,7 +3,7 @@ import 'package:meta/meta.dart';
 class TaskModel {
   final String id;
   final String text;
-  final int priority;
+  final TaskPriority priority;
   final String ownerUsername;
   final bool done;
   final String event;
@@ -20,7 +20,7 @@ class TaskModel {
   TaskModel.fromFirestore(Map<String, dynamic> firestoreMap, {String id})
       : id = id,
         text = firestoreMap["text"],
-        priority = firestoreMap["priority"],
+        priority = decodedPriority(firestoreMap["priority"]),
         ownerUsername = firestoreMap["ownerUsername"],
         done = firestoreMap["done"],
         event = firestoreMap["event"];
@@ -28,7 +28,7 @@ class TaskModel {
   Map<String, dynamic> toFirestoreMap() {
     return <String, dynamic>{
       "text": text,
-      "priority": priority,
+      "priority": ecodedPriority(),
       "ownerUsername": ownerUsername,
       "done": done,
       "event": event,
@@ -37,17 +37,49 @@ class TaskModel {
 
   String getPriorityText() {
     switch (priority) {
-      case 0:
+      case TaskPriority.low:
         return 'Low';
         break;
-      case 1:
+      case TaskPriority.medium:
         return 'Medium';
         break;
-      case 2:
+      case TaskPriority.high:
         return 'High';
         break;
       default:
         return 'None';
+    }
+  }
+
+  static TaskPriority decodedPriority(int priority) {
+    switch (priority) {
+      case 0:
+        return TaskPriority.low;
+        break;
+      case 1:
+        return TaskPriority.medium;
+        break;
+      case 2:
+        return TaskPriority.high;
+        break;
+      default:
+        return TaskPriority.none;
+    }
+  }
+
+  int ecodedPriority() {
+    switch (priority) {
+      case TaskPriority.low:
+        return 0;
+        break;
+      case TaskPriority.medium:
+        return 1;
+        break;
+      case TaskPriority.high:
+        return 2;
+        break;
+      default:
+        return -1;
     }
   }
 
@@ -59,7 +91,7 @@ class TaskModel {
       done: false,
       ownerUsername: 'testUser',
       event: 'testEvent',
-      priority: 1,
+      priority: TaskPriority.medium,
     );
   }
 
@@ -83,4 +115,11 @@ class TaskModel {
           ownerUsername == other.ownerUsername &&
           done == other.done &&
           event == other.event;
+}
+
+enum TaskPriority {
+  high,
+  medium,
+  low,
+  none,
 }
