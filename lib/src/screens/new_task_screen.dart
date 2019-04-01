@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../blocs/new_task_bloc.dart';
+import '../models/user_model.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/custom_dropdown.dart';
 import '../widgets/big_text_input.dart';
@@ -25,47 +26,60 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
   );
 
   final NewTaskBloc bloc = NewTaskBloc();
+  String dropdownValue;
 
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Add task',
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
-        child: Column(
-          children: <Widget>[
-            BigTextInput(
-              height: 95,
-              onChanged: bloc.setText,
+      body: StreamBuilder(
+        stream: bloc.userModelStream,
+        builder: (BuildContext context, AsyncSnapshot<UserModel> snap) {
+          List<String> events = [];
+
+          if (snap.hasData) {
+            events = snap.data.events;
+          }
+
+          return Padding(
+            padding: const EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
+            child: Column(
+              children: <Widget>[
+                BigTextInput(
+                  height: 95,
+                  onChanged: bloc.setText,
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                buildDropdownSection(events),
+                SizedBox(
+                  height: 15,
+                ),
+                buildPrioritySelectorSection(bloc),
+                SizedBox(
+                  height: 20,
+                ),
+                GradientTouchableContainer(
+                  height: 40,
+                  width: 330,
+                  radius: 8,
+                  onTap: () => onSubmit(context, bloc),
+                  child: Text(
+                    'Submit',
+                    style: kButtonStyle,
+                  ),
+                ),
+              ],
             ),
-            SizedBox(
-              height: 15,
-            ),
-            buildDropdownSection(),
-            SizedBox(
-              height: 15,
-            ),
-            buildPrioritySelectorSection(bloc),
-            SizedBox(
-              height: 20,
-            ),
-            GradientTouchableContainer(
-              height: 40,
-              width: 330,
-              radius: 8,
-              child: Text(
-                'Submit',
-                style: kButtonStyle,
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
-  Widget buildDropdownSection() {
+  Widget buildDropdownSection(List<String> events) {
     return Row(
       children: <Widget>[
         Text(
@@ -74,10 +88,11 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
         ),
         Spacer(),
         CustomDropdownButton(
+          value: dropdownValue,
+          onChanged: (String value) => onDropdownChanged(bloc, value),
           width: 230,
           hint: Text('Event'),
-          onChanged: (item) {},
-          items: ['Math', 'Lenguajes', 'Redes'].map((String name) {
+          items: events.map((String name) {
             return CustomDropdownMenuItem(
               value: name,
               child: Text(
@@ -105,5 +120,17 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
         ),
       ],
     );
+  }
+
+  void onDropdownChanged(NewTaskBloc bloc, String newValue) {
+    bloc.setEvent(newValue);
+    setState(() {
+      dropdownValue = newValue;
+    });
+  }
+
+  void onSubmit(BuildContext context, NewTaskBloc bloc) async {
+    await bloc.submit();
+    Navigator.of(context).pop();
   }
 }
