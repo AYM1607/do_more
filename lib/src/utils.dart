@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import './models/task_model.dart';
 
-// TODO: migrate to enum https://github.com/AYM1607/do_more/issues/4
+const kLowPriorityColor = Color(0xFF06AD12);
+const kMediumPriorityColor = Color(0xFFF6A93B);
+const kHighPriorityColor = Color(0xFFF42850);
+
 Color getColorFromPriority(TaskPriority priority) {
   switch (priority) {
     case TaskPriority.low:
-      return Color(0xFF06AD12);
+      return kLowPriorityColor;
       break;
     case TaskPriority.medium:
-      return Color(0xFFF6A93B);
+      return kMediumPriorityColor;
       break;
     case TaskPriority.high:
-      return Color(0xFFF42850);
+      return kHighPriorityColor;
       break;
     default:
       return Colors.white;
