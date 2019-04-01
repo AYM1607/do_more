@@ -16,6 +16,7 @@ class App extends StatelessWidget {
         accentColor: Color(0xFF707070),
         canvasColor: Color.fromRGBO(23, 25, 29, 1.0),
         cardColor: Color.fromRGBO(36, 39, 44, 1.0),
+        cursorColor: Color.fromRGBO(112, 112, 112, 1),
         fontFamily: 'IBM Plex Sans',
       ),
     );
