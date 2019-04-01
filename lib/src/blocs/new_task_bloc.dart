@@ -18,6 +18,14 @@ class NewTaskBloc {
     setCurrentUser();
   }
 
+  void setText(String newText) {
+    text = newText;
+  }
+
+  void setPriority(TaskPriority newPriority) {
+    priority = newPriority;
+  }
+
   Future<void> setCurrentUser() async {
     final user = await _auth.currentUser;
     currentUser = user;

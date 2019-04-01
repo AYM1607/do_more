@@ -4,8 +4,10 @@ class BigTextInput extends StatelessWidget {
   final double height;
   final double width;
   final bool elevated;
+  final Function(String) onChanged;
 
   BigTextInput({
+    @required this.onChanged,
     this.height,
     this.width,
     this.elevated = true,
@@ -27,6 +29,7 @@ class BigTextInput extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: TextField(
+            onChanged: onChanged,
             maxLines: 3,
             maxLength: 220,
             maxLengthEnforced: true,

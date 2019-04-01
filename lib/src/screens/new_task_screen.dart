@@ -37,6 +37,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
           children: <Widget>[
             BigTextInput(
               height: 95,
+              onChanged: bloc.setText,
             ),
             SizedBox(
               height: 15,
@@ -45,7 +46,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
             SizedBox(
               height: 15,
             ),
-            buildPrioritySelectorSection(),
+            buildPrioritySelectorSection(bloc),
             SizedBox(
               height: 20,
             ),
@@ -90,7 +91,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     );
   }
 
-  Widget buildPrioritySelectorSection() {
+  Widget buildPrioritySelectorSection(NewTaskBloc bloc) {
     return Row(
       children: <Widget>[
         Text(
@@ -99,7 +100,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
         ),
         Spacer(),
         PrioritySelector(
-          onChage: (priority) {},
+          onChage: bloc.setPriority,
           width: 230,
         ),
       ],
