@@ -29,6 +29,7 @@ main() {
   final user = UserModel(
     id: '123',
     tasks: <String>[],
+    events: <String>[],
     pendingHigh: 0,
     pendingMedium: 0,
     pendingLow: 0,
@@ -81,7 +82,7 @@ main() {
       when(querySnapshot.documents).thenReturn([snapshot]);
       when(snapshot.documentID).thenReturn(user.id);
 
-      expect(provider.getUser(user.username), emits(user));
+      expect(provider.getUserObservable(user.username), emits(user));
     });
 
     test('should create task', () {

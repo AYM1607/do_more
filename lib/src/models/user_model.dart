@@ -14,6 +14,9 @@ class UserModel {
   /// An array of task ids.
   final List<String> tasks;
 
+  /// An array of event names.
+  final List<String> events;
+
   /// Added and finished tasks for the current week.
   final SummaryModel summary;
 
@@ -34,6 +37,7 @@ class UserModel {
     @required this.pendingHigh,
     @required this.pendingMedium,
     @required this.pendingLow,
+    @required this.events,
   });
 
   ///Returns a [UserModel] from a map.
@@ -41,6 +45,7 @@ class UserModel {
       : id = id,
         username = firestoreMap["username"],
         tasks = firestoreMap["tasks"].cast<String>(),
+        events = firestoreMap["events"].cast<String>(),
         summary =
             SummaryModel.fromMap(firestoreMap["summary"].cast<String, int>()),
         pendingHigh = firestoreMap["pendingHigh"],
@@ -51,6 +56,7 @@ class UserModel {
     return <String, dynamic>{
       "username": username,
       "tasks": tasks,
+      "events": events,
       "summary": summary.toMap(),
       "pendingHigh": pendingHigh,
       "pendingMedium": pendingMedium,

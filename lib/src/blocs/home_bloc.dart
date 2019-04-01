@@ -10,7 +10,7 @@ export '../resources/authService.dart' show FirebaseUser;
 
 class HomeBloc {
   final AuthService _auth = authService;
-  final FirestoreProvider _firestore = firestoreProvider;
+  final FirestoreProvider _repository = firestoreProvider;
   final _tasks = BehaviorSubject<List<TaskModel>>();
 
   // Stream getters.
@@ -30,7 +30,7 @@ class HomeBloc {
 
   Future<void> fetchTasks() async {
     final user = await _auth.currentUser;
-    _firestore.getUserTasks(user.email).pipe(_tasks);
+    _repository.getUserTasks(user.email).pipe(_tasks);
   }
 
   Future<String> getUserAvatarUrl() async {
@@ -44,7 +44,7 @@ class HomeBloc {
   }
 
   void markTaskAsDone(TaskModel task) async {
-    _firestore.updateTask(
+    _repository.updateTask(
       task.id,
       done: true,
     );

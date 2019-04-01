@@ -21,7 +21,7 @@ class FirestoreProvider {
   //-----------------------User related operations------------------------------
 
   /// Returns a stream of [UserModel].
-  Observable<UserModel> getUser(String username) {
+  Observable<UserModel> getUserObservable(String username) {
     final mappedStream = _firestore
         .collection('users')
         .where('username', isEqualTo: username)
@@ -40,6 +40,28 @@ class FirestoreProvider {
     );
 
     return Observable(mappedStream);
+  }
+
+  //TODO: add tests for this method.
+
+  /// Returns a [UserModel].
+  /// Only one out of id or username can be provided, if both are provided id
+  /// will have higher priority.
+  Future<UserModel> getUser({String id, String username}) async {
+    DocumentSnapshot documentSnapshot;
+    if (id != null) {
+      documentSnapshot = await _firestore.document('users/$id').get();
+    } else {
+      final querySnapshot = await _firestore
+          .collection('users')
+          .where('username', isEqualTo: username)
+          .getDocuments();
+      documentSnapshot = querySnapshot.documents.first;
+    }
+    return UserModel.fromFirestore(
+      documentSnapshot.data,
+      id: documentSnapshot.documentID,
+    );
   }
 
   /// Creates a new instance of a user in Firestore.
@@ -68,6 +90,7 @@ class FirestoreProvider {
   Future<void> updateUser(
     String id, {
     List<String> tasks,
+    List<String> events,
     SummaryModel summary,
     int pendingHigh,
     int pendingMedium,
@@ -75,6 +98,7 @@ class FirestoreProvider {
   }) async {
     final newData = <String, dynamic>{
       'tasks': tasks,
+      'events': events,
       'summary': summary,
       'pendingHigh': pendingHigh,
       'pendingMedium': pendingMedium,
@@ -200,6 +224,11 @@ class FirestoreProvider {
     try {
       final dataMap = event.toFirestoreMap();
       await _firestore.collection('users/$userId/Events').add(dataMap);
+      // After the event was added successfully we have to update the events a
+      // user has.
+      final user = await getUser(id: userId);
+      final newEventsArray = user.events..add(event.name);
+      await updateUser(userId, events: newEventsArray);
     } catch (e) {
       print('Error adding Event to firestore: $e');
     }

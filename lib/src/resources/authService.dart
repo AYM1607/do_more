@@ -33,6 +33,7 @@ class AuthService {
       final newUserModel = UserModel(
         username: user.email,
         tasks: <String>[],
+        events: <String>[],
         summary: SummaryModel(),
         pendingHigh: 0,
         pendingMedium: 0,
