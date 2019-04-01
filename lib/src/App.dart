@@ -25,13 +25,7 @@ class App extends StatelessWidget {
   Route routes(RouteSettings settings) {
     final List<String> routeTokens = settings.name.split('/');
     print(routeTokens);
-    if (settings.name == '/') {
-      return MaterialPageRoute(
-        builder: (BuildContext context) {
-          return InitialLoadingScreen();
-        },
-      );
-    } else if (routeTokens.first == 'login') {
+    if (routeTokens.first == 'login') {
       return MaterialPageRoute(
         builder: (BuildContext context) {
           return LoginScreen();
@@ -50,5 +44,11 @@ class App extends StatelessWidget {
         },
       );
     }
+    // Default route.
+    return MaterialPageRoute(
+      builder: (BuildContext context) {
+        return InitialLoadingScreen();
+      },
+    );
   }
 }
