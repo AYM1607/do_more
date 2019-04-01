@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 class BigTextInput extends StatelessWidget {
   final double height;
   final double width;
+  final bool elevated;
 
   BigTextInput({
     this.height,
     this.width,
+    this.elevated = true,
   });
 
   Widget build(BuildContext context) {
     return Material(
+      elevation: elevated ? 10 : 0,
       child: ConstrainedBox(
         constraints: BoxConstraints(
           minWidth: 100,
