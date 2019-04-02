@@ -40,7 +40,8 @@ class NewItemDialogRoute extends PopupRoute {
             ),
             NewItemDialogButton(
               label: 'Media',
-              onTap: () {},
+              onTap: () =>
+                  Navigator.of(context).pushReplacementNamed('newImage/'),
             ),
           ],
         ),

@@ -8,6 +8,8 @@ import '../resources/firestore_provider.dart';
 
 export '../resources/authService.dart' show FirebaseUser;
 
+// TODO: Add the text search functionality.
+
 class HomeBloc {
   final AuthService _auth = authService;
   final FirestoreProvider _repository = firestoreProvider;

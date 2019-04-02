@@ -7,6 +7,8 @@ import '../models/user_model.dart';
 import '../resources/authService.dart';
 import '../resources/firestore_provider.dart';
 
+// TODO: Add validation.
+
 class NewTaskBloc {
   final AuthService _auth = authService;
   final FirestoreProvider _firestore = firestoreProvider;

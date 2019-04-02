@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'screens/initial_loading_screen.dart';
 import 'screens/login_screen.dart';
+import 'screens/new_image_screen.dart';
 import 'screens/new_task_screen.dart';
 
 class App extends StatelessWidget {
@@ -41,6 +42,12 @@ class App extends StatelessWidget {
       return MaterialPageRoute(
         builder: (BuildContext context) {
           return NewTaskScreen();
+        },
+      );
+    } else if (routeTokens.first == 'newImage') {
+      return MaterialPageRoute(
+        builder: (BuildContext context) {
+          return NewImageScreen();
         },
       );
     }
