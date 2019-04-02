@@ -17,6 +17,8 @@ const EdgeInsets _kAlignedMenuMargin = EdgeInsets.zero;
 const EdgeInsetsGeometry _kUnalignedMenuMargin =
     EdgeInsetsDirectional.only(start: 16.0, end: 24.0);
 
+//TODO: Refactor to allow expansion if no width is provided.
+
 class _DropdownMenuPainter extends CustomPainter {
   _DropdownMenuPainter({
     this.color,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+//TODO: Refactor to allow expansion if no width is provided.
+
 class GradientTouchableContainer extends StatelessWidget {
   /// The border radius of the button.
   final double radius;

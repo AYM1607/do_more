@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../utils.dart';
 import '../blocs/new_task_bloc.dart';
 import '../models/user_model.dart';
 import '../widgets/custom_app_bar.dart';
@@ -14,17 +15,6 @@ class NewTaskScreen extends StatefulWidget {
 }
 
 class _NewTaskScreenState extends State<NewTaskScreen> {
-  static const kLabelStyle = TextStyle(
-    color: Colors.white,
-    fontSize: 24,
-    fontWeight: FontWeight.w600,
-  );
-  static const kButtonStyle = TextStyle(
-    color: Colors.white,
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-  );
-
   final NewTaskBloc bloc = NewTaskBloc();
   String dropdownValue;
 
@@ -68,7 +58,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                   onTap: () => onSubmit(context, bloc),
                   child: Text(
                     'Submit',
-                    style: kButtonStyle,
+                    style: kSmallTextStyle,
                   ),
                 ),
               ],
@@ -84,7 +74,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       children: <Widget>[
         Text(
           'Event',
-          style: kLabelStyle,
+          style: kBigTextStyle,
         ),
         Spacer(),
         CustomDropdownButton(
@@ -111,7 +101,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       children: <Widget>[
         Text(
           'Priority',
-          style: kLabelStyle,
+          style: kBigTextStyle,
         ),
         Spacer(),
         PrioritySelector(
