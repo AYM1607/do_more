@@ -235,7 +235,7 @@ class FirestoreProvider {
   }
 
   /// Returns a Stream of a single event.
-  Observable<EventModel> getEvent(String userId, String eventId) {
+  Observable<EventModel> getEventObservable(String userId, String eventId) {
     final mappedStream = _firestore
         .collection('users/$userId/Events')
         .document(eventId)
@@ -250,6 +250,30 @@ class FirestoreProvider {
     );
 
     return Observable(mappedStream);
+  }
+
+  //TODO: add tests for this method.
+
+  /// Returns an [EventModel].
+  /// Only one out of id or name can be provided, if both are provided id
+  /// will have higher priority.
+  Future<EventModel> getEvent(String userId,
+      {String eventId, String eventName}) async {
+    DocumentSnapshot documentSnapshot;
+    if (eventId != null) {
+      documentSnapshot =
+          await _firestore.document('users/$userId/events/$eventId').get();
+    } else {
+      final querySnapshot = await _firestore
+          .collection('users/$userId/events')
+          .where('name', isEqualTo: eventName)
+          .getDocuments();
+      documentSnapshot = querySnapshot.documents.first;
+    }
+    return EventModel.fromFirestore(
+      documentSnapshot.data,
+      id: documentSnapshot.documentID,
+    );
   }
 
   /// Deletes an event from firestore.

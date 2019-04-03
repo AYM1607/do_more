@@ -14,6 +14,8 @@ class FirebaseStorageProvider {
       : _storage = storage ?? FirebaseStorage.instance.ref(),
         _uuid = uuid ?? Uuid();
 
+  // TODO: Sanitize the folder argument, it's too complicated.
+
   /// Uploads a given file to the firebase storage bucket.
   ///
   /// It returns a [StorageUploadTask] which contains the status of the upload.

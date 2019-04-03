@@ -70,7 +70,7 @@ class _NewImageScreenState extends State<NewImageScreen> {
               height: 40,
               isExpanded: true,
               radius: 8,
-              onTap: () {},
+              onTap: () => onSubmit(),
               child: Text(
                 'Submit',
                 style: kSmallTextStyle,
@@ -111,7 +111,7 @@ class _NewImageScreenState extends State<NewImageScreen> {
               return CustomDropdownButton(
                 isExpanded: true,
                 value: dropdownValue,
-                onChanged: (String value) => onDropdownChanged(bloc, value),
+                onChanged: (String value) => onDropdownChanged(value),
                 hint: Text('Event'),
                 items: events.map((String event) {
                   return CustomDropdownMenuItem(
@@ -130,11 +130,16 @@ class _NewImageScreenState extends State<NewImageScreen> {
     );
   }
 
-  void onDropdownChanged(NewImageBloc blco, String value) {
+  void onDropdownChanged(String value) {
     bloc.setEvent(value);
     setState(() {
       dropdownValue = value;
     });
+  }
+
+  void onSubmit() async {
+    await bloc.submit();
+    Navigator.of(context).pop();
   }
 
   void dispose() {

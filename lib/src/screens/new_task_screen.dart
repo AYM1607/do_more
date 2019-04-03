@@ -75,6 +75,8 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     );
   }
 
+  // TODO: Refactor to avoid using the dropdownValue property and instead use
+  // a stream from the bloc.
   Widget buildDropdownSection(List<String> events) {
     return Row(
       children: <Widget>[

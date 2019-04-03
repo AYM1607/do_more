@@ -3,10 +3,13 @@ import 'dart:io';
 
 import 'package:rxdart/rxdart.dart';
 
-import '../models/task_model.dart';
+import '../models/event_model.dart';
 import '../models/user_model.dart';
 import '../resources/authService.dart';
+import '../resources/firebase_storage_provider.dart';
 import '../resources/firestore_provider.dart';
+
+// TODO: Add validation
 
 class NewImageBloc {
   final AuthService _auth = authService;
@@ -35,6 +38,10 @@ class NewImageBloc {
 
   void setEvent(String newEvent) {
     event = newEvent;
+  }
+
+  Future<void> submit() {
+    List<String> events = _user.value.events;
   }
 
   void dispose() {
