@@ -6,8 +6,10 @@ import 'package:image_picker/image_picker.dart';
 
 import '../utils.dart';
 import '../blocs/new_image_bloc.dart';
+import '../models/user_model.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/custom_dropdown.dart';
+import '../widgets/fractionally_screen_sized_box.dart';
 import '../widgets/gradient_touchable_container.dart';
 
 class NewImageScreen extends StatefulWidget {
@@ -16,6 +18,7 @@ class NewImageScreen extends StatefulWidget {
 
 class _NewImageScreenState extends State<NewImageScreen> {
   final NewImageBloc bloc = NewImageBloc();
+  String dropdownValue;
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,13 +62,13 @@ class _NewImageScreenState extends State<NewImageScreen> {
             SizedBox(
               height: 10,
             ),
-            buildEventSection(),
+            buildEventSection(bloc),
             SizedBox(
               height: 10,
             ),
             GradientTouchableContainer(
               height: 40,
-              width: 350,
+              isExpanded: true,
               radius: 8,
               onTap: () {},
               child: Text(
@@ -86,7 +89,7 @@ class _NewImageScreenState extends State<NewImageScreen> {
     bloc.addPicture(imgFile);
   }
 
-  Widget buildEventSection() {
+  Widget buildEventSection(NewImageBloc bloc) {
     return Row(
       children: <Widget>[
         Text(
@@ -94,9 +97,44 @@ class _NewImageScreenState extends State<NewImageScreen> {
           style: kBigTextStyle,
         ),
         Spacer(),
-        CustomDropdownButton(),
+        FractionallyScreenSizedBox(
+          widthFactor: 0.7,
+          child: StreamBuilder(
+            stream: bloc.userModelStream,
+            builder: (BuildContext context, AsyncSnapshot<UserModel> snap) {
+              List<String> events = [];
+
+              if (snap.hasData) {
+                events = snap.data.events;
+              }
+
+              return CustomDropdownButton(
+                isExpanded: true,
+                value: dropdownValue,
+                onChanged: (String value) => onDropdownChanged(bloc, value),
+                hint: Text('Event'),
+                items: events.map((String name) {
+                  return CustomDropdownMenuItem(
+                    value: name,
+                    child: Text(
+                      name,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                }).toList(),
+              );
+            },
+          ),
+        ),
       ],
     );
+  }
+
+  void onDropdownChanged(NewImageBloc blco, String value) {
+    bloc.setEvent(value);
+    setState(() {
+      dropdownValue = value;
+    });
   }
 
   void dispose() {
