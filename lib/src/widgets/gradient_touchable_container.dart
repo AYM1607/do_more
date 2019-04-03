@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-//TODO: Refactor to allow expansion if no width is provided.
-
 class GradientTouchableContainer extends StatelessWidget {
   /// The border radius of the button.
   final double radius;
@@ -20,6 +18,8 @@ class GradientTouchableContainer extends StatelessWidget {
 
   final BoxShadow shadow;
 
+  final bool isExpanded;
+
   GradientTouchableContainer({
     this.radius = 4,
     @required this.child,
@@ -27,22 +27,33 @@ class GradientTouchableContainer extends StatelessWidget {
     this.width,
     this.onTap,
     this.shadow,
+    this.isExpanded = false,
   });
 
   Widget build(BuildContext context) {
+    final resultChild = Center(
+      widthFactor: 1.0,
+      heightFactor: 1.0,
+      child: child,
+    );
+
     return ConstrainedBox(
       constraints: const BoxConstraints(minWidth: 88.0, minHeight: 36.0),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
           width: width,
-          height: height,
+          height: isExpanded ? null : height,
           padding: EdgeInsets.all(5),
-          child: Center(
-            widthFactor: 1.0,
-            heightFactor: 1.0,
-            child: child,
-          ),
+          child: isExpanded
+              ? Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: resultChild,
+                    )
+                  ],
+                )
+              : resultChild,
           decoration: BoxDecoration(
             boxShadow: shadow == null ? null : [shadow],
             borderRadius: BorderRadius.circular(radius),

@@ -17,8 +17,6 @@ const EdgeInsets _kAlignedMenuMargin = EdgeInsets.zero;
 const EdgeInsetsGeometry _kUnalignedMenuMargin =
     EdgeInsetsDirectional.only(start: 16.0, end: 24.0);
 
-//TODO: Refactor to allow expansion if no width is provided.
-
 class _DropdownMenuPainter extends CustomPainter {
   _DropdownMenuPainter({
     this.color,
@@ -545,7 +543,6 @@ class CustomDropdownButton<T> extends StatefulWidget {
     this.iconSize = 24.0,
     this.isDense = false,
     this.isExpanded = false,
-    this.width = 200,
   })  : assert(items == null ||
             items.isEmpty ||
             value == null ||
@@ -598,8 +595,6 @@ class CustomDropdownButton<T> extends StatefulWidget {
   final int elevation;
 
   final bool isElevated;
-
-  final double width;
 
   /// The text style to use for text in the dropdown button and the dropdown
   /// menu that appears when you tap the button.
@@ -784,7 +779,6 @@ class _DropdownButtonState<T> extends State<CustomDropdownButton<T>>
           ),
           padding: padding.resolve(Directionality.of(context)),
           height: 35.0,
-          width: widget.width,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.min,
@@ -792,7 +786,9 @@ class _DropdownButtonState<T> extends State<CustomDropdownButton<T>>
               SizedBox(
                 width: 15,
               ),
-              Expanded(child: innerItemsWidget),
+              widget.isExpanded
+                  ? Expanded(child: innerItemsWidget)
+                  : innerItemsWidget,
               Icon(
                 FontAwesomeIcons.chevronCircleDown,
                 size: 16.0,

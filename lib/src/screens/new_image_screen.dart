@@ -94,9 +94,7 @@ class _NewImageScreenState extends State<NewImageScreen> {
           style: kBigTextStyle,
         ),
         Spacer(),
-        CustomDropdownButton(
-          width: 200,
-        ),
+        CustomDropdownButton(),
       ],
     );
   }

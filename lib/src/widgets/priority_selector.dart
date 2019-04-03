@@ -9,7 +9,7 @@ class PrioritySelector extends StatefulWidget {
   final Function(TaskPriority) onChage;
 
   PrioritySelector({
-    this.width = 200,
+    this.width,
     @required this.onChage,
   });
 
