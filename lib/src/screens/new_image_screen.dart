@@ -113,11 +113,11 @@ class _NewImageScreenState extends State<NewImageScreen> {
                 value: dropdownValue,
                 onChanged: (String value) => onDropdownChanged(bloc, value),
                 hint: Text('Event'),
-                items: events.map((String name) {
+                items: events.map((String event) {
                   return CustomDropdownMenuItem(
-                    value: name,
+                    value: event,
                     child: Text(
-                      name,
+                      event,
                       style: TextStyle(color: Colors.white),
                     ),
                   );
