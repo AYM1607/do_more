@@ -299,7 +299,7 @@ class FirestoreProvider {
     String eventId, {
     String name,
     int pendingtasks,
-    List<int> media,
+    List<String> media,
     List<String> tasks,
     int highPriority,
     int mediumPriority,
@@ -323,7 +323,7 @@ class FirestoreProvider {
 
     try {
       final documentReference =
-          _firestore.document('users/$userId/Events/$eventId');
+          _firestore.document('users/$userId/events/$eventId');
       await documentReference.setData(newData, merge: true);
     } catch (e) {
       print('Error while updating Event in Firestore: $e');
