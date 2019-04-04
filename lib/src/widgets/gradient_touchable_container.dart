@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utils.dart';
+
 class GradientTouchableContainer extends StatelessWidget {
   /// The border radius of the button.
   final double radius;
@@ -20,6 +22,8 @@ class GradientTouchableContainer extends StatelessWidget {
 
   final bool isExpanded;
 
+  final bool enabled;
+
   GradientTouchableContainer({
     this.radius = 4,
     @required this.child,
@@ -28,6 +32,7 @@ class GradientTouchableContainer extends StatelessWidget {
     this.onTap,
     this.shadow,
     this.isExpanded = false,
+    this.enabled = true,
   });
 
   Widget build(BuildContext context) {
@@ -40,7 +45,7 @@ class GradientTouchableContainer extends StatelessWidget {
     return ConstrainedBox(
       constraints: const BoxConstraints(minWidth: 88.0, minHeight: 36.0),
       child: GestureDetector(
-        onTap: onTap,
+        onTap: enabled ? onTap : null,
         child: Container(
           width: width,
           height: isExpanded ? null : height,
@@ -55,19 +60,10 @@ class GradientTouchableContainer extends StatelessWidget {
                 )
               : resultChild,
           decoration: BoxDecoration(
+            color: enabled ? null : Colors.grey,
             boxShadow: shadow == null ? null : [shadow],
             borderRadius: BorderRadius.circular(radius),
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                stops: [
-                  0,
-                  1.0
-                ],
-                colors: [
-                  Color.fromRGBO(32, 156, 227, 1.0),
-                  Color.fromRGBO(45, 83, 216, 1.0)
-                ]),
+            gradient: enabled ? kBlueGradient : null,
           ),
         ),
       ),

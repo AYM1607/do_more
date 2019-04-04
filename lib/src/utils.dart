@@ -15,6 +15,12 @@ const kSmallTextStyle = TextStyle(
   fontSize: 16,
   fontWeight: FontWeight.w500,
 );
+const kBlueGradient = LinearGradient(
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+  stops: [0, 1.0],
+  colors: [Color.fromRGBO(32, 156, 227, 1.0), Color.fromRGBO(45, 83, 216, 1.0)],
+);
 
 Color getColorFromPriority(TaskPriority priority) {
   switch (priority) {
