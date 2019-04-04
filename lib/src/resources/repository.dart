@@ -65,7 +65,7 @@ class Repository {
   }
 
   Observable<EventModel> getEvent(String userId, String eventId) {
-    return _firestoreProvider.getEvent(userId, eventId);
+    return _firestoreProvider.getEventObservable(userId, eventId);
   }
 
   Future<void> updateEvent(
@@ -73,7 +73,7 @@ class Repository {
     String eventId, {
     String name,
     int pendingtasks,
-    List<int> media,
+    List<String> media,
     List<String> tasks,
     int highPriority,
     int mediumPriority,
