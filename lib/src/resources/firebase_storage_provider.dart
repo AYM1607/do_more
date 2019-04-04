@@ -15,17 +15,15 @@ class FirebaseStorageProvider {
       : _storage = storage ?? FirebaseStorage.instance.ref(),
         _uuid = uuid ?? Uuid();
 
-  // TODO: Sanitize the folder argument, it's too complicated.
-
   /// Uploads a given file to the firebase storage bucket.
   ///
   /// It returns a [StorageUploadTask] which contains the status of the upload.
-  /// The [folder] parameter should not start with "/", but it should end with
-  /// it. it allows the file to be stored at any path in the bucket.
   /// The [type] parameter allows you to specify the extension of the file bein
   /// uploaded, it defaults to png.
   StorageUploadTask uploadFile(File file,
       {String folder = '', String type = 'png'}) {
+    folder = folder.startsWith('/') ? folder.substring(1) : folder;
+    folder = folder.endsWith('/') ? folder : folder += '/';
     final String fileId = _uuid.v1();
     final StorageReference fileReference =
         _storage.child('$folder/$fileId.$type');
