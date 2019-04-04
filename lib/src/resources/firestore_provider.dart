@@ -223,7 +223,7 @@ class FirestoreProvider {
   Future<void> addEvent(String userId, EventModel event) async {
     try {
       final dataMap = event.toFirestoreMap();
-      await _firestore.collection('users/$userId/Events').add(dataMap);
+      await _firestore.collection('users/$userId/events').add(dataMap);
       // After the event was added successfully we have to update the events a
       // user has.
       final user = await getUser(id: userId);
@@ -237,7 +237,7 @@ class FirestoreProvider {
   /// Returns a Stream of a single event.
   Observable<EventModel> getEventObservable(String userId, String eventId) {
     final mappedStream = _firestore
-        .collection('users/$userId/Events')
+        .collection('users/$userId/events')
         .document(eventId)
         .snapshots()
         .map(
@@ -282,7 +282,7 @@ class FirestoreProvider {
   Future<void> deleteEvent(String userId, String eventId) async {
     try {
       final documentReference =
-          _firestore.document('users/$userId/Events/$eventId');
+          _firestore.document('users/$userId/events/$eventId');
       await documentReference.delete();
     } catch (e) {
       print('Error deleting event in firestore: $e');
@@ -334,7 +334,7 @@ class FirestoreProvider {
   /// a particular user.
   Observable<List<EventModel>> getUserEvents(String userId) {
     final mappedStream =
-        _firestore.collection('users/$userId/Events').snapshots().map(
+        _firestore.collection('users/$userId/events').snapshots().map(
       (QuerySnapshot snapshot) {
         return snapshot.documents.map((DocumentSnapshot documentSnapshot) {
           return EventModel.fromFirestore(

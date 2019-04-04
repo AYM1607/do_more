@@ -190,7 +190,7 @@ main() {
       final collection = MockCollectionReference();
       final provider = FirestoreProvider(firestore);
 
-      when(firestore.collection('users/123/Events')).thenReturn(collection);
+      when(firestore.collection('users/123/events')).thenReturn(collection);
 
       provider.addEvent('123', event);
 
@@ -205,12 +205,12 @@ main() {
       final document = MockDocumentReference();
       final provider = FirestoreProvider(firestore);
 
-      when(firestore.collection('users/123/Events')).thenReturn(collection);
+      when(firestore.collection('users/123/events')).thenReturn(collection);
       when(collection.document(event.id)).thenReturn(document);
       when(document.snapshots()).thenAnswer((_) => snapshots);
       when(snapshot.documentID).thenReturn(event.id);
 
-      expectLater(provider.getEvent('123', event.id), emits(event));
+      expectLater(provider.getEventObservable('123', event.id), emits(event));
     });
 
     test('should delete an event', () {
@@ -218,7 +218,7 @@ main() {
       final document = MockDocumentReference();
       final provider = FirestoreProvider(firestore);
 
-      when(firestore.document('users/123/Events/${event.id}'))
+      when(firestore.document('users/123/events/${event.id}'))
           .thenReturn(document);
       when(document.delete()).thenAnswer((_) => Future<void>.value());
 
@@ -232,7 +232,7 @@ main() {
       final document = MockDocumentReference();
       final provider = FirestoreProvider(firestore);
 
-      when(firestore.document('users/123/Events/${event.id}'))
+      when(firestore.document('users/123/events/${event.id}'))
           .thenReturn(document);
 
       provider.updateEvent('123', event.id, name: 'new name');
@@ -248,7 +248,7 @@ main() {
       final document = MockDocumentSnapshot(event.toFirestoreMap());
       final provider = FirestoreProvider(firestore);
 
-      when(firestore.collection('users/123/Events')).thenReturn(collection);
+      when(firestore.collection('users/123/events')).thenReturn(collection);
       when(collection.snapshots()).thenAnswer((_) => snapshots);
       when(snapshot.documents).thenReturn([document]);
       when(document.documentID).thenReturn(event.id);
