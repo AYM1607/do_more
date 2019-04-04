@@ -17,7 +17,6 @@ class NewTaskScreen extends StatefulWidget {
 
 class _NewTaskScreenState extends State<NewTaskScreen> {
   final NewTaskBloc bloc = NewTaskBloc();
-  String dropdownValue;
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +50,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                     SizedBox(
                       height: 15,
                     ),
-                    buildPrioritySelectorSection(bloc),
+                    buildPrioritySelectorSection(),
                     SizedBox(
                       height: 20,
                     ),
@@ -75,8 +74,6 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     );
   }
 
-  // TODO: Refactor to avoid using the dropdownValue property and instead use
-  // a stream from the bloc.
   Widget buildDropdownSection(List<String> events) {
     return Row(
       children: <Widget>[
@@ -87,27 +84,32 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
         Spacer(),
         FractionallyScreenSizedBox(
           widthFactor: 0.6,
-          child: CustomDropdownButton(
-            isExpanded: true,
-            value: dropdownValue,
-            onChanged: (String value) => onDropdownChanged(bloc, value),
-            hint: Text('Event'),
-            items: events.map((String name) {
-              return CustomDropdownMenuItem(
-                value: name,
-                child: Text(
-                  name,
-                  style: TextStyle(color: Colors.white),
-                ),
+          child: StreamBuilder(
+            stream: bloc.eventName,
+            builder: (BuildContext context, AsyncSnapshot<String> snap) {
+              return CustomDropdownButton(
+                isExpanded: true,
+                value: snap.data,
+                onChanged: bloc.changeEventName,
+                hint: Text('Event'),
+                items: events.map((String name) {
+                  return CustomDropdownMenuItem(
+                    value: name,
+                    child: Text(
+                      name,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                }).toList(),
               );
-            }).toList(),
+            },
           ),
         ),
       ],
     );
   }
 
-  Widget buildPrioritySelectorSection(NewTaskBloc bloc) {
+  Widget buildPrioritySelectorSection() {
     return Row(
       children: <Widget>[
         Text(
@@ -125,15 +127,13 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     );
   }
 
-  void onDropdownChanged(NewTaskBloc bloc, String newValue) {
-    bloc.setEvent(newValue);
-    setState(() {
-      dropdownValue = newValue;
-    });
-  }
-
   void onSubmit(BuildContext context, NewTaskBloc bloc) async {
     await bloc.submit();
     Navigator.of(context).pop();
+  }
+
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
   }
 }

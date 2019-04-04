@@ -13,12 +13,18 @@ class NewTaskBloc {
   final AuthService _auth = authService;
   final FirestoreProvider _firestore = firestoreProvider;
   final _user = BehaviorSubject<UserModel>();
+  final _eventName = BehaviorSubject<String>();
 
   String text = '';
   TaskPriority priority = TaskPriority.high;
   String event = '';
 
+  //Stream getters.
   Observable<UserModel> get userModelStream => _user.stream;
+  Observable<String> get eventName => _eventName.stream;
+
+  //Sinks getters.
+  Function(String) get changeEventName => _eventName.sink.add;
 
   NewTaskBloc() {
     setCurrentUser();
@@ -51,5 +57,10 @@ class NewTaskBloc {
     final user = await _auth.currentUser;
     final userModel = await _firestore.getUser(username: user.email);
     _user.add(userModel);
+  }
+
+  void dispose() {
+    _user.close();
+    _eventName.close();
   }
 }
