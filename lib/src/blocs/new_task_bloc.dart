@@ -17,7 +17,6 @@ class NewTaskBloc {
 
   String text = '';
   TaskPriority priority = TaskPriority.high;
-  String event = '';
 
   //Stream getters.
   Observable<UserModel> get userModelStream => _user.stream;
@@ -38,15 +37,11 @@ class NewTaskBloc {
     priority = newPriority;
   }
 
-  void setEvent(String newEvent) {
-    event = newEvent;
-  }
-
   Future<void> submit() {
     final newTask = TaskModel(
       text: text,
       priority: priority,
-      event: event,
+      event: _eventName.value,
       ownerUsername: _user.value.username,
       done: false,
     );
