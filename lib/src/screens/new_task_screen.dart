@@ -41,7 +41,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                   children: <Widget>[
                     BigTextInput(
                       height: 95,
-                      onChanged: bloc.setText,
+                      onChanged: bloc.changeTaskText,
                     ),
                     SizedBox(
                       height: 15,
@@ -54,15 +54,21 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                     SizedBox(
                       height: 20,
                     ),
-                    GradientTouchableContainer(
-                      height: 40,
-                      radius: 8,
-                      isExpanded: true,
-                      onTap: () => onSubmit(context, bloc),
-                      child: Text(
-                        'Submit',
-                        style: kSmallTextStyle,
-                      ),
+                    StreamBuilder<Object>(
+                      stream: bloc.submitEnabled,
+                      builder: (context, submitSnap) {
+                        return GradientTouchableContainer(
+                          height: 40,
+                          radius: 8,
+                          isExpanded: true,
+                          enabled: submitSnap.hasData,
+                          onTap: () => onSubmit(context),
+                          child: Text(
+                            'Submit',
+                            style: kSmallTextStyle,
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -127,7 +133,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     );
   }
 
-  void onSubmit(BuildContext context, NewTaskBloc bloc) async {
+  void onSubmit(BuildContext context) async {
     await bloc.submit();
     Navigator.of(context).pop();
   }

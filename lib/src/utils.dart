@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import './models/task_model.dart';
 
@@ -36,4 +38,16 @@ Color getColorFromPriority(TaskPriority priority) {
     default:
       return Colors.white;
   }
+}
+
+class Validators {
+  final validateStringNotEmpty = StreamTransformer<String, String>.fromHandlers(
+    handleData: (String string, EventSink<String> sink) {
+      if (string.isEmpty) {
+        sink.addError('Text cannot be empty');
+      } else {
+        sink.add(string);
+      }
+    },
+  );
 }
