@@ -17,8 +17,7 @@ class NewImageBloc {
   final FirebaseStorageProvider _storage = storageProvider;
   final _picture = BehaviorSubject<File>();
   final _user = BehaviorSubject<UserModel>();
-
-  String eventName;
+  final _eventName = BehaviorSubject<String>();
 
   NewImageBloc() {
     setCurrentUser();
@@ -27,18 +26,16 @@ class NewImageBloc {
   //Stream getters.
   Observable<File> get picture => _picture.stream;
   Observable<UserModel> get userModelStream => _user.stream;
+  Observable<String> get eventName => _eventName.stream;
 
   //Sink getters.
-  Function(File) get addPicture => _picture.sink.add;
+  Function(File) get changePicture => _picture.sink.add;
+  Function(String) get changeEventName => _eventName.sink.add;
 
   Future<void> setCurrentUser() async {
     final user = await _auth.currentUser;
     final userModel = await _firestore.getUser(username: user.email);
     _user.add(userModel);
-  }
-
-  void setEvent(String newEventName) {
-    eventName = newEventName;
   }
 
   Future<void> submit() async {
@@ -47,12 +44,14 @@ class NewImageBloc {
         _storage.uploadFile(_picture.value, folder: '${user.id}/');
     final storageSnapshot = await uploadTask.onComplete;
     final imagePath = storageSnapshot.ref.path;
-    EventModel event = await _firestore.getEvent(user.id, eventName: eventName);
+    EventModel event =
+        await _firestore.getEvent(user.id, eventName: _eventName.value);
     final newMediaList = List<String>.from(event.media)..add(imagePath);
     await _firestore.updateEvent(user.id, event.id, media: newMediaList);
   }
 
   void dispose() {
+    _eventName.close();
     _picture.close();
   }
 }

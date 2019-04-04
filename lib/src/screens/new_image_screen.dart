@@ -18,7 +18,6 @@ class NewImageScreen extends StatefulWidget {
 
 class _NewImageScreenState extends State<NewImageScreen> {
   final NewImageBloc bloc = NewImageBloc();
-  String dropdownValue;
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,7 +85,7 @@ class _NewImageScreenState extends State<NewImageScreen> {
     final File imgFile = await ImagePicker.pickImage(
       source: ImageSource.camera,
     );
-    bloc.addPicture(imgFile);
+    bloc.changePicture(imgFile);
   }
 
   Widget buildEventSection(NewImageBloc bloc) {
@@ -108,33 +107,31 @@ class _NewImageScreenState extends State<NewImageScreen> {
                 events = snap.data.events;
               }
 
-              return CustomDropdownButton(
-                isExpanded: true,
-                value: dropdownValue,
-                onChanged: (String value) => onDropdownChanged(value),
-                hint: Text('Event'),
-                items: events.map((String event) {
-                  return CustomDropdownMenuItem(
-                    value: event,
-                    child: Text(
-                      event,
-                      style: TextStyle(color: Colors.white),
-                    ),
+              return StreamBuilder(
+                stream: bloc.eventName,
+                builder: (BuildContext context, AsyncSnapshot<String> snap) {
+                  return CustomDropdownButton(
+                    isExpanded: true,
+                    value: snap.data,
+                    onChanged: bloc.changeEventName,
+                    hint: Text('Event'),
+                    items: events.map((String event) {
+                      return CustomDropdownMenuItem(
+                        value: event,
+                        child: Text(
+                          event,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      );
+                    }).toList(),
                   );
-                }).toList(),
+                },
               );
             },
           ),
         ),
       ],
     );
-  }
-
-  void onDropdownChanged(String value) {
-    bloc.setEvent(value);
-    setState(() {
-      dropdownValue = value;
-    });
   }
 
   void onSubmit() async {
