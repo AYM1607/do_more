@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../services/authService.dart';
+import '../services/auth_service.dart';
 import '../widgets/logo.dart';
 import '../widgets/gradient_touchable_container.dart';
 

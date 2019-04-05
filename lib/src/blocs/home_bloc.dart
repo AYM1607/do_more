@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 import '../models/task_model.dart';
-import '../services/authService.dart';
+import '../services/auth_service.dart';
 import '../resources/firestore_provider.dart';
 
-export '../services/authService.dart' show FirebaseUser;
+export '../services/auth_service.dart' show FirebaseUser;
 
 // TODO: Add the text search functionality.
 

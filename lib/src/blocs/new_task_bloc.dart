@@ -5,7 +5,7 @@ import 'package:rxdart/rxdart.dart';
 import '../utils.dart' show Validators;
 import '../models/task_model.dart';
 import '../models/user_model.dart';
-import '../services/authService.dart';
+import '../services/auth_service.dart';
 import '../resources/firestore_provider.dart';
 
 class NewTaskBloc extends Object with Validators {
