@@ -26,7 +26,7 @@ class NewImageBloc {
   /// A subject of the current user model.
   final _user = BehaviorSubject<UserModel>();
 
-  /// A subject of the current task event name.
+  /// A subject of the current media event name.
   final _eventName = BehaviorSubject<String>();
 
   NewImageBloc() {
@@ -40,10 +40,10 @@ class NewImageBloc {
   /// An observable of the user model.
   Observable<UserModel> get userModelStream => _user.stream;
 
-  /// An observable of the task event name.
+  /// An observable of the media event name.
   Observable<String> get eventName => _eventName.stream;
 
-  /// An observable of the ready to submit flag.
+  /// An observable of the submit enabled flag.
   Observable<bool> get submitEnabled =>
       Observable.combineLatest2(_picture, _eventName, (a, b) => true);
 
@@ -51,7 +51,7 @@ class NewImageBloc {
   /// Changes the current picture file.
   Function(File) get changePicture => _picture.sink.add;
 
-  /// Changes the current task event name.
+  /// Changes the current media event name.
   Function(String) get changeEventName => _eventName.sink.add;
 
   /// Fetches and updates the current user.
