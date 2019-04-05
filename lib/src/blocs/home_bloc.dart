@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 import '../models/task_model.dart';
-import '../services/auth_service.dart';
 import '../resources/firestore_provider.dart';
+import '../services/auth_service.dart';
+import '../services/current_task_service.dart';
 
 export '../services/auth_service.dart' show FirebaseUser;
 
@@ -13,6 +14,7 @@ export '../services/auth_service.dart' show FirebaseUser;
 class HomeBloc {
   final AuthService _auth = authService;
   final FirestoreProvider _repository = firestoreProvider;
+  final CurrentTaskService _taskService = currentTaskService;
   final _tasks = BehaviorSubject<List<TaskModel>>();
 
   // Stream getters.
@@ -24,8 +26,8 @@ class HomeBloc {
   StreamTransformer<List<TaskModel>, List<TaskModel>>
       prioritySortTransformer() {
     return StreamTransformer.fromHandlers(handleData: (tasksList, sink) {
-      tasksList
-          .sort((a, b) => b.ecodedPriority().compareTo(a.ecodedPriority()));
+      tasksList.sort((a, b) => TaskModel.ecodedPriority(b.priority)
+          .compareTo(TaskModel.ecodedPriority(a.priority)));
       sink.add(tasksList);
     });
   }
@@ -50,6 +52,10 @@ class HomeBloc {
       task.id,
       done: true,
     );
+  }
+
+  void updateCurrentTask(TaskModel task) {
+    _taskService.setTask(task);
   }
 
   void dispose() {

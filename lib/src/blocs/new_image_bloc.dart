@@ -5,7 +5,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../models/event_model.dart';
 import '../models/user_model.dart';
-import '../services/authService.dart';
+import '../services/auth_service.dart';
 import '../resources/firebase_storage_provider.dart';
 import '../resources/firestore_provider.dart';
 

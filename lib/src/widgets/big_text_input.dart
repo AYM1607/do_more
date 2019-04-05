@@ -1,35 +1,54 @@
 import 'package:flutter/material.dart';
 
-class BigTextInput extends StatelessWidget {
+class BigTextInput extends StatefulWidget {
   final double height;
   final double width;
   final bool elevated;
   final Function(String) onChanged;
+  final String initialValue;
 
   BigTextInput({
     @required this.onChanged,
     this.height,
     this.width,
     this.elevated = true,
+    this.initialValue,
   });
+
+  @override
+  _BigTextInputState createState() => _BigTextInputState();
+}
+
+class _BigTextInputState extends State<BigTextInput> {
+  TextEditingController _controller;
+
+  void initState() {
+    _controller = TextEditingController(text: widget.initialValue);
+    _controller.addListener(controllerListener);
+    super.initState();
+  }
+
+  void controllerListener() {
+    widget.onChanged(_controller.text);
+  }
 
   Widget build(BuildContext context) {
     return Material(
-      elevation: elevated ? 10 : 0,
+      elevation: widget.elevated ? 10 : 0,
       child: ConstrainedBox(
         constraints: BoxConstraints(
           minWidth: 100,
           minHeight: 50,
         ),
         child: Container(
-          width: width,
-          height: height,
+          width: widget.width,
+          height: widget.height,
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(8.0),
           ),
           child: TextField(
-            onChanged: onChanged,
+            controller: _controller,
             maxLines: 3,
             maxLength: 220,
             maxLengthEnforced: true,

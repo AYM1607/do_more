@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 
-import '../services/authService.dart';
+import '../services/auth_service.dart';
 
 class InitialLoadingScreen extends StatelessWidget {
   final AuthService _auth = authService;

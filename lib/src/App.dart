@@ -4,7 +4,7 @@ import 'screens/home_screen.dart';
 import 'screens/initial_loading_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/new_image_screen.dart';
-import 'screens/new_task_screen.dart';
+import 'screens/task_screen.dart';
 
 class App extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -41,7 +41,15 @@ class App extends StatelessWidget {
     } else if (routeTokens.first == 'newTask') {
       return MaterialPageRoute(
         builder: (BuildContext context) {
-          return NewTaskScreen();
+          return TaskScreen();
+        },
+      );
+    } else if (routeTokens.first == 'editTask') {
+      return MaterialPageRoute(
+        builder: (BuildContext context) {
+          return TaskScreen(
+            isEdit: true,
+          );
         },
       );
     } else if (routeTokens.first == 'newImage') {

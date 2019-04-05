@@ -28,7 +28,7 @@ class TaskModel {
   Map<String, dynamic> toFirestoreMap() {
     return <String, dynamic>{
       "text": text,
-      "priority": ecodedPriority(),
+      "priority": ecodedPriority(priority),
       "ownerUsername": ownerUsername,
       "done": done,
       "event": event,
@@ -67,7 +67,7 @@ class TaskModel {
     }
   }
 
-  int ecodedPriority() {
+  static int ecodedPriority(TaskPriority priority) {
     switch (priority) {
       case TaskPriority.low:
         return 0;
