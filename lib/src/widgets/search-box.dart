@@ -4,7 +4,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import './gradient_touchable_container.dart';
 
 //TODO: Add neccessary properties to be able to inform of changes in text field.
+
+/// A search box that mathces the app mocks.
 class SearchBox extends StatelessWidget {
+  /// Height of the sarch box.
   final double height;
 
   SearchBox({@required this.height}) : assert(height >= 50);

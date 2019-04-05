@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// A button that represents a card action.
 class ActionButton extends StatelessWidget {
   /// Function to be called when the button is pressed
   final VoidCallback onPressed;
@@ -29,7 +30,7 @@ class ActionButton extends StatelessWidget {
   final double radius;
 
   ActionButton({
-    this.onPressed,
+    @required this.onPressed,
     this.color = const Color(0xFF2C2F34),
     this.textColor = Colors.white,
     this.leadingIconData,

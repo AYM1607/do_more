@@ -5,6 +5,7 @@ import '../models/task_model.dart';
 import '../utils.dart';
 import '../widgets/action_button.dart';
 
+/// A card that visually represents a task.
 class TaskListTile extends StatelessWidget {
   /// Task model which this card represents.
   final TaskModel task;

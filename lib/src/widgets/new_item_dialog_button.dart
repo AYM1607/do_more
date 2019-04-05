@@ -6,7 +6,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 /// Let's you specify the text shown and the action to perform when the circular
 /// button is pressed.
 class NewItemDialogButton extends StatelessWidget {
+  /// Function to be called on tap gesture.
   final VoidCallback onTap;
+
+  /// Label to be shown on top of the action button.
   final String label;
 
   NewItemDialogButton({

@@ -4,8 +4,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../models/task_model.dart';
 import '../utils.dart';
 
+/// A wdiget that lets you select the priority of a task.
 class PrioritySelector extends StatefulWidget {
+  /// Width of the selector.
+  ///
+  /// If none is provided it expands as much as it can horizontally.
   final double width;
+
+  /// Function to be called when the current selected priority changes.
   final Function(TaskPriority) onChage;
 
   PrioritySelector({
@@ -35,7 +41,7 @@ class _PrioritySelectorState extends State<PrioritySelector> {
           Expanded(
             flex: 8,
             child: GestureDetector(
-              onTap: () => setPriority(TaskPriority.high),
+              onTap: () => updatePriority(TaskPriority.high),
               child: Container(
                 decoration: BoxDecoration(
                   color: kHighPriorityColor,
@@ -52,7 +58,7 @@ class _PrioritySelectorState extends State<PrioritySelector> {
           Expanded(
             flex: 8,
             child: GestureDetector(
-              onTap: () => setPriority(TaskPriority.medium),
+              onTap: () => updatePriority(TaskPriority.medium),
               child: Container(
                 decoration: BoxDecoration(
                   color: kMediumPriorityColor,
@@ -68,7 +74,7 @@ class _PrioritySelectorState extends State<PrioritySelector> {
           ),
           Expanded(
             child: GestureDetector(
-              onTap: () => setPriority(TaskPriority.low),
+              onTap: () => updatePriority(TaskPriority.low),
               child: Container(
                 decoration: BoxDecoration(
                   color: kLowPriorityColor,
@@ -84,7 +90,8 @@ class _PrioritySelectorState extends State<PrioritySelector> {
     );
   }
 
-  void setPriority(TaskPriority priority) {
+  /// Sets the selected priority and calls the onChange method with it.
+  void updatePriority(TaskPriority priority) {
     widget.onChage(priority);
     setState(() {
       selectedPriority = priority;

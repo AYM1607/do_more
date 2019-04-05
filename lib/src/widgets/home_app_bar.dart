@@ -3,8 +3,18 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import './logo.dart';
 
+//TODO: Add callback for the menu button.
+
+/// Custom app bar with avatar and menu button.
+///
+/// Only to be used in the home scree.
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
+  /// Url for the user avatar.
+  ///
+  /// A placeholder is shown if null.
   final String avatarUrl;
+
+  /// Text to be shown as a subtitle.
   final String subtitle;
 
   HomeAppBar({

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../utils.dart';
 
+/// A container that has the apps custom gradient as its background.
+///
+/// The optional [onTap] gets called if provided when the onTap gesture is
+/// detected.
 class GradientTouchableContainer extends StatelessWidget {
   /// The border radius of the button.
   final double radius;
@@ -18,10 +22,18 @@ class GradientTouchableContainer extends StatelessWidget {
   /// Function to be called when the button is pressed.
   final VoidCallback onTap;
 
+  /// Shadow to be casted by the container.
   final BoxShadow shadow;
 
+  /// Whether the container is expanded horizontally or not.
+  ///
+  /// The container will have an unbound width if set to true and it should not
+  /// be put inside a row without constraints.
   final bool isExpanded;
 
+  /// Whether or not the tap functionality is enabled.
+  ///
+  /// Changes the background to grey if set to false.
   final bool enabled;
 
   GradientTouchableContainer({
