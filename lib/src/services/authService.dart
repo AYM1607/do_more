@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:rxdart/rxdart.dart';
 
-import './firestore_provider.dart';
-import './google_sign_in_provider.dart';
+import '../resources/firestore_provider.dart';
+import '../resources/google_sign_in_provider.dart';
 import '../models/summary_model.dart';
 import '../models/user_model.dart';
 
-export './google_sign_in_provider.dart' show FirebaseUser;
+export '../resources/google_sign_in_provider.dart' show FirebaseUser;
 
 class AuthService {
   final GoogleSignInProvider _googleSignInProvider = signInProvider;
