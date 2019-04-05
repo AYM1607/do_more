@@ -1,13 +1,30 @@
 import 'package:meta/meta.dart';
 
+/// A user's task.
+///
+/// Represents a task linked to a user.
 class TaskModel {
+  /// The task id in the database.
   final String id;
+
+  /// The task's text.
   final String text;
+
+  /// The priority of this task.
   final TaskPriority priority;
+
+  /// The username of the user that owns this task.
+  ///
+  /// It represents an email.
   final String ownerUsername;
+
+  /// Wether a task has been marked as done or not.
   final bool done;
+
+  /// The name of the event that contains this task.
   final String event;
 
+  /// Creates a task model.
   TaskModel({
     this.id,
     @required this.text,
@@ -17,7 +34,12 @@ class TaskModel {
     @required this.event,
   });
 
-  TaskModel.fromFirestore(Map<String, dynamic> firestoreMap, {String id})
+  /// Creates a task model from a map.
+  ///
+  /// The database id for the event is not provided inside the map but should
+  /// always be specified.
+  TaskModel.fromFirestore(Map<String, dynamic> firestoreMap,
+      {@required String id})
       : id = id,
         text = firestoreMap["text"],
         priority = decodedPriority(firestoreMap["priority"]),
@@ -25,6 +47,9 @@ class TaskModel {
         done = firestoreMap["done"],
         event = firestoreMap["event"];
 
+  /// Returns a map representation of the task.
+  ///
+  /// Encodes properties where required.
   Map<String, dynamic> toFirestoreMap() {
     return <String, dynamic>{
       "text": text,
@@ -35,6 +60,7 @@ class TaskModel {
     };
   }
 
+  /// Returns a text representation of the task priority.
   String getPriorityText() {
     switch (priority) {
       case TaskPriority.low:
@@ -51,6 +77,7 @@ class TaskModel {
     }
   }
 
+  /// Returns a [TaskPriority] from an integer.
   static TaskPriority decodedPriority(int priority) {
     switch (priority) {
       case 0:
@@ -67,6 +94,7 @@ class TaskModel {
     }
   }
 
+  /// Returns an int from a [TaskPriority].
   static int ecodedPriority(TaskPriority priority) {
     switch (priority) {
       case TaskPriority.low:
@@ -83,6 +111,7 @@ class TaskModel {
     }
   }
 
+  /// Returns a sample [TaskModel] with mock data.
   static TaskModel sample() {
     return TaskModel(
       id: '1',
@@ -117,6 +146,7 @@ class TaskModel {
           event == other.event;
 }
 
+/// A representation of the priority of a task.
 enum TaskPriority {
   high,
   medium,
