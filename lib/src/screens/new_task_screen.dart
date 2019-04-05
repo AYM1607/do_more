@@ -54,7 +54,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                     SizedBox(
                       height: 20,
                     ),
-                    StreamBuilder<Object>(
+                    StreamBuilder(
                       stream: bloc.submitEnabled,
                       builder: (context, submitSnap) {
                         return GradientTouchableContainer(

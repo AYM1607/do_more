@@ -9,8 +9,6 @@ import '../resources/authService.dart';
 import '../resources/firebase_storage_provider.dart';
 import '../resources/firestore_provider.dart';
 
-// TODO: Add validation
-
 class NewImageBloc {
   final AuthService _auth = authService;
   final FirestoreProvider _firestore = firestoreProvider;
@@ -27,6 +25,8 @@ class NewImageBloc {
   Observable<File> get picture => _picture.stream;
   Observable<UserModel> get userModelStream => _user.stream;
   Observable<String> get eventName => _eventName.stream;
+  Observable<bool> get submitEnabled =>
+      Observable.combineLatest2(_picture, _eventName, (a, b) => true);
 
   //Sink getters.
   Function(File) get changePicture => _picture.sink.add;

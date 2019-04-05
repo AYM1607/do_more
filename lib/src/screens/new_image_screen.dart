@@ -65,16 +65,22 @@ class _NewImageScreenState extends State<NewImageScreen> {
             SizedBox(
               height: 10,
             ),
-            GradientTouchableContainer(
-              height: 40,
-              isExpanded: true,
-              radius: 8,
-              onTap: () => onSubmit(),
-              child: Text(
-                'Submit',
-                style: kSmallTextStyle,
-              ),
-            ),
+            StreamBuilder(
+                stream: bloc.submitEnabled,
+                builder:
+                    (BuildContext context, AsyncSnapshot<bool> submitSnap) {
+                  return GradientTouchableContainer(
+                    height: 40,
+                    isExpanded: true,
+                    radius: 8,
+                    enabled: submitSnap.hasData,
+                    onTap: () => onSubmit(),
+                    child: Text(
+                      'Submit',
+                      style: kSmallTextStyle,
+                    ),
+                  );
+                }),
           ],
         ),
       ),
