@@ -64,7 +64,7 @@ class FirestoreProvider {
     );
   }
 
-  /// Creates a new instance of a user in Firestore.
+  /// Creates a new user in Firestore.
   Future<void> createUser(UserModel user, String uid) async {
     try {
       final dataMap = user.toFirestoreMap();

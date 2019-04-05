@@ -6,7 +6,7 @@ import 'package:rxdart/rxdart.dart';
 
 export 'package:firebase_auth/firebase_auth.dart' show FirebaseUser;
 
-/// A Google authentication provider.
+/// Google authentication provider.
 ///
 /// Connects to both Google and Firebase to authenticate a user.
 class GoogleSignInProvider {

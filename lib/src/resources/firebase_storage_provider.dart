@@ -6,9 +6,14 @@ import 'package:uuid/uuid.dart';
 export 'package:firebase_storage/firebase_storage.dart'
     show StorageUploadTask, StorageTaskSnapshot;
 
+/// A connection to the firebase sotrage bucket.
 class FirebaseStorageProvider {
+  /// The reference to the root path of the storage bucket.
   final StorageReference _storage;
+
+  /// An instance of a uuid generator.
   final Uuid _uuid;
+
   // [FirebaseStorage] and [Uuid] instances can be injected for testing purposes.
   // Don't remove.
   FirebaseStorageProvider([StorageReference storage, Uuid uuid])
