@@ -217,7 +217,6 @@ class FirestoreProvider {
   }
 
   //-----------------------Event related operations-----------------------------
-  // TODO: Change the Events collection name to 'events' in forestore.
 
   /// Adds an event to firestore.
   Future<void> addEvent(String userId, EventModel event) async {

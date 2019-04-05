@@ -26,7 +26,7 @@ class FirebaseStorageProvider {
     folder = folder.endsWith('/') ? folder : folder += '/';
     final String fileId = _uuid.v1();
     final StorageReference fileReference =
-        _storage.child('$folder/$fileId.$type');
+        _storage.child('$folder$fileId.$type');
     return fileReference.putFile(file);
   }
 
