@@ -16,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   static const _searchBoxHeight = 50.0;
 
+  /// An instance of the bloc for this screen.
   final HomeBloc bloc = HomeBloc();
 
   @override

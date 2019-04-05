@@ -11,6 +11,7 @@ import '../widgets/gradient_touchable_container.dart';
 import '../widgets/priority_selector.dart';
 
 class TaskScreen extends StatefulWidget {
+  /// Wether the Screen is going to edit a current task or create a new one.
   final bool isEdit;
 
   TaskScreen({
@@ -22,7 +23,12 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
+  /// An instance of this screen's bloc.
   final TaskBloc bloc = TaskBloc();
+
+  /// The initial value for the text field.
+  ///
+  /// This only gets used whent the screen is set to edit.
   String textFieldInitialValue;
 
   initState() {
@@ -148,6 +154,9 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 
+  /// Updates or creates a task.
+  ///
+  /// The action is determined by the [isEdit] property.
   void onSubmit(BuildContext context) async {
     await bloc.submit(widget.isEdit);
     Navigator.of(context).pop();

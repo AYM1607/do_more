@@ -8,7 +8,8 @@ import '../widgets/logo.dart';
 import '../widgets/gradient_touchable_container.dart';
 
 class LoginScreen extends StatelessWidget {
-  final _authService = authService;
+  /// An instance of the auth service.
+  final AuthService _authService = authService;
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,13 +41,6 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Future<void> onLoginButtonTap(BuildContext context) async {
-    final user = await _authService.googleLoginAndSignup();
-    if (user != null) {
-      Navigator.of(context).pushReplacementNamed('home/');
-    }
-  }
-
   Widget getButtonBody() {
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -70,5 +64,15 @@ class LoginScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  /// Signs in a user.
+  ///
+  /// Redirects to thehome screen if the login was successful.
+  Future<void> onLoginButtonTap(BuildContext context) async {
+    final user = await _authService.googleLoginAndSignup();
+    if (user != null) {
+      Navigator.of(context).pushReplacementNamed('home/');
+    }
   }
 }

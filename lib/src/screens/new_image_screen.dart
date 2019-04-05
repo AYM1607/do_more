@@ -17,6 +17,7 @@ class NewImageScreen extends StatefulWidget {
 }
 
 class _NewImageScreenState extends State<NewImageScreen> {
+  /// An instance of the bloc for this scree.
   final NewImageBloc bloc = NewImageBloc();
 
   Widget build(BuildContext context) {
@@ -87,13 +88,6 @@ class _NewImageScreenState extends State<NewImageScreen> {
     );
   }
 
-  Future<void> takePicture() async {
-    final File imgFile = await ImagePicker.pickImage(
-      source: ImageSource.camera,
-    );
-    bloc.changePicture(imgFile);
-  }
-
   Widget buildEventSection(NewImageBloc bloc) {
     return Row(
       children: <Widget>[
@@ -140,9 +134,20 @@ class _NewImageScreenState extends State<NewImageScreen> {
     );
   }
 
+  /// Saves the image to the storage bucket.
   void onSubmit() async {
     await bloc.submit();
     Navigator.of(context).pop();
+  }
+
+  /// Prompts the user to take a picture.
+  ///
+  /// Updates the file in the bloc.
+  Future<void> takePicture() async {
+    final File imgFile = await ImagePicker.pickImage(
+      source: ImageSource.camera,
+    );
+    bloc.changePicture(imgFile);
   }
 
   void dispose() {
