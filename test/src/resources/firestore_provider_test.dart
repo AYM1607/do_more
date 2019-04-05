@@ -17,7 +17,6 @@ main() {
     name: 'An event',
     pendigTasks: 0,
     media: <String>[],
-    tasks: <String>[],
     when: <bool>[],
     highPriority: 0,
     mediumPriority: 0,
