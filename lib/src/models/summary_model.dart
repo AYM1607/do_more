@@ -2,15 +2,34 @@
 ///
 /// It represents how many tasks were completed and added by a user every day.
 class SummaryModel {
+  /// Amount of tasks completed on Monday.
   int completedMonday;
+
+  /// Amount od tasks added on Monday.
   int addedMonday;
+
+  /// Amount of tasks completed on Tuesday.
   int completedTuesday;
+
+  /// Amount od tasks added on Tuesday.
   int addedTuesday;
+
+  /// Amount of tasks completed on Wednesday.
   int completedWednesday;
+
+  /// Amount od tasks added on Wednesday.
   int addedWednesday;
+
+  /// Amount of tasks completed on Thursday.
   int completedThursday;
+
+  /// Amount od tasks added on Thursday.
   int addedThursday;
+
+  /// Amount of tasks completed on Friday.
   int completedFriday;
+
+  /// Amount od tasks added on Friday.
   int addedFriday;
 
   SummaryModel({
@@ -26,7 +45,7 @@ class SummaryModel {
     this.addedFriday = 0,
   });
 
-  /// Returns a [SummaryModel] from a map.
+  /// Creates a [SummaryModel] from a map.
   SummaryModel.fromMap(Map<String, dynamic> map) {
     completedMonday = map["completedMonday"];
     addedMonday = map["addedMonday"];
@@ -40,6 +59,7 @@ class SummaryModel {
     addedFriday = map["addedFriday"];
   }
 
+  /// Returns a map representation of the model.
   Map<String, int> toMap() {
     return <String, int>{
       "completedMonday": completedMonday,
