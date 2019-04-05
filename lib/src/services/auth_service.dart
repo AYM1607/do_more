@@ -10,11 +10,20 @@ import '../models/user_model.dart';
 export '../resources/google_sign_in_provider.dart' show FirebaseUser;
 
 class AuthService {
+  /// An instance of [GoogleSignInProvider].
   final GoogleSignInProvider _googleSignInProvider = signInProvider;
+
+  /// An instance of the firestore provider.
   final FirestoreProvider _firestoreProvider = firestoreProvider;
+
+  /// A subject of Firebase user.
   final _user = BehaviorSubject<FirebaseUser>();
 
+  // Stream getters.
+  /// An observable of the current [FirebaseUser]
   Observable<FirebaseUser> get userStream => _user.stream;
+
+  /// A future of the current [FirebaseUser].
   Future<FirebaseUser> get currentUser =>
       _googleSignInProvider.getCurrentUser();
 
@@ -22,6 +31,10 @@ class AuthService {
     _googleSignInProvider.onAuthStateChange.pipe(_user);
   }
 
+  /// Logs in or Signs up a user.
+  ///
+  /// Checks if the account used to sign up is already registered, log the user
+  /// in if it is, create a new user otherwise.
   Future<FirebaseUser> googleLoginAndSignup() async {
     final user = await _googleSignInProvider.signIn();
 
@@ -45,6 +58,7 @@ class AuthService {
     return user;
   }
 
+  /// Sings out the current user.
   Future<void> signOut() {
     return _googleSignInProvider.signOut();
   }
