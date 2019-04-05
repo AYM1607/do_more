@@ -29,6 +29,7 @@ class UserModel {
   /// Pending low priority tasks.
   final int pendingLow;
 
+  /// Creates a user model.
   UserModel({
     this.id,
     @required this.username,
@@ -40,8 +41,12 @@ class UserModel {
     @required this.events,
   });
 
-  ///Returns a [UserModel] from a map.
-  UserModel.fromFirestore(Map<String, dynamic> firestoreMap, {String id})
+  ///Create a [UserModel] from a map.
+  ///
+  /// The database id for the event is not provided inside the map but should
+  /// always be specified.
+  UserModel.fromFirestore(Map<String, dynamic> firestoreMap,
+      {@required String id})
       : id = id,
         username = firestoreMap["username"],
         tasks = firestoreMap["tasks"].cast<String>(),
@@ -52,6 +57,7 @@ class UserModel {
         pendingMedium = firestoreMap["pendingMedium"],
         pendingLow = firestoreMap["pendingLow"];
 
+  /// Returns a map representation of the user model.
   Map<String, dynamic> toFirestoreMap() {
     return <String, dynamic>{
       "username": username,
