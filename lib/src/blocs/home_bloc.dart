@@ -25,14 +25,27 @@ class HomeBloc {
   /// A subject of list of task model.
   final _tasks = BehaviorSubject<List<TaskModel>>();
 
-  /// Current text from the search box.
-  String _searchBoxText = '';
+  /// A subject of the search box updates.
+  final _searchBoxText = BehaviorSubject<String>(seedValue: '');
 
   // Stream getters.
+
+  // The result has to be a combination of the tasks streams and the text
+  // stream, because otherwise, the tasks stream has no way of knowing when
+  // there's a new update in the text.
+  //
+  // The search box transformation has to be applied after the combination,
+  // otherwhise the value used for filtering is outdated and the list output is
+  // not synchronized with the current value of the searhc box text.
   /// An observalbe of the taks of a user.
-  Observable<List<TaskModel>> get userTasks => _tasks.stream
-      .transform(prioritySortTransformer())
-      .transform(searchBoxTransformer());
+  Observable<List<TaskModel>> get userTasks =>
+      Observable.combineLatest2<String, List<TaskModel>, List<TaskModel>>(
+        _searchBoxText.stream,
+        _tasks.stream.transform(prioritySortTransformer()),
+        (text, tasks) {
+          return tasks;
+        },
+      ).transform(searchBoxTransformer());
 
   /// An observable of the current logged in user.
   Observable<FirebaseUser> get userStream => _auth.userStream;
@@ -55,17 +68,17 @@ class HomeBloc {
         sink.add(
           taskList.where(
             (TaskModel task) {
-              if (_searchBoxText == '') {
+              if (_searchBoxText.value == '') {
                 return true;
               }
               // Return true if the text in the search box matches the title
               // or the text of the task.
               return task.event
                       .toLowerCase()
-                      .contains(_searchBoxText.toLowerCase()) ||
+                      .contains(_searchBoxText.value.toLowerCase()) ||
                   task.text
                       .toLowerCase()
-                      .contains(_searchBoxText.toLowerCase());
+                      .contains(_searchBoxText.value.toLowerCase());
             },
           ).toList(),
         );
@@ -106,10 +119,11 @@ class HomeBloc {
 
   /// Updates the serach box text.
   void updateSearchBoxText(String newText) {
-    _searchBoxText = newText;
+    _searchBoxText.add(newText);
   }
 
   void dispose() {
+    _searchBoxText.close();
     _tasks.close();
   }
 }
