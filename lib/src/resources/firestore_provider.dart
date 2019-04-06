@@ -42,8 +42,6 @@ class FirestoreProvider {
     return Observable(mappedStream);
   }
 
-  //TODO: add tests for this method.
-
   /// Returns a [UserModel].
   /// Only one out of id or username can be provided, if both are provided id
   /// will have higher priority.
@@ -250,8 +248,6 @@ class FirestoreProvider {
 
     return Observable(mappedStream);
   }
-
-  //TODO: add tests for this method.
 
   /// Returns an [EventModel].
   /// Only one out of id or name can be provided, if both are provided id

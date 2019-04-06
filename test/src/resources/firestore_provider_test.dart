@@ -10,7 +10,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 main() {
-  final task = TaskModel.sample();
+  final task = TaskModel(
+    id: '1',
+    text:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.',
+    done: false,
+    ownerUsername: 'testUser',
+    event: 'testEvent',
+    priority: TaskPriority.medium,
+  );
 
   final event = EventModel(
     id: '1',
@@ -82,6 +90,42 @@ main() {
       when(snapshot.documentID).thenReturn(user.id);
 
       expect(provider.getUserObservable(user.username), emits(user));
+    });
+
+    group('should retrieve a user', () {
+      test('from an id', () {
+        final firestore = MockFirestore();
+        final reference = MockDocumentReference();
+        final snapshot = MockDocumentSnapshot(user.toFirestoreMap());
+        final provider = FirestoreProvider(firestore);
+
+        when(firestore.document('users/123')).thenReturn(reference);
+        when(reference.get())
+            .thenAnswer((_) => Future<DocumentSnapshot>.value(snapshot));
+        when(snapshot.documentID).thenReturn(user.id);
+
+        expect(provider.getUser(id: user.id), completion(equals(user)));
+      });
+
+      test('from a username', () {
+        final firestore = MockFirestore();
+        final documentSnapshot = MockDocumentSnapshot(user.toFirestoreMap());
+        final querySnapshot = MockQuerySnapshot();
+        final collection = MockCollectionReference();
+        final query = MockQuery();
+        final provider = FirestoreProvider(firestore);
+
+        when(firestore.collection('users')).thenReturn(collection);
+        when(collection.where('username', isEqualTo: user.username))
+            .thenReturn(query);
+        when(query.getDocuments())
+            .thenAnswer((_) => Future<QuerySnapshot>.value(querySnapshot));
+        when(querySnapshot.documents).thenReturn([documentSnapshot]);
+        when(documentSnapshot.documentID).thenReturn(user.id);
+
+        expect(provider.getUser(username: user.username),
+            completion(equals(user)));
+      });
     });
 
     test('should create task', () {
@@ -210,6 +254,42 @@ main() {
       when(snapshot.documentID).thenReturn(event.id);
 
       expectLater(provider.getEventObservable('123', event.id), emits(event));
+    });
+
+    group('should retrieve an event', () {
+      test('from an id', () {
+        final firestore = MockFirestore();
+        final reference = MockDocumentReference();
+        final snapshot = MockDocumentSnapshot(event.toFirestoreMap());
+        final provider = FirestoreProvider(firestore);
+
+        when(firestore.document('users/123/events/1')).thenReturn(reference);
+        when(reference.get())
+            .thenAnswer((_) => Future<DocumentSnapshot>.value(snapshot));
+        when(snapshot.documentID).thenReturn(event.id);
+
+        expect(provider.getEvent('123', eventId: event.id),
+            completion(equals(event)));
+      });
+
+      test('from a name', () {
+        final firestore = MockFirestore();
+        final documentSnapshot = MockDocumentSnapshot(event.toFirestoreMap());
+        final querySnapshot = MockQuerySnapshot();
+        final collection = MockCollectionReference();
+        final query = MockQuery();
+        final provider = FirestoreProvider(firestore);
+
+        when(firestore.collection('users/123/events')).thenReturn(collection);
+        when(collection.where('name', isEqualTo: event.name)).thenReturn(query);
+        when(query.getDocuments())
+            .thenAnswer((_) => Future<QuerySnapshot>.value(querySnapshot));
+        when(querySnapshot.documents).thenReturn([documentSnapshot]);
+        when(documentSnapshot.documentID).thenReturn(event.id);
+
+        expectLater(provider.getEvent('123', eventName: event.name),
+            completion(equals(event)));
+      });
     });
 
     test('should delete an event', () {

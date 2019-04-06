@@ -111,19 +111,6 @@ class TaskModel {
     }
   }
 
-  /// Returns a sample [TaskModel] with mock data.
-  static TaskModel sample() {
-    return TaskModel(
-      id: '1',
-      text:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.',
-      done: false,
-      ownerUsername: 'testUser',
-      event: 'testEvent',
-      priority: TaskPriority.medium,
-    );
-  }
-
   @override
   int get hashCode =>
       id.hashCode ^
