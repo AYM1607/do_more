@@ -68,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Theme.of(context).cardColor,
                   ),
                   SearchBox(
+                    onChanged: bloc.updateSearchBoxText,
                     height: 50.0,
                   ),
                 ],

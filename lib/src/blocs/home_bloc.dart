@@ -25,10 +25,14 @@ class HomeBloc {
   /// A subject of list of task model.
   final _tasks = BehaviorSubject<List<TaskModel>>();
 
+  /// Current text from the search box.
+  String _searchBoxText = '';
+
   // Stream getters.
   /// An observalbe of the taks of a user.
-  Observable<List<TaskModel>> get userTasks =>
-      _tasks.stream.transform(prioritySortTransformer());
+  Observable<List<TaskModel>> get userTasks => _tasks.stream
+      .transform(prioritySortTransformer())
+      .transform(searchBoxTransformer());
 
   /// An observable of the current logged in user.
   Observable<FirebaseUser> get userStream => _auth.userStream;
@@ -41,6 +45,32 @@ class HomeBloc {
           .compareTo(TaskModel.ecodedPriority(a.priority)));
       sink.add(tasksList);
     });
+  }
+
+  /// Returns a stream transformer that filters the task with the text from
+  /// the search box.
+  StreamTransformer<List<TaskModel>, List<TaskModel>> searchBoxTransformer() {
+    return StreamTransformer.fromHandlers(
+      handleData: (taskList, sink) {
+        sink.add(
+          taskList.where(
+            (TaskModel task) {
+              if (_searchBoxText == '') {
+                return true;
+              }
+              // Return true if the text in the search box matches the title
+              // or the text of the task.
+              return task.event
+                      .toLowerCase()
+                      .contains(_searchBoxText.toLowerCase()) ||
+                  task.text
+                      .toLowerCase()
+                      .contains(_searchBoxText.toLowerCase());
+            },
+          ).toList(),
+        );
+      },
+    );
   }
 
   /// Fetches the tasks for the current user.
@@ -72,6 +102,11 @@ class HomeBloc {
   /// Sets the global current task.
   void updateCurrentTask(TaskModel task) {
     _taskService.setTask(task);
+  }
+
+  /// Updates the serach box text.
+  void updateSearchBoxText(String newText) {
+    _searchBoxText = newText;
   }
 
   void dispose() {

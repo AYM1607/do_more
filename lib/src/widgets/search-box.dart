@@ -10,7 +10,13 @@ class SearchBox extends StatelessWidget {
   /// Height of the sarch box.
   final double height;
 
-  SearchBox({@required this.height}) : assert(height >= 50);
+  /// Function to be called when the text changes.
+  final Function(String) onChanged;
+
+  SearchBox({
+    @required this.height,
+    @required this.onChanged,
+  }) : assert(height >= 50);
 
   Widget build(BuildContext context) {
     return Row(
@@ -41,6 +47,7 @@ class SearchBox extends StatelessWidget {
                 ),
                 Expanded(
                   child: TextField(
+                    onChanged: onChanged,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Search...',
