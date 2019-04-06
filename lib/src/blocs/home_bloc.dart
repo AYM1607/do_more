@@ -30,22 +30,22 @@ class HomeBloc {
 
   // Stream getters.
 
-  // The result has to be a combination of the tasks streams and the text
+  // The result has to be a combination of the tasks stream and the text
   // stream, because otherwise, the tasks stream has no way of knowing when
   // there's a new update in the text.
   //
-  // The search box transformation has to be applied after the combination,
+  // The transformations have to be applied after the combination,
   // otherwhise the value used for filtering is outdated and the list output is
   // not synchronized with the current value of the searhc box text.
   /// An observalbe of the taks of a user.
   Observable<List<TaskModel>> get userTasks =>
       Observable.combineLatest2<String, List<TaskModel>, List<TaskModel>>(
         _searchBoxText.stream,
-        _tasks.stream.transform(prioritySortTransformer()),
+        _tasks.stream,
         (text, tasks) {
           return tasks;
         },
-      ).transform(searchBoxTransformer());
+      ).transform(searchBoxTransformer()).transform(prioritySortTransformer());
 
   /// An observable of the current logged in user.
   Observable<FirebaseUser> get userStream => _auth.userStream;
