@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-//TODO: add support for tabed navigation.
-
 /// A custom app bar to match the DO> design rules.
 ///
 /// This app bar is meant to be usen in screens that are not the home screen.
@@ -12,16 +10,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
 
   /// Widget to be shown on the bottom of the app bar.
-  final PreferredSize bottom;
+  final PreferredSizeWidget bottom;
 
-  /// the preferred size for this widget.
-  final Size preferredSize;
-
+  /// The size of only the app bar part.
+  final double appBarHeight;
   CustomAppBar({
     this.title = '',
     this.bottom,
-  }) : preferredSize =
-            Size.fromHeight(140.0 + (bottom?.preferredSize?.height ?? 0));
+  }) : appBarHeight = bottom == null ? 140.0 : 120.0;
+
+  Size get preferredSize =>
+      Size.fromHeight(appBarHeight + (bottom?.preferredSize?.height ?? 0));
 
   Widget build(BuildContext context) {
     Widget result = Container(
@@ -56,8 +55,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     if (bottom != null) {
       result = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          result,
+          Flexible(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxHeight: 140.0),
+              child: result,
+            ),
+          ),
           bottom,
         ],
       );
