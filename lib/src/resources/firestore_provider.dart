@@ -129,7 +129,7 @@ class FirestoreProvider {
   }
 
   /// Returns a Stream of a single task from an id.
-  Observable<TaskModel> getTask(String id) {
+  Observable<TaskModel> getTaskObservable(String id) {
     final mappedStream =
         _firestore.collection('tasks').document(id).snapshots().map(
       (DocumentSnapshot snapshot) {
@@ -141,6 +141,16 @@ class FirestoreProvider {
     );
 
     return Observable(mappedStream);
+  }
+
+  //TODO: Add tests for this method.
+  /// Returns a task from an id.
+  Future<TaskModel> getTask(String id) async {
+    final documentSnapshot = await _firestore.document('tasks/$id').get();
+    return TaskModel.fromFirestore(
+      documentSnapshot.data,
+      id: documentSnapshot.documentID,
+    );
   }
 
   /// Deletes a task from firestore.

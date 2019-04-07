@@ -7,7 +7,6 @@ import '../models/task_model.dart';
 import '../models/user_model.dart';
 import '../resources/firestore_provider.dart';
 import '../services/auth_service.dart';
-import '../services/current_selection_service.dart';
 
 /// Business logic component that manages the state for the task screen.
 class TaskBloc extends Object with Validators {
@@ -17,19 +16,24 @@ class TaskBloc extends Object with Validators {
   /// An instance of the firebase repository.
   final FirestoreProvider _firestore = firestoreProvider;
 
-  /// An instance of the current task service.
-  final CurrentSelectionService _selectionService = currentSelectionService;
-
   /// A subject of user model.
+  ///
+  /// Needed to access the username of the owner of the task.
   final _user = BehaviorSubject<UserModel>();
 
   /// A subject of task event name.
+  ///
+  /// Only needed if in edit mode. This will receive updates when the task to be
+  /// edited is fetched.
   final _eventName = BehaviorSubject<String>();
 
   /// A subject of task text.
   final _taskText = BehaviorSubject<String>();
 
   ///  A subject of the text of the current global task.
+  ///
+  /// Only needed if in edit mode. This will receive updates when the task to be
+  /// edited is fetched.
   final _textInitialValue = BehaviorSubject<String>();
 
   /// The priority of the current task.
@@ -37,10 +41,10 @@ class TaskBloc extends Object with Validators {
 
   /// The id of the current task.
   ///
-  /// Only to be used if editing an existing task.
-  String taskId;
+  /// Only needed if in edit mode. Not needed by the UI.
+  final String taskId;
 
-  //Stream getters.
+  // Stream getters.
   /// An observable of the current user model.
   Observable<UserModel> get userModelStream => _user.stream;
 
@@ -48,14 +52,20 @@ class TaskBloc extends Object with Validators {
   Observable<String> get eventName => _eventName.stream;
 
   /// An observable of the current task text.
+  ///
+  /// Emits an error if the string added is empty.
   Observable<String> get taskText =>
       _taskText.stream.transform(validateStringNotEmpty);
 
   /// An observable of the submit enabled flag.
+  ///
+  /// Only emits true when an event is selected and the task text is not empty.
   Observable<bool> get submitEnabled =>
       Observable.combineLatest2(eventName, taskText, (a, b) => true);
 
   /// An observable of the text of the global selected task.
+  ///
+  /// Only needed in edit mode.
   Observable<String> get textInitialvalue => _textInitialValue.stream;
 
   //Sinks getters.
@@ -65,7 +75,7 @@ class TaskBloc extends Object with Validators {
   ///Changes the current task text.
   Function(String) get changeTaskText => _taskText.sink.add;
 
-  TaskBloc() {
+  TaskBloc({this.taskId}) {
     setCurrentUser();
   }
 
@@ -76,7 +86,6 @@ class TaskBloc extends Object with Validators {
 
   //TODO: Figure out how to update the event and user properties if needed.
   // as in the number of pending high tasks for example.
-
   /// Saves or updates the current task in the database.
   Future<void> submit(isEdit) {
     if (isEdit) {
@@ -105,17 +114,11 @@ class TaskBloc extends Object with Validators {
 
   /// Grabs the data from the current global task and pipes it to the local
   /// streams.
-  void populateWithCurrentTask() {
-    // We only want the task that was just selected and stop listening
-    // after receiving it.
-    _selectionService.task.take(1).listen(
-      (TaskModel task) {
-        _textInitialValue.sink.add(task.text);
-        changeEventName(task.event);
-        changeTaskText(task.text);
-        taskId = task.id;
-      },
-    );
+  void populateWithCurrentTask() async {
+    final task = await _firestore.getTask(taskId);
+    _textInitialValue.sink.add(task.text);
+    changeEventName(task.event);
+    changeTaskText(task.text);
   }
 
   void dispose() {

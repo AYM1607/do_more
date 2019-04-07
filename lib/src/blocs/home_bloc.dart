@@ -5,7 +5,6 @@ import 'package:rxdart/rxdart.dart';
 import '../models/task_model.dart';
 import '../resources/firestore_provider.dart';
 import '../services/auth_service.dart';
-import '../services/current_selection_service.dart';
 
 export '../services/auth_service.dart' show FirebaseUser;
 
@@ -18,9 +17,6 @@ class HomeBloc {
 
   /// An instance of the firebase repository.
   final FirestoreProvider _firestore = firestoreProvider;
-
-  /// An instance of the current task service.
-  final CurrentSelectionService _selectionService = currentSelectionService;
 
   /// A subject of list of task model.
   final _tasks = BehaviorSubject<List<TaskModel>>();
@@ -111,19 +107,6 @@ class HomeBloc {
       task.id,
       done: true,
     );
-  }
-
-  /// Sets the global selected task.
-  void updateSelectedTask(TaskModel task) {
-    _selectionService.updateSelectedTask(task);
-  }
-
-  /// Updated the global selected event.
-  void updateSelectedEvent(TaskModel task) async {
-    final userModel = await _auth.getCurrentUserModel();
-    final event =
-        await _firestore.getEvent(userModel.id, eventName: task.event);
-    _selectionService.updateSelectedEvent(event);
   }
 
   /// Updates the serach box text.

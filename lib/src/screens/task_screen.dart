@@ -14,8 +14,15 @@ class TaskScreen extends StatefulWidget {
   /// Wether the Screen is going to edit a current task or create a new one.
   final bool isEdit;
 
+  /// Id of the task to edit if in edit mode.
+  final String taskId;
+
+  /// Creates a screen capable of editing of creating a new task.
+  ///
+  /// [taskId] must be provided and cannot be null if [isEdit] is set to true.
   TaskScreen({
     this.isEdit = false,
+    this.taskId,
   });
 
   @override
@@ -24,11 +31,14 @@ class TaskScreen extends StatefulWidget {
 
 class _TaskScreenState extends State<TaskScreen> {
   /// An instance of this screen's bloc.
-  final TaskBloc bloc = TaskBloc();
+  TaskBloc bloc;
 
   initState() {
     if (widget.isEdit) {
+      bloc = TaskBloc(taskId: widget.taskId);
       bloc.populateWithCurrentTask();
+    } else {
+      bloc = TaskBloc();
     }
     super.initState();
   }

@@ -93,11 +93,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   task: task,
                   onDone: () => bloc.markTaskAsDone(task),
                   onEventPressed: () {
-                    bloc.updateSelectedEvent(task);
+                    // Include the event name in the route.
+                    Navigator.of(context).pushNamed('event/${task.event}');
                   },
                   onEditPressed: () {
-                    bloc.updateSelectedTask(task);
-                    Navigator.of(context).pushNamed('editTask/');
+                    // Include the id of the task to be edited in the route.
+                    Navigator.of(context).pushNamed('editTask/${task.id}');
                   },
                 ),
                 padding: EdgeInsets.only(bottom: 12),

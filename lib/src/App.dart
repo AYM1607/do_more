@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'screens/event_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/initial_loading_screen.dart';
 import 'screens/login_screen.dart';
@@ -49,6 +50,7 @@ class App extends StatelessWidget {
         builder: (BuildContext context) {
           return TaskScreen(
             isEdit: true,
+            taskId: routeTokens[1],
           );
         },
       );
@@ -56,6 +58,14 @@ class App extends StatelessWidget {
       return MaterialPageRoute(
         builder: (BuildContext context) {
           return NewImageScreen();
+        },
+      );
+    } else if (routeTokens.first == 'event') {
+      return MaterialPageRoute(
+        builder: (BuildContext context) {
+          return EventScreen(
+            eventName: routeTokens[1],
+          );
         },
       );
     }
