@@ -11,48 +11,65 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// The title for the app bar.
   final String title;
 
-  CustomAppBar({this.title = ''});
+  /// Widget to be shown on the bottom of the app bar.
+  final PreferredSize bottom;
+
+  /// the preferred size for this widget.
+  final Size preferredSize;
+
+  CustomAppBar({
+    this.title = '',
+    this.bottom,
+  }) : preferredSize =
+            Size.fromHeight(140.0 + (bottom?.preferredSize?.height ?? 0));
 
   Widget build(BuildContext context) {
+    Widget result = Container(
+      height: preferredSize.height,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          IconButton(
+            icon: Icon(
+              FontAwesomeIcons.arrowLeft,
+              color: Color.fromRGBO(112, 112, 112, 1),
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (bottom != null) {
+      result = Column(
+        children: <Widget>[
+          result,
+          bottom,
+        ],
+      );
+    }
     return Material(
       elevation: 10.0,
       child: Container(
         color: Theme.of(context).canvasColor,
         child: SafeArea(
-          child: Container(
-            height: preferredSize.height,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    FontAwesomeIcons.arrowLeft,
-                    color: Color.fromRGBO(112, 112, 112, 1),
-                  ),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          child: result,
         ),
       ),
     );
   }
-
-  @override
-  final preferredSize = Size.fromHeight(140.0);
 }

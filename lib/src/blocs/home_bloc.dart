@@ -121,7 +121,8 @@ class HomeBloc {
   /// Updated the global selected event.
   void updateSelectedEvent(TaskModel task) async {
     final userModel = await _auth.getCurrentUserModel();
-    final event = await _firestore.getEvent(userModel.id, eventId: task.event);
+    final event =
+        await _firestore.getEvent(userModel.id, eventName: task.event);
     _selectionService.updateSelectedEvent(event);
   }
 
