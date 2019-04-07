@@ -44,6 +44,7 @@ export const generateThumb = functions.storage.object().onFinalize(async object 
     await bucket.upload(thumbnailLocalPath, {
         destination: join(bucketDirectory, thumbnailName),
     });
+    console.log('Thumbnail created successfully')
 
     // Exit the function deleting all the temprorary files.
     return fs.remove(workingDirectory);

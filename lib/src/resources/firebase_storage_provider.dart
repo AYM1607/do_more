@@ -32,7 +32,10 @@ class FirebaseStorageProvider {
     final String fileId = _uuid.v1();
     final StorageReference fileReference =
         _storage.child('$folder$fileId.$type');
-    return fileReference.putFile(file);
+    return fileReference.putFile(
+      file,
+      StorageMetadata(contentType: 'image'),
+    );
   }
 
   /// Deletes a file from the firebase storage bucket given its path.
