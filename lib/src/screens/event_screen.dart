@@ -27,19 +27,40 @@ class _EventScreenState extends State<EventScreen>
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: widget.eventName,
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: <Tab>[
-            Tab(
-              text: 'tab1',
+      appBar: buildAppBar(),
+      body: TabBarView(
+        controller: _tabController,
+        children: <Widget>[
+          Center(
+            child: Text(
+              'Tasks',
+              style: kBigTextStyle,
             ),
-            Tab(
-              text: 'tab2',
+          ),
+          Center(
+            child: Text(
+              'Media',
+              style: kBigTextStyle,
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildAppBar() {
+    return CustomAppBar(
+      title: widget.eventName,
+      bottom: TabBar(
+        controller: _tabController,
+        tabs: <Tab>[
+          Tab(
+            text: 'Tasks',
+          ),
+          Tab(
+            text: 'Media',
+          ),
+        ],
       ),
     );
   }
