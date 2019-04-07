@@ -101,25 +101,27 @@ class TaskListTile extends StatelessWidget {
   /// Builds the section that contains the 3 buttons for the tile.
   Widget buildButtonSection() {
     final bottomRowChildren = <Widget>[];
+
+    bottomRowChildren.add(
+      ActionButton(
+        onPressed: onEditPressed,
+        text: 'Edit',
+        leadingIconData: Icons.edit,
+      ),
+    );
+
     if (!hideEventButton) {
       bottomRowChildren.addAll([
-        ActionButton(
-          onPressed: onEditPressed,
-          text: 'Edit',
-          leadingIconData: Icons.edit,
-        ),
         SizedBox(
           width: 4,
         ),
+        ActionButton(
+          onPressed: onEventPressed,
+          text: 'Event',
+          leadingIconData: FontAwesomeIcons.calendar,
+        ),
       ]);
     }
-    bottomRowChildren.add(
-      ActionButton(
-        onPressed: onEventPressed,
-        text: 'Event',
-        leadingIconData: FontAwesomeIcons.calendar,
-      ),
-    );
     return Expanded(
       flex: 5,
       child: Column(
