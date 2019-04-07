@@ -5,7 +5,7 @@ import 'package:rxdart/rxdart.dart';
 import '../models/task_model.dart';
 import '../resources/firestore_provider.dart';
 import '../services/auth_service.dart';
-import '../services/current_task_service.dart';
+import '../services/current_selection_service.dart';
 
 export '../services/auth_service.dart' show FirebaseUser;
 
@@ -20,7 +20,7 @@ class HomeBloc {
   final FirestoreProvider _repository = firestoreProvider;
 
   /// An instance of the current task service.
-  final CurrentTaskService _taskService = currentTaskService;
+  final CurrentSelectionService _selectionService = currentSelectionService;
 
   /// A subject of list of task model.
   final _tasks = BehaviorSubject<List<TaskModel>>();
@@ -60,6 +60,7 @@ class HomeBloc {
     });
   }
 
+  // TODO: Include the priority in the filtering.
   /// Returns a stream transformer that filters the task with the text from
   /// the search box.
   StreamTransformer<List<TaskModel>, List<TaskModel>> searchBoxTransformer() {
@@ -114,7 +115,7 @@ class HomeBloc {
 
   /// Sets the global current task.
   void updateCurrentTask(TaskModel task) {
-    _taskService.setTask(task);
+    _selectionService.updateSelectedTask(task);
   }
 
   /// Updates the serach box text.

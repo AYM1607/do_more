@@ -7,7 +7,7 @@ import '../models/task_model.dart';
 import '../models/user_model.dart';
 import '../resources/firestore_provider.dart';
 import '../services/auth_service.dart';
-import '../services/current_task_service.dart';
+import '../services/current_selection_service.dart';
 
 /// Business logic component that manages the state for the task screen.
 class TaskBloc extends Object with Validators {
@@ -18,7 +18,7 @@ class TaskBloc extends Object with Validators {
   final FirestoreProvider _firestore = firestoreProvider;
 
   /// An instance of the current task service.
-  final CurrentTaskService _taskService = currentTaskService;
+  final CurrentSelectionService _selectionService = currentSelectionService;
 
   /// A subject of user model.
   final _user = BehaviorSubject<UserModel>();
@@ -33,7 +33,7 @@ class TaskBloc extends Object with Validators {
   TaskPriority priority = TaskPriority.high;
 
   /// The text of the current global task.
-  String get textInitialValue => _taskService.task.text;
+  String get textInitialValue => _selectionService.task.text;
 
   //Stream getters.
   /// An observable of the current user model.
@@ -72,7 +72,7 @@ class TaskBloc extends Object with Validators {
   Future<void> submit(isEdit) {
     if (isEdit) {
       return _firestore.updateTask(
-        _taskService.task.id,
+        _selectionService.task.id,
         text: _taskText.value,
         priority: TaskModel.ecodedPriority(priority),
       );
@@ -97,7 +97,7 @@ class TaskBloc extends Object with Validators {
   /// Grabs the data from the current global task and pipes it to the local
   /// streams.
   void populateWithCurrentTask() {
-    TaskModel currentTask = _taskService.task;
+    TaskModel currentTask = _selectionService.task;
     if (currentTask != null) {
       changeEventName(currentTask.event);
       changeTaskText(currentTask.text);
