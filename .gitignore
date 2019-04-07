@@ -73,3 +73,13 @@ build/
 # Firebase api keys
 **/GoogleService-Info.plist
 **/google-services.json
+
+
+## Compiled JavaScript files
+**/*.js
+**/*.js.map
+
+# Typescript v1 declaration files
+typings/
+
+node_modules/

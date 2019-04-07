@@ -36,12 +36,7 @@ class _EventScreenState extends State<EventScreen>
         controller: _tabController,
         children: <Widget>[
           buildTasksListView(),
-          Center(
-            child: Text(
-              'Media',
-              style: kBigTextStyle,
-            ),
-          ),
+          buildMediaView(),
         ],
       ),
     );
@@ -93,6 +88,15 @@ class _EventScreenState extends State<EventScreen>
                 ..add(Container(height: 70)),
         );
       },
+    );
+  }
+
+  Widget buildMediaView() {
+    return Center(
+      child: Text(
+        'Media',
+        style: kBigTextStyle,
+      ),
     );
   }
 

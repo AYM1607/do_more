@@ -17,6 +17,9 @@ class EventBloc {
   /// An instance of a firestore provider.
   final FirestoreProvider _firestore = firestoreProvider;
 
+  /// An instance of the firebase sotrage provider.
+  final FirebaseStorageProvider _storage = storageProvider;
+
   /// An instace of the auth service.
   final AuthService _auth = authService;
 
