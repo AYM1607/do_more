@@ -19,6 +19,9 @@ class TaskListTile extends StatelessWidget {
   /// Function to be called when the "event" button is pressed.
   final VoidCallback onEventPressed;
 
+  /// Whether or not the event button should be hidden.
+  final bool hideEventButton;
+
   /// Height of the priority badge.
   ///
   /// Also used to calculate the padding for the first section.
@@ -33,6 +36,7 @@ class TaskListTile extends StatelessWidget {
     this.onDone,
     this.onEditPressed,
     this.onEventPressed,
+    this.hideEventButton = false,
   }) : assert(task != null);
 
   Widget build(BuildContext context) {
@@ -96,6 +100,26 @@ class TaskListTile extends StatelessWidget {
 
   /// Builds the section that contains the 3 buttons for the tile.
   Widget buildButtonSection() {
+    final bottomRowChildren = <Widget>[];
+    if (!hideEventButton) {
+      bottomRowChildren.addAll([
+        ActionButton(
+          onPressed: onEditPressed,
+          text: 'Edit',
+          leadingIconData: Icons.edit,
+        ),
+        SizedBox(
+          width: 4,
+        ),
+      ]);
+    }
+    bottomRowChildren.add(
+      ActionButton(
+        onPressed: onEventPressed,
+        text: 'Event',
+        leadingIconData: FontAwesomeIcons.calendar,
+      ),
+    );
     return Expanded(
       flex: 5,
       child: Column(
@@ -113,21 +137,7 @@ class TaskListTile extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              ActionButton(
-                onPressed: onEditPressed,
-                text: 'Edit',
-                leadingIconData: Icons.edit,
-              ),
-              SizedBox(
-                width: 4,
-              ),
-              ActionButton(
-                onPressed: onEventPressed,
-                text: 'Event',
-                leadingIconData: FontAwesomeIcons.calendar,
-              )
-            ],
+            children: bottomRowChildren,
           ),
         ],
       ),

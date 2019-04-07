@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../utils.dart';
+import '../utils.dart' show kBigTextStyle;
 import '../blocs/event_bloc.dart';
+import '../models/task_model.dart';
 import '../widgets/custom_app_bar.dart';
+import '../widgets/loading_indicator.dart';
+import '../widgets/task_list_tile.dart';
 
 class EventScreen extends StatefulWidget {
   /// The name of the event this screenn is showing.
@@ -22,6 +25,7 @@ class _EventScreenState extends State<EventScreen>
   initState() {
     super.initState();
     bloc = EventBloc(eventName: widget.eventName);
+    bloc.fetchTasks();
     _tabController = TabController(vsync: this, length: 2);
   }
 
@@ -31,12 +35,7 @@ class _EventScreenState extends State<EventScreen>
       body: TabBarView(
         controller: _tabController,
         children: <Widget>[
-          Center(
-            child: Text(
-              'Tasks',
-              style: kBigTextStyle,
-            ),
-          ),
+          buildTasksListView(),
           Center(
             child: Text(
               'Media',
@@ -62,6 +61,38 @@ class _EventScreenState extends State<EventScreen>
           ),
         ],
       ),
+    );
+  }
+
+  Widget buildTasksListView() {
+    return StreamBuilder(
+      stream: bloc.eventTasks,
+      builder: (BuildContext context, AsyncSnapshot<List<TaskModel>> snap) {
+        if (!snap.hasData) {
+          return Center(
+            child: LoadingIndicator(),
+          );
+        }
+
+        return ListView(
+          padding: EdgeInsets.only(top: 15),
+          children: snap.data
+              .map((task) => Container(
+                    child: TaskListTile(
+                      task: task,
+                      hideEventButton: true,
+                      onDone: () => bloc.markTaskAsDone(task),
+                      onEditPressed: () {
+                        // Include the id of the task to be edited in the route.
+                        Navigator.of(context).pushNamed('editTask/${task.id}');
+                      },
+                    ),
+                    padding: EdgeInsets.only(bottom: 12),
+                  ))
+              .toList()
+                ..add(Container(height: 70)),
+        );
+      },
     );
   }
 

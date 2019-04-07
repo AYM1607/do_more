@@ -51,3 +51,12 @@ class Validators {
     },
   );
 }
+
+/// Returns a stream transformer that sorts tasks by priority.
+final StreamTransformer<List<TaskModel>, List<TaskModel>>
+    kTaskListPriorityTransforemer =
+    StreamTransformer.fromHandlers(handleData: (tasksList, sink) {
+  tasksList.sort((a, b) => TaskModel.ecodedPriority(b.priority)
+      .compareTo(TaskModel.ecodedPriority(a.priority)));
+  sink.add(tasksList);
+});

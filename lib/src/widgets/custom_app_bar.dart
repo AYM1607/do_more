@@ -13,14 +13,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final PreferredSizeWidget bottom;
 
   /// The size of only the app bar part.
-  final double appBarHeight;
+  ///
+  /// It will vary depending on the existance of the bottom widget.
+  final double _appBarHeight;
+
   CustomAppBar({
     this.title = '',
     this.bottom,
-  }) : appBarHeight = bottom == null ? 140.0 : 120.0;
+  }) : _appBarHeight = bottom == null ? 140.0 : 120.0;
 
+  /// The preferred size of the app bar.
+  ///
+  /// Consider the size of the bottom widget if there is one.
   Size get preferredSize =>
-      Size.fromHeight(appBarHeight + (bottom?.preferredSize?.height ?? 0));
+      Size.fromHeight(_appBarHeight + (bottom?.preferredSize?.height ?? 0));
 
   Widget build(BuildContext context) {
     Widget result = Container(

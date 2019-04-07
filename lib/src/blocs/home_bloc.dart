@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:rxdart/rxdart.dart';
 
+import '../utils.dart' show kTaskListPriorityTransforemer;
 import '../models/task_model.dart';
 import '../resources/firestore_provider.dart';
 import '../services/auth_service.dart';
@@ -41,20 +42,12 @@ class HomeBloc {
         (text, tasks) {
           return tasks;
         },
-      ).transform(searchBoxTransformer()).transform(prioritySortTransformer());
+      )
+          .transform(searchBoxTransformer())
+          .transform(kTaskListPriorityTransforemer);
 
   /// An observable of the current logged in user.
   Observable<FirebaseUser> get userStream => _auth.userStream;
-
-  /// Returns a stream transformer that sorts the tasks by priority.
-  StreamTransformer<List<TaskModel>, List<TaskModel>>
-      prioritySortTransformer() {
-    return StreamTransformer.fromHandlers(handleData: (tasksList, sink) {
-      tasksList.sort((a, b) => TaskModel.ecodedPriority(b.priority)
-          .compareTo(TaskModel.ecodedPriority(a.priority)));
-      sink.add(tasksList);
-    });
-  }
 
   // TODO: Include the priority in the filtering.
   /// Returns a stream transformer that filters the task with the text from
