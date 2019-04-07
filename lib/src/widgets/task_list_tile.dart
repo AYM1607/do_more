@@ -14,7 +14,7 @@ class TaskListTile extends StatelessWidget {
   final VoidCallback onDone;
 
   /// Function to be called when the "edit" button is pressed.
-  final VoidCallback onEdit;
+  final VoidCallback onEditPressed;
 
   /// Function to be called when the "event" button is pressed.
   final VoidCallback onEventPressed;
@@ -31,7 +31,7 @@ class TaskListTile extends StatelessWidget {
   TaskListTile({
     @required this.task,
     this.onDone,
-    this.onEdit,
+    this.onEditPressed,
     this.onEventPressed,
   }) : assert(task != null);
 
@@ -115,7 +115,7 @@ class TaskListTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               ActionButton(
-                onPressed: onEdit,
+                onPressed: onEditPressed,
                 text: 'Edit',
                 leadingIconData: Icons.edit,
               ),

@@ -92,8 +92,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: TaskListTile(
                   task: task,
                   onDone: () => bloc.markTaskAsDone(task),
-                  onEdit: () {
-                    bloc.updateCurrentTask(task);
+                  onEventPressed: () {
+                    bloc.updateSelectedEvent(task);
+                  },
+                  onEditPressed: () {
+                    bloc.updateSelectedTask(task);
                     Navigator.of(context).pushNamed('editTask/');
                   },
                 ),

@@ -26,16 +26,10 @@ class _TaskScreenState extends State<TaskScreen> {
   /// An instance of this screen's bloc.
   final TaskBloc bloc = TaskBloc();
 
-  /// The initial value for the text field.
-  ///
-  /// This only gets used whent the screen is set to edit.
-  String textFieldInitialValue;
-
   initState() {
     if (widget.isEdit) {
       bloc.populateWithCurrentTask();
     }
-    textFieldInitialValue = bloc.textInitialValue;
     super.initState();
   }
 
@@ -50,11 +44,21 @@ class _TaskScreenState extends State<TaskScreen> {
             padding: const EdgeInsets.only(top: 15.0, left: 20.0, right: 20.0),
             child: Column(
               children: <Widget>[
-                BigTextInput(
-                  initialValue: widget.isEdit ? textFieldInitialValue : '',
-                  height: 95,
-                  onChanged: bloc.changeTaskText,
-                ),
+                StreamBuilder(
+                    stream: bloc.textInitialvalue,
+                    builder:
+                        (BuildContext context, AsyncSnapshot<String> snapshot) {
+                      String textFieldInitialValue = '';
+                      if (snapshot.hasData) {
+                        textFieldInitialValue = snapshot.data;
+                      }
+                      return BigTextInput(
+                        initialValue:
+                            widget.isEdit ? textFieldInitialValue : '',
+                        height: 95,
+                        onChanged: bloc.changeTaskText,
+                      );
+                    }),
                 SizedBox(
                   height: 15,
                 ),

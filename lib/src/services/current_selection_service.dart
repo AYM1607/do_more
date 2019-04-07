@@ -1,3 +1,5 @@
+import 'package:rxdart/rxdart.dart';
+
 import '../models/event_model.dart';
 import '../models/task_model.dart';
 
@@ -7,25 +9,26 @@ import '../models/task_model.dart';
 /// can grab the user selection for this service.
 class CurrentSelectionService {
   /// The current selected task.
-  TaskModel _selectedTask;
+  final _selectedTask = BehaviorSubject<TaskModel>();
 
   /// The current selected event.
-  EventModel _selectedEvent;
+  final _selectedEvent = BehaviorSubject<EventModel>();
 
-  /// The current selected task.
-  TaskModel get task => _selectedTask;
+  /// An observable of the current selected event.
+  Observable<TaskModel> get task => _selectedTask.stream;
 
   /// The current selected event.
-  EventModel get event => _selectedEvent;
+  Observable<EventModel> get event => _selectedEvent.stream;
 
   /// Updates the current selected task.
-  void updateSelectedTask(TaskModel newTask) {
-    _selectedTask = newTask;
-  }
+  Function(TaskModel) get updateSelectedTask => _selectedTask.sink.add;
 
   // Updates the current selected event.
-  void updateSelectedEvent(EventModel newEvent) {
-    _selectedEvent = newEvent;
+  Function(EventModel) get updateSelectedEvent => _selectedEvent.sink.add;
+
+  dispose() {
+    _selectedEvent.close();
+    _selectedTask.close();
   }
 }
 

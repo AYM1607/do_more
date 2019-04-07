@@ -63,6 +63,15 @@ class AuthService {
     return _googleSignInProvider.signOut();
   }
 
+  /// Returns the model that represents the current logged in user.
+  Future<UserModel> getCurrentUserModel() async {
+    final user = await _googleSignInProvider.getCurrentUser();
+    if (user != null) {
+      return _firestoreProvider.getUser(username: user.email);
+    }
+    return null;
+  }
+
   void dispose() {
     _user.close();
   }

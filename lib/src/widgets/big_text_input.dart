@@ -22,7 +22,7 @@ class BigTextInput extends StatefulWidget {
     this.height,
     this.width,
     this.elevated = true,
-    this.initialValue,
+    this.initialValue = '',
   });
 
   @override
@@ -33,11 +33,29 @@ class _BigTextInputState extends State<BigTextInput> {
   /// Custom controller for the text input.
   TextEditingController _controller;
 
+  /// Flag to indicate if the initial value has been set or not.
+  ///
+  /// Without this flag the text property of the controller will be set
+  /// continuously and the cursor inside the text field will return to the
+  /// origin when tapped.
+  bool initialValueWasSet = false;
+
   /// Setus up the controller.
   void initState() {
     _controller = TextEditingController(text: widget.initialValue);
     _controller.addListener(controllerListener);
     super.initState();
+  }
+
+  // Set the text property of the controller if the newly rendered widget
+  // contains a non empty initial value. It should only be done once, otherwise
+  // the cursor will continuously return to the start of the input when tapped.
+  void didUpdateWidget(oldWidget) {
+    if (widget.initialValue != '' && !initialValueWasSet) {
+      _controller.text = widget.initialValue;
+      initialValueWasSet = true;
+    }
+    super.didUpdateWidget(oldWidget);
   }
 
   /// Calls [onChanged] when updates are sent by the controller.

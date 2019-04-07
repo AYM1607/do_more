@@ -29,11 +29,16 @@ class TaskBloc extends Object with Validators {
   /// A subject of task text.
   final _taskText = BehaviorSubject<String>();
 
+  ///  A subject of the text of the current global task.
+  final _textInitialValue = BehaviorSubject<String>();
+
   /// The priority of the current task.
   TaskPriority priority = TaskPriority.high;
 
-  /// The text of the current global task.
-  String get textInitialValue => _selectionService.task.text;
+  /// The id of the current task.
+  ///
+  /// Only to be used if editing an existing task.
+  String taskId;
 
   //Stream getters.
   /// An observable of the current user model.
@@ -49,6 +54,9 @@ class TaskBloc extends Object with Validators {
   /// An observable of the submit enabled flag.
   Observable<bool> get submitEnabled =>
       Observable.combineLatest2(eventName, taskText, (a, b) => true);
+
+  /// An observable of the text of the global selected task.
+  Observable<String> get textInitialvalue => _textInitialValue.stream;
 
   //Sinks getters.
   /// Changes the current task event name.
@@ -67,12 +75,13 @@ class TaskBloc extends Object with Validators {
   }
 
   //TODO: Figure out how to update the event and user properties if needed.
+  // as in the number of pending high tasks for example.
 
   /// Saves or updates the current task in the database.
   Future<void> submit(isEdit) {
     if (isEdit) {
       return _firestore.updateTask(
-        _selectionService.task.id,
+        taskId,
         text: _taskText.value,
         priority: TaskModel.ecodedPriority(priority),
       );
@@ -97,14 +106,20 @@ class TaskBloc extends Object with Validators {
   /// Grabs the data from the current global task and pipes it to the local
   /// streams.
   void populateWithCurrentTask() {
-    TaskModel currentTask = _selectionService.task;
-    if (currentTask != null) {
-      changeEventName(currentTask.event);
-      changeTaskText(currentTask.text);
-    }
+    // We only want the task that was just selected and stop listening
+    // after receiving it.
+    _selectionService.task.take(1).listen(
+      (TaskModel task) {
+        _textInitialValue.sink.add(task.text);
+        changeEventName(task.event);
+        changeTaskText(task.text);
+        taskId = task.id;
+      },
+    );
   }
 
   void dispose() {
+    _textInitialValue.close();
     _taskText.close();
     _user.close();
     _eventName.close();
