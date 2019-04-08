@@ -34,7 +34,7 @@ class FirebaseStorageProvider {
         _storage.child('$folder$fileId.$type');
     return fileReference.putFile(
       file,
-      StorageMetadata(contentType: 'image'),
+      StorageMetadata(contentType: 'image/png'),
     );
   }
 

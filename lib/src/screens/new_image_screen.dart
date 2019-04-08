@@ -140,12 +140,14 @@ class _NewImageScreenState extends State<NewImageScreen> {
     Navigator.of(context).pop();
   }
 
+  // TODO: Pro users can save their pictures in full res.
   /// Prompts the user to take a picture.
   ///
   /// Updates the file in the bloc.
   Future<void> takePicture() async {
     final File imgFile = await ImagePicker.pickImage(
       source: ImageSource.camera,
+      maxWidth: 1500,
     );
     bloc.changePicture(imgFile);
   }

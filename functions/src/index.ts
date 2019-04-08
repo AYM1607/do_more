@@ -10,17 +10,22 @@ import * as sharp from 'sharp';
 import * as fs from 'fs-extra';
 
 export const generateThumb = functions.storage.object().onFinalize(async object => {
-    // Find the bucket where the uploaded dile resides.
+    // Find the bucket where the uploaded file resides.
     const bucket = gcs.bucket(object.bucket);
+
+    // Find the path of the file inside the bucket.
     const filePathGcs = object.name;
+
+    // Save the name of the file.
     const fileName = filePathGcs!.split('/').pop();
 
+    // Directory where the file is stored inside the bucket.
     const bucketDirectory = dirname(filePathGcs!);
     const workingDirectory = join(tmpdir(), 'thumbnails');
-    const tmpFilePath = join(workingDirectory, 'source.png');
+    const tmpFilePath = join(workingDirectory, fileName!);
 
     if (fileName!.includes('thumb@') || !object.contentType!.includes('image')) {
-        console.log('Exiting function');
+        console.log('Exiting function, already compressed or no image.');
         return false;
     }
 
