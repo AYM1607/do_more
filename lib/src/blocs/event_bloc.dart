@@ -123,7 +123,13 @@ class EventBloc {
   /// Fetches the paths of all the images linked to this event.
   Future<void> fetchImagesPaths() async {
     await _ready;
-    _imagesPaths.sink.add(_event.media);
+    _firestore.getEventObservable(_user.id, _event.id).transform(
+      StreamTransformer<EventModel, List<String>>.fromHandlers(
+        handleData: (event, sink) {
+          sink.add(event.media);
+        },
+      ),
+    ).pipe(_imagesPaths);
   }
 
   /// Marks a task as done in the database.
