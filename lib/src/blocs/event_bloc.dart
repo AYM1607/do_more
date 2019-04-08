@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
@@ -30,6 +31,9 @@ class EventBloc {
   /// An observable of the tasks linked to the event.
   Observable<List<TaskModel>> get eventTasks =>
       _tasks.stream.transform(kTaskListPriorityTransforemer);
+
+  Future<File> get testFile => _storage.getFile(
+      '26LVkBPFkHVekVDatitVh6MXrm53/thumb@c64293a0-5970-11e9-d441-03e3ea627257.png');
 
   EventBloc({
     @required this.eventName,

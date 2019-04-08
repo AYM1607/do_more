@@ -42,7 +42,7 @@ export const generateThumb = functions.storage.object().onFinalize(async object 
     const thumbnailLocalPath = join(workingDirectory, thumbnailName);
 
     await sharp(tmpFilePath)
-        .resize(124, 124)
+        .resize(256, 256)
         .toFile(thumbnailLocalPath);
 
     // Upload the resulting thumnail to the same directory as the original file.

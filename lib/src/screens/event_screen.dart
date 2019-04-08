@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../utils.dart' show kBigTextStyle;
@@ -93,9 +95,16 @@ class _EventScreenState extends State<EventScreen>
 
   Widget buildMediaView() {
     return Center(
-      child: Text(
-        'Media',
-        style: kBigTextStyle,
+      child: FutureBuilder(
+        future: bloc.testFile,
+        builder: (BuildContext context, AsyncSnapshot<File> snap) {
+          if (!snap.hasData) {
+            return Center(
+              child: LoadingIndicator(),
+            );
+          }
+          return Image.file(snap.data);
+        },
       ),
     );
   }

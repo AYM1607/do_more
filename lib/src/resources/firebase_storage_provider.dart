@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
+
 export 'package:firebase_storage/firebase_storage.dart'
     show StorageUploadTask, StorageTaskSnapshot;
 
@@ -41,6 +43,22 @@ class FirebaseStorageProvider {
   /// Deletes a file from the firebase storage bucket given its path.
   Future<void> deleteFile(String path) {
     return _storage.child(path).delete();
+  }
+
+  // TODO: Add tests for this method.
+  // TODO: Delete the tmp file when the app closes.
+  /// Returns a future of the file from the path.
+  ///
+  /// Downloads the raw bytes from the sotrage buckets and converts it to a file.
+  Future<File> getFile(String path) async {
+    final fileName = path.split('/').last;
+    final fileReference = _storage.child(path);
+    final metadata = await fileReference.getMetadata();
+    final bytes = await fileReference.getData(metadata.sizeBytes);
+
+    final Directory tmp = await getTemporaryDirectory();
+    final file = File('${tmp.path}/$fileName');
+    return file.writeAsBytes(bytes);
   }
 }
 
