@@ -5,10 +5,16 @@ import 'package:flutter/material.dart';
 ///
 /// Shows an animation of the logo.
 class LoadingIndicator extends StatelessWidget {
+  final double size;
+
+  LoadingIndicator({
+    this.size = 70,
+  });
+
   Widget build(BuildContext context) {
     return Container(
-      width: 70,
-      height: 70,
+      width: size,
+      height: size,
       child: FlareActor(
         'assets/animations/loading_animation_looped.flr',
         animation: 'Flip',

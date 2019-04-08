@@ -2,19 +2,26 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../utils.dart' show kBlueGradient, getImageThumbnailPath;
+import '../utils.dart' show getImageThumbnailPath;
 import '../blocs/event_bloc.dart';
 import '../models/task_model.dart';
 import '../widgets/custom_app_bar.dart';
-import '../widgets/fractionally_screen_sized_box.dart';
+import '../widgets/gradient_touchable_container.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/task_list_tile.dart';
+import '../widgets/async_thumbnail.dart';
 
+/// A screen that shows all the items linked to an event.
 class EventScreen extends StatefulWidget {
   /// The name of the event this screenn is showing.
   final String eventName;
 
+  /// Creates a screen that shows all the items linked to an event.
+  ///
+  /// The tasks and images are showed in different page views controlled by a
+  /// [TabBar].
   EventScreen({
     @required this.eventName,
   });
@@ -64,6 +71,7 @@ class _EventScreenState extends State<EventScreen>
     );
   }
 
+  /// Builds a list of the undone tasks linked to this service.
   Widget buildTasksListView() {
     return StreamBuilder(
       stream: bloc.eventTasks,
@@ -96,11 +104,13 @@ class _EventScreenState extends State<EventScreen>
     );
   }
 
-  // TODO: refactor this.
+  /// Builds the Page view that contains all the thumnails of the pictures
+  /// linked to this event.
   Widget buildMediaView() {
     return StreamBuilder(
       stream: bloc.imagesPaths,
       builder: (BuildContext context, AsyncSnapshot<List<String>> listSnap) {
+        // Wait until the images paths have been fetched.
         if (!listSnap.hasData) {
           return Center(
             child: LoadingIndicator(),
@@ -112,47 +122,16 @@ class _EventScreenState extends State<EventScreen>
           padding: EdgeInsets.all(10.0),
           itemBuilder: (BuildContext context, int index) {
             if (index == 0) {
-              return Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0),
-                  gradient: kBlueGradient,
-                ),
-              );
+              return buildAddPictureButton();
             }
+            // Shift the indices since we added a button that's not contained
+            // in the original paths list.
             final imagePath = listSnap.data[index - 1];
             bloc.fetchThumbnail(imagePath);
-            return StreamBuilder(
-              stream: bloc.thumbnails,
-              builder: (BuildContext context,
-                  AsyncSnapshot<Map<String, Future<File>>> thumbailsCacheSnap) {
-                if (!thumbailsCacheSnap.hasData) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      color: Colors.grey,
-                    ),
-                  );
-                }
-                return FutureBuilder(
-                  future:
-                      thumbailsCacheSnap.data[getImageThumbnailPath(imagePath)],
-                  builder: (BuildContext context,
-                      AsyncSnapshot<File> thumbnailFileSnap) {
-                    if (!thumbnailFileSnap.hasData) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          color: Colors.grey,
-                        ),
-                      );
-                    }
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Image.file(thumbnailFileSnap.data),
-                    );
-                  },
-                );
-              },
+
+            return AsyncThumbnail(
+              cacheStream: bloc.thumbnails,
+              cacheId: getImageThumbnailPath(imagePath),
             );
           },
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -162,6 +141,17 @@ class _EventScreenState extends State<EventScreen>
           ),
         );
       },
+    );
+  }
+
+  Widget buildAddPictureButton() {
+    return GradientTouchableContainer(
+      radius: 8,
+      child: Icon(
+        Icons.camera_alt,
+        color: Colors.white,
+        size: 28,
+      ),
     );
   }
 
