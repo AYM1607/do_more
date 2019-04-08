@@ -60,3 +60,10 @@ final StreamTransformer<List<TaskModel>, List<TaskModel>>
       .compareTo(TaskModel.ecodedPriority(a.priority)));
   sink.add(tasksList);
 });
+
+/// Gets the path of an image thumbnail from its original path.
+String getImageThumbnailPath(String path) {
+  List<String> tokens = path.split('/');
+  tokens.last = 'thumb@' + tokens.last;
+  return tokens.join('/');
+}

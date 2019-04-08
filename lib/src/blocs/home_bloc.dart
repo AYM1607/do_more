@@ -43,7 +43,7 @@ class HomeBloc {
           return tasks;
         },
       )
-          .transform(searchBoxTransformer())
+          .transform(_searchBoxTransformer())
           .transform(kTaskListPriorityTransforemer);
 
   /// An observable of the current logged in user.
@@ -52,7 +52,7 @@ class HomeBloc {
   // TODO: Include the priority in the filtering.
   /// Returns a stream transformer that filters the task with the text from
   /// the search box.
-  StreamTransformer<List<TaskModel>, List<TaskModel>> searchBoxTransformer() {
+  StreamTransformer<List<TaskModel>, List<TaskModel>> _searchBoxTransformer() {
     return StreamTransformer.fromHandlers(
       handleData: (taskList, sink) {
         sink.add(

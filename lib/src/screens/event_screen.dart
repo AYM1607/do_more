@@ -1,11 +1,13 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import '../utils.dart' show kBigTextStyle;
+import '../utils.dart' show kBlueGradient, getImageThumbnailPath;
 import '../blocs/event_bloc.dart';
 import '../models/task_model.dart';
 import '../widgets/custom_app_bar.dart';
+import '../widgets/fractionally_screen_sized_box.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/task_list_tile.dart';
 
@@ -28,6 +30,7 @@ class _EventScreenState extends State<EventScreen>
     super.initState();
     bloc = EventBloc(eventName: widget.eventName);
     bloc.fetchTasks();
+    bloc.fetchImagesPaths();
     _tabController = TabController(vsync: this, length: 2);
   }
 
@@ -93,19 +96,72 @@ class _EventScreenState extends State<EventScreen>
     );
   }
 
+  // TODO: refactor this.
   Widget buildMediaView() {
-    return Center(
-      child: FutureBuilder(
-        future: bloc.testFile,
-        builder: (BuildContext context, AsyncSnapshot<File> snap) {
-          if (!snap.hasData) {
-            return Center(
-              child: LoadingIndicator(),
+    return StreamBuilder(
+      stream: bloc.imagesPaths,
+      builder: (BuildContext context, AsyncSnapshot<List<String>> listSnap) {
+        if (!listSnap.hasData) {
+          return Center(
+            child: LoadingIndicator(),
+          );
+        }
+
+        return GridView.builder(
+          itemCount: listSnap.data.length + 1,
+          padding: EdgeInsets.all(10.0),
+          itemBuilder: (BuildContext context, int index) {
+            if (index == 0) {
+              return Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  gradient: kBlueGradient,
+                ),
+              );
+            }
+            final imagePath = listSnap.data[index - 1];
+            bloc.fetchThumbnail(imagePath);
+            return StreamBuilder(
+              stream: bloc.thumbnails,
+              builder: (BuildContext context,
+                  AsyncSnapshot<Map<String, Future<File>>> thumbailsCacheSnap) {
+                if (!thumbailsCacheSnap.hasData) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      color: Colors.grey,
+                    ),
+                  );
+                }
+                return FutureBuilder(
+                  future:
+                      thumbailsCacheSnap.data[getImageThumbnailPath(imagePath)],
+                  builder: (BuildContext context,
+                      AsyncSnapshot<File> thumbnailFileSnap) {
+                    if (!thumbnailFileSnap.hasData) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          color: Colors.grey,
+                        ),
+                      );
+                    }
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.file(thumbnailFileSnap.data),
+                    );
+                  },
+                );
+              },
             );
-          }
-          return Image.file(snap.data);
-        },
-      ),
+          },
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 5,
+            mainAxisSpacing: 5,
+          ),
+        );
+      },
     );
   }
 
