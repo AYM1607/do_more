@@ -16,6 +16,9 @@ class App extends StatelessWidget {
       theme: ThemeData(
         // Accent color is set to be used by the floating action button.
         accentColor: Color(0xFF707070),
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
         canvasColor: Color.fromRGBO(23, 25, 29, 1.0),
         cardColor: Color.fromRGBO(36, 39, 44, 1.0),
         cursorColor: Color.fromRGBO(112, 112, 112, 1),
@@ -55,9 +58,15 @@ class App extends StatelessWidget {
         },
       );
     } else if (routeTokens.first == 'newImage') {
+      String eventName;
+      if (routeTokens.length > 1) {
+        eventName = routeTokens[1];
+      }
       return MaterialPageRoute(
         builder: (BuildContext context) {
-          return NewImageScreen();
+          return NewImageScreen(
+            defaultEventName: eventName,
+          );
         },
       );
     } else if (routeTokens.first == 'event') {

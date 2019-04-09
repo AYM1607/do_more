@@ -103,6 +103,7 @@ class EventBloc {
       if (isThumbnail) {
         path = getImageThumbnailPath(path);
       }
+      // Do not re-fetch the image if it resolved already.
       if (cache.containsKey(path)) {
         return cache;
       }

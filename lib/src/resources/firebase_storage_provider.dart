@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path_provider/path_provider.dart';
@@ -47,17 +48,47 @@ class FirebaseStorageProvider {
 
   // TODO: Add tests for this method.
   // TODO: Delete the tmp file when the app closes.
+  // TODO: Add support for requests taking too long not only errors.
   /// Returns a future of the file from the path.
   ///
   /// Downloads the raw bytes from the sotrage buckets and converts it to a file.
-  Future<File> getFile(String path) async {
-    final fileName = path.split('/').last;
-    final fileReference = _storage.child(path);
-    final metadata = await fileReference.getMetadata();
-    final bytes = await fileReference.getData(metadata.sizeBytes);
-
+  /// The fetching process is repeated up to [retries] times with a [retryDelay]
+  /// delay in between tries.
+  Future<File> getFile(
+    String path, {
+    int retries = 3,
+    Duration retryDelay = const Duration(seconds: 2),
+  }) async {
     final Directory tmp = await getTemporaryDirectory();
+    final fileName = path.split('/').last;
     final file = File('${tmp.path}/$fileName');
+
+    // Don't re-fetch if the file is already in the temp directory.
+    if (await file.exists()) {
+      return file;
+    }
+    Uint8List bytes;
+    // Repeat until the fetching process is successful or the number of retries
+    // is excceded.
+    while (bytes == null && retries > 0) {
+      final fileReference = _storage.child(path);
+      // Assing null to metadata if there's an error during the fetching process.
+      // aka the file potentially doesn't exist.
+      final metadata =
+          await fileReference.getMetadata().catchError((error) => null);
+      // Restart the fetching process if there was an error.
+      if (metadata == null) {
+        print('retrying');
+        await Future.delayed(retryDelay);
+        retries -= 1;
+        continue;
+      }
+      bytes = await fileReference.getData(metadata.sizeBytes);
+      print('done getting data');
+    }
+    if (bytes == null) {
+      return null;
+    }
     return file.writeAsBytes(bytes);
   }
 }

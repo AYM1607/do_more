@@ -12,13 +12,31 @@ import '../widgets/custom_dropdown.dart';
 import '../widgets/fractionally_screen_sized_box.dart';
 import '../widgets/gradient_touchable_container.dart';
 
+/// A screen that prompts the user for an image and uploads it to
+/// firebase storage.
 class NewImageScreen extends StatefulWidget {
+  /// The name of the event to be preselected in the dropdown menu.
+  final String defaultEventName;
+
+  /// Creates a new screen that prompts the user for an image and uploads it to
+  /// firevase storage.
+  NewImageScreen({
+    this.defaultEventName,
+  });
+
   _NewImageScreenState createState() => _NewImageScreenState();
 }
 
 class _NewImageScreenState extends State<NewImageScreen> {
   /// An instance of the bloc for this scree.
-  final NewImageBloc bloc = NewImageBloc();
+  NewImageBloc bloc;
+
+  initState() {
+    bloc = NewImageBloc(
+      defaultEventName: widget.defaultEventName,
+    );
+    super.initState();
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(

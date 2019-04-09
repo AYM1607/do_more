@@ -29,7 +29,13 @@ class NewImageBloc {
   /// A subject of the current media event name.
   final _eventName = BehaviorSubject<String>();
 
-  NewImageBloc() {
+  /// Default event name.
+  final String defaultEventName;
+
+  NewImageBloc({this.defaultEventName}) {
+    if (defaultEventName != null && defaultEventName != '') {
+      _eventName.sink.add(defaultEventName);
+    }
     setCurrentUser();
   }
 

@@ -1,16 +1,16 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 
 import '../utils.dart' show getImageThumbnailPath;
 import '../blocs/event_bloc.dart';
+import '../screens/gallery_screen.dart';
 import '../models/task_model.dart';
+import '../widgets/async_thumbnail.dart';
 import '../widgets/custom_app_bar.dart';
 import '../widgets/gradient_touchable_container.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/task_list_tile.dart';
-import '../widgets/async_thumbnail.dart';
 
 /// A screen that shows all the items linked to an event.
 class EventScreen extends StatefulWidget {
@@ -128,9 +128,12 @@ class _EventScreenState extends State<EventScreen>
             final imagePath = listSnap.data[index - 1];
             bloc.fetchThumbnail(imagePath);
 
-            return AsyncThumbnail(
-              cacheStream: bloc.thumbnails,
-              cacheId: getImageThumbnailPath(imagePath),
+            return GestureDetector(
+              onTap: () => openGallery(imageIndex: index - 1),
+              child: AsyncThumbnail(
+                cacheStream: bloc.thumbnails,
+                cacheId: getImageThumbnailPath(imagePath),
+              ),
             );
           },
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -143,13 +146,32 @@ class _EventScreenState extends State<EventScreen>
     );
   }
 
+  // TODO: Change the navigation call whent the new package is ready.
   Widget buildAddPictureButton() {
     return GradientTouchableContainer(
       radius: 8,
+      onTap: () =>
+          Navigator.of(context).pushNamed('newImage/${bloc.eventName}'),
       child: Icon(
         Icons.camera_alt,
         color: Colors.white,
         size: 28,
+      ),
+    );
+  }
+
+  /// Pushes a new screen that shows the pictures in full size.
+  void openGallery({int imageIndex}) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          return GalleryScreen(
+            fetchImage: bloc.fetchImage,
+            cacheStream: bloc.images,
+            pathsStream: bloc.imagesPaths,
+            initialScreen: imageIndex,
+          );
+        },
       ),
     );
   }
