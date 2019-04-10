@@ -120,6 +120,8 @@ class GalleryScreen extends StatelessWidget {
     );
   }
 
+  // TODO: Create a navigation control similar to the one in iOS gallery, or
+  // the whatsapp one.
   /// Builds the navigation controls.
   ///
   /// Two icon buttons allow the user to navigate to the next or previous page.
