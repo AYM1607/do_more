@@ -10,6 +10,7 @@ import '../models/user_model.dart';
 import '../resources/firestore_provider.dart';
 import '../resources/firebase_storage_provider.dart';
 import '../services/auth_service.dart';
+import '../services/upload_status_service.dart';
 import '../utils.dart'
     show kTaskListPriorityTransforemer, getImageThumbnailPath;
 

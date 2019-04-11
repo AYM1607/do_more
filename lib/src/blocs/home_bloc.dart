@@ -107,8 +107,10 @@ class HomeBloc {
     _searchBoxText.add(newText);
   }
 
-  void dispose() {
+  void dispose() async {
+    await _searchBoxText.drain();
     _searchBoxText.close();
+    await _tasks.drain();
     _tasks.close();
   }
 }

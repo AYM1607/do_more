@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../utils.dart' show getImageThumbnailPath;
@@ -165,8 +167,7 @@ class _EventScreenState extends State<EventScreen>
   Widget buildAddPictureButton() {
     return GradientTouchableContainer(
       radius: 8,
-      onTap: () =>
-          Navigator.of(context).pushNamed('newImage/${bloc.eventName}'),
+      onTap: onAddPicturePressed,
       child: Icon(
         Icons.camera_alt,
         color: Colors.white,
@@ -189,6 +190,11 @@ class _EventScreenState extends State<EventScreen>
         },
       ),
     );
+  }
+
+  Future<void> onAddPicturePressed() async {
+    await Navigator.of(context).pushNamed('newImage/${bloc.eventName}');
+    print('popped the pictures');
   }
 
   void dispose() {
