@@ -28,12 +28,8 @@ class UploadStatusService {
   ///
   /// The task gets automatically removed when done.
   void addNewUpload(StorageUploadTask task) async {
-    final initialSnap = task.lastSnapshot;
-    // Initialize the map entry with the initial values.
-    _tasksData[task] = [
-      initialSnap.bytesTransferred,
-      initialSnap.totalByteCount,
-    ];
+    // Initialize the map entry with initial values.
+    _tasksData[task] = [0, 0];
     task.events.listen(
       (StorageTaskEvent event) {
         // Update the map with the current values.
@@ -47,6 +43,7 @@ class UploadStatusService {
     );
     await task.onComplete;
     _tasksData.remove(task);
+    _sendUpdate();
   }
 
   /// Updates the _status subject with the most current data.
@@ -60,10 +57,10 @@ class UploadStatusService {
       },
     );
     if (bytestTransferred != 0) {
-      percentage = totalBytes / bytestTransferred;
+      percentage = bytestTransferred / totalBytes;
     }
     _status.sink.add(UploadStatus(
-      percentage: percentage,
+      percentage: (percentage * 100).toStringAsFixed(2),
       numberOfFiles: _tasksData.length,
     ));
   }
@@ -77,7 +74,7 @@ class UploadStatusService {
 /// The status of an upload.
 class UploadStatus {
   /// Percentage of the upload.
-  final double percentage;
+  final String percentage;
 
   /// Number of files being uploaded.
   ///

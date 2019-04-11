@@ -154,7 +154,7 @@ class _NewImageScreenState extends State<NewImageScreen> {
 
   /// Saves the image to the storage bucket.
   void onSubmit() async {
-    await bloc.submit();
+    bloc.submit();
     Navigator.of(context).pop();
   }
 

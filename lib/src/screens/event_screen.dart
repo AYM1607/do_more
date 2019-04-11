@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../utils.dart' show getImageThumbnailPath;
+import '../utils.dart' show getImageThumbnailPath, showUploadStatusSnackBar;
 import '../blocs/event_bloc.dart';
 import '../screens/gallery_screen.dart';
 import '../models/task_model.dart';
@@ -189,9 +189,16 @@ class _EventScreenState extends State<EventScreen>
     );
   }
 
+  // TODO: use a block provider instead of passing callbacks
   Future<void> onAddPicturePressed() async {
     await Navigator.of(context).pushNamed('newImage/${bloc.eventName}');
-    print('popped the pictures');
+    if (bloc.snackBarStatus.value == false) {
+      showUploadStatusSnackBar(
+        _scaffoldContext,
+        bloc.uploadStatus,
+        bloc.updateSnackBarStatus,
+      );
+    }
   }
 
   void dispose() {

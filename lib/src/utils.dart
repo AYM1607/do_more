@@ -71,9 +71,46 @@ String getImageThumbnailPath(String path) {
   return tokens.join('/');
 }
 
+/// Shows an upload status snack bar.
 ///
+/// Takes the data from the [uploadStatus] stream and shows in the snack bar.
+/// Calls [onSuccessfullyClosed] with [false] when all files are done being
+/// uploaded.
 void showUploadStatusSnackBar(
-  BuildContext context,
+  BuildContext scaffoldContext,
   Observable<UploadStatus> uploadStatus,
-  ValueObservable<bool> snackBarStatus,
-) {}
+  Function(bool) onSuccessfullyClosed,
+) {
+  assert(scaffoldContext != null);
+  assert(uploadStatus != null);
+  assert(onSuccessfullyClosed != null);
+  final scaffoldState = Scaffold.of(scaffoldContext);
+  scaffoldState.showSnackBar(SnackBar(
+    /// The snack bar shouldn't close until the files are done uploading
+    /// hence the long duration. It gets closed programatically.
+    duration: Duration(hours: 1),
+    content: StreamBuilder(
+      stream: uploadStatus,
+      builder: (BuildContext context, AsyncSnapshot<UploadStatus> snap) {
+        if (!snap.hasData) {
+          return Text('');
+        }
+        print('Number of files: ${snap.data.numberOfFiles}');
+        if (snap.data.numberOfFiles == 0) {
+          onSuccessfullyClosed(false);
+          scaffoldState.hideCurrentSnackBar();
+          return Text('');
+        }
+        return Row(
+          children: <Widget>[
+            Spacer(),
+            Text('${snap.data.numberOfFiles} pending files'),
+            Spacer(flex: 5),
+            Text(snap.data.percentage + '%'),
+            Spacer(),
+          ],
+        );
+      },
+    ),
+  ));
+}
