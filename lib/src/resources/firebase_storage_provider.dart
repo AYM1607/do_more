@@ -6,11 +6,16 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
+import '../services/upload_status_service.dart';
+
 export 'package:firebase_storage/firebase_storage.dart'
     show StorageUploadTask, StorageTaskSnapshot;
 
 /// A connection to the firebase sotrage bucket.
 class FirebaseStorageProvider {
+  /// An instance of the upload status service.
+  final UploadStatusService _uploadStatus = uploadStatusService;
+
   /// The reference to the root path of the storage bucket.
   final StorageReference _storage;
 
@@ -35,10 +40,12 @@ class FirebaseStorageProvider {
     final String fileId = _uuid.v1();
     final StorageReference fileReference =
         _storage.child('$folder$fileId.$type');
-    return fileReference.putFile(
+    final uploadTask = fileReference.putFile(
       file,
       StorageMetadata(contentType: 'image/png'),
     );
+    _uploadStatus.addNewUpload(uploadTask);
+    return uploadTask;
   }
 
   /// Deletes a file from the firebase storage bucket given its path.

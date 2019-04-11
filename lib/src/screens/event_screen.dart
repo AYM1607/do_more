@@ -41,9 +41,6 @@ class _EventScreenState extends State<EventScreen>
   /// Needed for showing snackbars.
   BuildContext _scaffoldContext;
 
-  /// Flag that indicates if there is a snackbar currently being shown.
-  bool _hasSnackBar = false;
-
   initState() {
     super.initState();
     bloc = EventBloc(eventName: widget.eventName);

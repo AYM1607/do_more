@@ -9,8 +9,6 @@ import '../services/auth_service.dart';
 
 export '../services/auth_service.dart' show FirebaseUser;
 
-// TODO: Add the text search functionality.
-
 /// A business logic component that manages the state of the home screen.
 class HomeBloc {
   /// An instance of the auth service.

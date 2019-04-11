@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
+
 import './models/task_model.dart';
+import './services/upload_status_service.dart';
 
 const kLowPriorityColor = Color(0xFF06AD12);
 const kMediumPriorityColor = Color(0xFFF6A93B);
@@ -67,3 +70,10 @@ String getImageThumbnailPath(String path) {
   tokens.last = 'thumb@' + tokens.last;
   return tokens.join('/');
 }
+
+///
+void showUploadStatusSnackBar(
+  BuildContext context,
+  Observable<UploadStatus> uploadStatus,
+  ValueObservable<bool> snackBarStatus,
+) {}

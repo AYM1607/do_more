@@ -5,16 +5,24 @@ import 'package:rxdart/rxdart.dart';
 
 /// A service that maintains a record of the upload operations made to
 /// the firebase storage bucket.
-class _UploadStatusService {
+class UploadStatusService {
   /// A subject of the current status of uploads.
   final _status = BehaviorSubject<UploadStatus>();
 
   /// A map that contains the information about all the current upload tasks.
-  Map<StorageUploadTask, List<int>> tasksData =
+  Map<StorageUploadTask, List<int>> _tasksData =
       <StorageUploadTask, List<int>>{};
 
   /// An observable of the status for all current upload tasks.
   Observable<UploadStatus> get status => _status.stream;
+
+  /// Creates a new service that maintains a record of the upload operations
+  /// made to the firebase storage bucket.
+  ///
+  /// Avoid multiple instantiaion of this service. Either use the
+  /// [uploadStatusService] singleton or instantiate once, the state will be
+  /// lost otherwise.
+  UploadStatusService();
 
   /// Adds a new upload task to be tracked.
   ///
@@ -22,7 +30,7 @@ class _UploadStatusService {
   void addNewUpload(StorageUploadTask task) async {
     final initialSnap = task.lastSnapshot;
     // Initialize the map entry with the initial values.
-    tasksData[task] = [
+    _tasksData[task] = [
       initialSnap.bytesTransferred,
       initialSnap.totalByteCount,
     ];
@@ -30,7 +38,7 @@ class _UploadStatusService {
       (StorageTaskEvent event) {
         // Update the map with the current values.
         final snap = event.snapshot;
-        tasksData[task] = [
+        _tasksData[task] = [
           snap.bytesTransferred,
           snap.totalByteCount,
         ];
@@ -38,14 +46,14 @@ class _UploadStatusService {
       },
     );
     await task.onComplete;
-    tasksData.remove(task);
+    _tasksData.remove(task);
   }
 
   /// Updates the _status subject with the most current data.
   void _sendUpdate() {
     int totalBytes = 0, bytestTransferred = 0;
     double percentage = 0.0;
-    tasksData.forEach(
+    _tasksData.forEach(
       (_, data) {
         bytestTransferred += data[0];
         totalBytes += data[1];
@@ -56,7 +64,7 @@ class _UploadStatusService {
     }
     _status.sink.add(UploadStatus(
       percentage: percentage,
-      numberOfFiles: tasksData.length,
+      numberOfFiles: _tasksData.length,
     ));
   }
 
@@ -83,4 +91,4 @@ class UploadStatus {
   });
 }
 
-final uploadStatusService = _UploadStatusService();
+final uploadStatusService = UploadStatusService();
