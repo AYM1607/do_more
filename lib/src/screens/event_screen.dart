@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 import '../utils.dart' show getImageThumbnailPath;
@@ -30,8 +28,20 @@ class EventScreen extends StatefulWidget {
 
 class _EventScreenState extends State<EventScreen>
     with SingleTickerProviderStateMixin {
+  /// An instance of the bloc for this screen.
   EventBloc bloc;
+
+  /// The controller for the tabbed naviagtion.
   TabController _tabController;
+
+  /// The context of the scaffold being shown.
+  ///
+  /// Needed for showing snackbars.
+  BuildContext _scaffoldContext;
+
+  /// Flag that indicates if there is a snackbar currently being shown.
+  bool _hasSnackBar = false;
+
   initState() {
     super.initState();
     bloc = EventBloc(eventName: widget.eventName);
@@ -43,12 +53,17 @@ class _EventScreenState extends State<EventScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-      body: TabBarView(
-        controller: _tabController,
-        children: <Widget>[
-          buildTasksListView(),
-          buildMediaView(),
-        ],
+      body: Builder(
+        builder: (BuildContext context) {
+          _scaffoldContext = context;
+          return TabBarView(
+            controller: _tabController,
+            children: <Widget>[
+              buildTasksListView(),
+              buildMediaView(),
+            ],
+          );
+        },
       ),
     );
   }
