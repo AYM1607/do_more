@@ -9,6 +9,7 @@ import { join, dirname } from 'path';
 import * as sharp from 'sharp';
 import * as fs from 'fs-extra';
 
+/// Creates a thumbnail for every image that gets uploaded to the storage bucket.
 export const generateThumb: functions.CloudFunction<functions.storage.ObjectMetadata> = functions.storage.object().onFinalize(async object => {
     // Find the bucket where the uploaded file resides.
     const bucket = gcs.bucket(object.bucket);
