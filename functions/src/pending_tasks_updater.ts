@@ -67,14 +67,32 @@ const incrementPendingTasks = async (
 export const pendingTasksUpdater: functions.CloudFunction<functions.Change<FirebaseFirestore.DocumentSnapshot>> = functions.firestore
     .document('tasks/{taskId}')
     .onWrite(async (change, _) => {
+        /// Snapshot of the document before the operation.
+        ///
+        /// Only applicable for update and delete operations.
         const before: DocumentSnapshot = change.before;
+
+        /// Snapshot of the document after the operation.
+        ///
+        /// Only applicable for update and create operations.
         const after: DocumentSnapshot = change.after;
+
+        /// Operation performed to the task.
         let action: string;
+
+        /// Reference to the user dociment linked to this task.
         let userDocument: DocumentReference;
+
+        /// Reference to the event document linked to this task before the operation.
         let eventDocument: DocumentReference;
+
+        /// Reference to the event document linked to this task after the operation.
         let eventDocumentBefore: DocumentReference | null;
 
+
         if (change.after.exists && change.before.exists) {
+            /// Exit the funciton if case this is an update operation and the
+            /// event and priority of the taks haven't changed.
             if (before.get('priority') === after.get('priority') || before.get('event') === after.get('event')) {
                 console.log('Nothing to update, exiting function');
                 return true;
