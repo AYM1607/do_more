@@ -6,6 +6,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../widgets/async_image.dart';
+import '../widgets/async_thumbnail.dart';
+import '../widgets/carousel.dart';
 import '../widgets/fractionally_screen_sized_box.dart';
 import '../widgets/loading_indicator.dart';
 
@@ -14,11 +16,15 @@ import '../widgets/loading_indicator.dart';
 class GalleryScreen extends StatelessWidget {
   /// An observable that emits a list of all the paths of the images the gallery
   /// will show.
-  final Observable<List<String>> pathsStream;
+  final ValueObservable<List<String>> pathsStream;
 
   /// An observable that emits a map that caches the files corresponding to the
   /// images to be shown.
-  final Observable<Map<String, Future<File>>> cacheStream;
+  final ValueObservable<Map<String, Future<File>>> cacheStream;
+
+  /// An observable that emits a map that caches the files corresponding to the
+  /// thumbnails of the images to be shown.
+  final ValueObservable<Map<String, Future<File>>> thumbnailCaceStream;
 
   /// A function to be called when an image needs to be fetched.
   final Function(String) fetchImage;
@@ -40,9 +46,11 @@ class GalleryScreen extends StatelessWidget {
     @required this.cacheStream,
     this.initialScreen = 0,
     @required this.fetchImage,
+    @required this.thumbnailCaceStream,
   })  : assert(pathsStream != null),
         assert(cacheStream != null),
         assert(fetchImage != null),
+        assert(thumbnailCaceStream != null),
         _controller = PageController(
           initialPage: initialScreen,
           keepPage: false,
@@ -80,29 +88,21 @@ class GalleryScreen extends StatelessWidget {
             },
           ),
           buildCloseButton(context),
-          buildPageNavigation(),
+          buildCarousel(),
         ],
       ),
     );
   }
 
   /// Jumps to the specified page.
-  void animateToPage(Page page) {
+  void animateToPage(int index) {
     final curve = Curves.easeInOut;
     final duration = Duration(milliseconds: 300);
-    switch (page) {
-      case Page.previous:
-        _controller.previousPage(
-          curve: curve,
-          duration: duration,
-        );
-        break;
-      case Page.next:
-        _controller.nextPage(
-          curve: curve,
-          duration: duration,
-        );
-    }
+    _controller.animateToPage(
+      index,
+      curve: curve,
+      duration: duration,
+    );
   }
 
   /// Builds the button that closes this screen.
@@ -120,40 +120,47 @@ class GalleryScreen extends StatelessWidget {
     );
   }
 
-  // TODO: Create a navigation control similar to the one in iOS gallery, or
-  // the whatsapp one.
-  /// Builds the navigation controls.
-  ///
-  /// Two icon buttons allow the user to navigate to the next or previous page.
-  Widget buildPageNavigation() {
-    return Positioned(
-      bottom: 50,
-      child: FractionallyScreenSizedBox(
-        widthFactor: 1,
-        child: Row(
-          children: <Widget>[
-            Spacer(),
-            IconButton(
-              onPressed: () => animateToPage(Page.previous),
-              icon: Icon(
-                FontAwesomeIcons.caretLeft,
-                size: 40,
-              ),
+  Widget buildCarousel() {
+    return StreamBuilder(
+      stream: thumbnailCaceStream,
+      builder: (context, AsyncSnapshot<Map<String, Future<File>>> snap) {
+        Widget carousel = Container();
+
+        if (snap.hasData) {
+          final cache = snap.data;
+          List<Widget> carouselChildren = [];
+
+          cache.keys.forEach(
+            (key) {
+              carouselChildren.add(
+                AsyncThumbnail(
+                  cacheId: key,
+                  cacheStream: thumbnailCaceStream,
+                ),
+              );
+            },
+          );
+
+          carousel = Carousel(
+            onChanged: (index) => animateToPage(index),
+            itemCount: cache.length,
+            initialItem: initialScreen,
+            children: carouselChildren,
+          );
+        }
+
+        return Positioned(
+          bottom: 20,
+          child: FractionallyScreenSizedBox(
+            widthFactor: 1,
+            child: Column(
+              children: <Widget>[
+                carousel,
+              ],
             ),
-            Spacer(
-              flex: 8,
-            ),
-            IconButton(
-              onPressed: () => animateToPage(Page.next),
-              icon: Icon(
-                FontAwesomeIcons.caretRight,
-                size: 40,
-              ),
-            ),
-            Spacer(),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 

@@ -183,6 +183,7 @@ class _EventScreenState extends State<EventScreen>
             cacheStream: bloc.images,
             pathsStream: bloc.imagesPaths,
             initialScreen: imageIndex,
+            thumbnailCaceStream: bloc.thumbnails,
           );
         },
       ),
