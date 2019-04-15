@@ -308,7 +308,7 @@ class _DropdownRoute<T> extends PopupRoute<_DropdownRouteResult<T>> {
     this.barrierLabel,
   }) : assert(style != null);
 
-  final List<CustomDropdownMenuItem<T>> items;
+  final List<EventDropdownMenuItem<T>> items;
   final EdgeInsetsGeometry padding;
   final Rect buttonRect;
   final int selectedIndex;
@@ -424,11 +424,11 @@ class _DropdownRoute<T> extends PopupRoute<_DropdownRouteResult<T>> {
 ///
 /// The type `T` is the type of the value the entry represents. All the entries
 /// in a given menu must represent values with consistent types.
-class CustomDropdownMenuItem<T> extends StatelessWidget {
+class EventDropdownMenuItem<T> extends StatelessWidget {
   /// Creates an item for a dropdown menu.
   ///
   /// The [child] argument is required.
-  const CustomDropdownMenuItem({
+  const EventDropdownMenuItem({
     Key key,
     this.value,
     @required this.child,
@@ -519,7 +519,7 @@ class CustomDropdownMenuItem<T> extends StatelessWidget {
 ///    from displaying their underlines.
 ///  * [RaisedButton], [FlatButton], ordinary buttons that trigger a single action.
 ///  * <https://material.io/design/components/menus.html#dropdown-menu>
-class CustomDropdownButton<T> extends StatefulWidget {
+class EventDropdown<T> extends StatefulWidget {
   /// Creates a dropdown button.
   ///
   /// The [items] must have distinct values. If [value] isn't null then it
@@ -530,7 +530,7 @@ class CustomDropdownButton<T> extends StatefulWidget {
   /// The [elevation] and [iconSize] arguments must not be null (they both have
   /// defaults, so do not need to be specified). The boolean [isDense] and
   /// [isExpanded] arguments must not be null.
-  CustomDropdownButton({
+  EventDropdown({
     Key key,
     @required this.items,
     this.value,
@@ -548,7 +548,7 @@ class CustomDropdownButton<T> extends StatefulWidget {
             value == null ||
             items
                     .where(
-                        (CustomDropdownMenuItem<T> item) => item.value == value)
+                        (EventDropdownMenuItem<T> item) => item.value == value)
                     .length ==
                 1),
         assert(elevation != null),
@@ -563,7 +563,7 @@ class CustomDropdownButton<T> extends StatefulWidget {
   /// then the dropdown button will be disabled, i.e. its arrow will be
   /// displayed in grey and it will not respond to input. A disabled button
   /// will display the [disabledHint] widget if it is non-null.
-  final List<CustomDropdownMenuItem<T>> items;
+  final List<EventDropdownMenuItem<T>> items;
 
   /// The value of the currently selected [DropdownMenuItem], or null if no
   /// item has been selected. If `value` is null then the menu is popped up as
@@ -627,7 +627,7 @@ class CustomDropdownButton<T> extends StatefulWidget {
   _DropdownButtonState<T> createState() => _DropdownButtonState<T>();
 }
 
-class _DropdownButtonState<T> extends State<CustomDropdownButton<T>>
+class _DropdownButtonState<T> extends State<EventDropdown<T>>
     with WidgetsBindingObserver {
   int _selectedIndex;
   _DropdownRoute<T> _dropdownRoute;
@@ -659,7 +659,7 @@ class _DropdownButtonState<T> extends State<CustomDropdownButton<T>>
   }
 
   @override
-  void didUpdateWidget(CustomDropdownButton<T> oldWidget) {
+  void didUpdateWidget(EventDropdown<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     _updateSelectedIndex();
   }
@@ -671,7 +671,7 @@ class _DropdownButtonState<T> extends State<CustomDropdownButton<T>>
 
     assert(widget.value == null ||
         widget.items
-                .where((CustomDropdownMenuItem<T> item) =>
+                .where((EventDropdownMenuItem<T> item) =>
                     item.value == widget.value)
                 .length ==
             1);
@@ -734,7 +734,7 @@ class _DropdownButtonState<T> extends State<CustomDropdownButton<T>>
     if (widget.hint != null || (!_enabled && widget.disabledHint != null)) {
       final Widget emplacedHint = _enabled
           ? widget.hint
-          : CustomDropdownMenuItem<Widget>(
+          : EventDropdownMenuItem<Widget>(
               child: widget.disabledHint ?? widget.hint);
       hintIndex = items.length;
       items.add(DefaultTextStyle(

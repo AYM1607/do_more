@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide AppBar;
 
 import '../utils.dart';
 import '../blocs/task_bloc.dart';
 import '../models/user_model.dart';
-import '../widgets/custom_app_bar.dart';
-import '../widgets/custom_dropdown.dart';
+import '../widgets/app_bar.dart';
+import '../widgets/event_dropdown.dart';
 import '../widgets/big_text_input.dart';
 import '../widgets/fractionally_screen_sized_box.dart';
 import '../widgets/gradient_touchable_container.dart';
@@ -45,7 +45,7 @@ class _TaskScreenState extends State<TaskScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
+      appBar: AppBar(
         title: widget.isEdit ? 'Edit task' : 'Add task',
       ),
       body: SingleChildScrollView(
@@ -128,13 +128,13 @@ class _TaskScreenState extends State<TaskScreen> {
           child: StreamBuilder(
             stream: bloc.eventName,
             builder: (BuildContext context, AsyncSnapshot<String> snap) {
-              return CustomDropdownButton(
+              return EventDropdown(
                 isExpanded: true,
                 value: snap.data,
                 onChanged: bloc.changeEventName,
                 hint: Text('Event'),
                 items: events.map((String name) {
-                  return CustomDropdownMenuItem(
+                  return EventDropdownMenuItem(
                     value: name,
                     child: Text(
                       name,

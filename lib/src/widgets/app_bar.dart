@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide AppBar;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 /// A custom app bar to match the DO> design rules.
 ///
 /// This app bar is meant to be usen in screens that are not the home screen.
 /// It will always contain a back button that pops the current screen.
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+class AppBar extends StatelessWidget implements PreferredSizeWidget {
   /// The title for the app bar.
   final String title;
 
@@ -17,7 +17,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   /// It will vary depending on the existance of the bottom widget.
   final double _appBarHeight;
 
-  CustomAppBar({
+  AppBar({
     this.title = '',
     this.bottom,
   }) : _appBarHeight = bottom == null ? 140.0 : 120.0;

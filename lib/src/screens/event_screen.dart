@@ -1,13 +1,13 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide AppBar;
 
 import '../utils.dart' show getImageThumbnailPath, showUploadStatusSnackBar;
 import '../blocs/event_bloc.dart';
 import '../screens/gallery_screen.dart';
 import '../models/task_model.dart';
 import '../widgets/async_thumbnail.dart';
-import '../widgets/custom_app_bar.dart';
+import '../widgets/app_bar.dart';
 import '../widgets/gradient_touchable_container.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/task_list_tile.dart';
@@ -68,7 +68,7 @@ class _EventScreenState extends State<EventScreen>
   }
 
   Widget buildAppBar() {
-    return CustomAppBar(
+    return AppBar(
       title: widget.eventName,
       bottom: TabBar(
         controller: _tabController,
