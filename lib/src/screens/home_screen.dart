@@ -7,6 +7,7 @@ import '../widgets/home_app_bar.dart';
 import '../widgets/new_item_dialog_route.dart';
 import '../widgets/task_list_tile.dart';
 import '../widgets/loading_indicator.dart';
+import '../widgets/populated_drawer.dart';
 import '../widgets/search-box.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -29,14 +30,21 @@ class _HomeScreenState extends State<HomeScreen> {
     return StreamBuilder(
       stream: bloc.userStream,
       builder: (BuildContext context, AsyncSnapshot<FirebaseUser> userSnap) {
-        String userAvatarUrl, userDisplayName;
+        String userAvatarUrl = '', userDisplayName = '', userEmail;
 
         if (userSnap.hasData) {
           userAvatarUrl = userSnap.data.photoUrl;
           userDisplayName = userSnap.data.displayName;
+          userEmail = userSnap.data.email;
         }
 
         return Scaffold(
+          drawer: PopulatedDrawer(
+            userAvatarUrl: userAvatarUrl,
+            userDisplayName: userDisplayName,
+            userEmail: userEmail,
+            selectedScreen: Screen.home,
+          ),
           floatingActionButton: FloatingActionButton(
             child: Icon(FontAwesomeIcons.plus),
             backgroundColor: Color(0xFF707070),

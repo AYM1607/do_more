@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import './logo.dart';
+import './avatar.dart';
 
 //TODO: Add callback for the menu button.
 
@@ -32,7 +33,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              buildTopSection(),
+              buildTopSection(context),
               SizedBox(
                 height: 20,
               ),
@@ -58,48 +59,31 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Widget buildTopSection() {
+  Widget buildTopSection(BuildContext context) {
+    final scaffolContext = Scaffold.of(context);
+
     return Row(
       children: <Widget>[
         SizedBox(
           width: 20,
         ),
-        Icon(
-          FontAwesomeIcons.bars,
+        IconButton(
+          onPressed: () => scaffolContext.openDrawer(),
+          icon: Icon(
+            FontAwesomeIcons.bars,
+            size: 24,
+          ),
           color: Colors.white,
-          size: 24,
         ),
         Spacer(),
-        maybeBuildAvatar(),
+        Avatar(
+          imageUrl: avatarUrl,
+        ),
         SizedBox(
           width: 20,
         )
       ],
     );
-  }
-
-  Widget maybeBuildAvatar() {
-    return avatarUrl == null
-        ? Container(
-            height: 60,
-            width: 60,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Center(
-              child: Icon(
-                FontAwesomeIcons.question,
-              ),
-            ),
-          )
-        : ClipOval(
-            child: Image.network(
-              avatarUrl,
-              height: 60,
-              width: 60,
-            ),
-          );
   }
 
   @override

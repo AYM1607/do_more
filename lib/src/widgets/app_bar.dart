@@ -17,9 +17,12 @@ class AppBar extends StatelessWidget implements PreferredSizeWidget {
   /// It will vary depending on the existance of the bottom widget.
   final double _appBarHeight;
 
+  /// Whether to show a back button or a menu button.
+  final bool hasDrawer;
   AppBar({
     this.title = '',
     this.bottom,
+    this.hasDrawer = false,
   }) : _appBarHeight = bottom == null ? 140.0 : 120.0;
 
   /// The preferred size of the app bar.
