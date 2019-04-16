@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'screens/event_screen.dart';
+import 'screens/events_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/initial_loading_screen.dart';
 import 'screens/login_screen.dart';
@@ -75,6 +76,12 @@ class App extends StatelessWidget {
           return EventScreen(
             eventName: routeTokens[1],
           );
+        },
+      );
+    } else if (routeTokens.first == 'events') {
+      return MaterialPageRoute(
+        builder: (BuildContext context) {
+          return EventsScreen();
         },
       );
     }

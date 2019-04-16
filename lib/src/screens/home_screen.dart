@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return StreamBuilder(
       stream: bloc.userStream,
       builder: (BuildContext context, AsyncSnapshot<FirebaseUser> userSnap) {
-        String userAvatarUrl = '', userDisplayName = '', userEmail;
+        String userAvatarUrl, userDisplayName = '', userEmail = '';
 
         if (userSnap.hasData) {
           userAvatarUrl = userSnap.data.photoUrl;
