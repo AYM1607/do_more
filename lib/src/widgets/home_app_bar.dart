@@ -60,7 +60,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Widget buildTopSection(BuildContext context) {
-    final scaffolContext = Scaffold.of(context);
+    final scaffoldState = Scaffold.of(context);
 
     return Row(
       children: <Widget>[
@@ -68,7 +68,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           width: 20,
         ),
         IconButton(
-          onPressed: () => scaffolContext.openDrawer(),
+          onPressed: () => scaffoldState.openDrawer(),
           icon: Icon(
             FontAwesomeIcons.bars,
             size: 24,

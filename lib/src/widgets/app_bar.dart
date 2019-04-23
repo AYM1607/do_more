@@ -37,13 +37,7 @@ class AppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          IconButton(
-            icon: Icon(
-              FontAwesomeIcons.arrowLeft,
-              color: Color.fromRGBO(112, 112, 112, 1),
-            ),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
+          buildButton(context),
           SizedBox(
             height: 10,
           ),
@@ -84,6 +78,22 @@ class AppBar extends StatelessWidget implements PreferredSizeWidget {
           child: result,
         ),
       ),
+    );
+  }
+
+  Widget buildButton(BuildContext context) {
+    return IconButton(
+      icon: hasDrawer
+          ? Icon(
+              FontAwesomeIcons.bars,
+            )
+          : Icon(
+              FontAwesomeIcons.arrowLeft,
+              color: Color.fromRGBO(112, 112, 112, 1),
+            ),
+      onPressed: hasDrawer
+          ? () => Scaffold.of(context).openDrawer()
+          : () => Navigator.of(context).pop(),
     );
   }
 }

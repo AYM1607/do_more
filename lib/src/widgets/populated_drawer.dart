@@ -108,6 +108,7 @@ class PopulatedDrawer extends StatelessWidget {
       return result;
     }
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: action,
       child: result,
     );

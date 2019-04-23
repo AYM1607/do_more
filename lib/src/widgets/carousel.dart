@@ -177,4 +177,9 @@ class _CarouselState extends State<Carousel> {
       ),
     );
   }
+
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
 }

@@ -20,7 +20,7 @@ class Avatar extends StatelessWidget {
             width: size,
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(size / 2),
             ),
             child: Center(
               child: Icon(
