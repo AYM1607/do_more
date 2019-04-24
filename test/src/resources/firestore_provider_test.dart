@@ -139,7 +139,7 @@ main() {
       verify(collection.add(task.toFirestoreMap()));
     });
 
-    test('should listen for updates to a single Task', () {
+    test('should listen for updates to a task', () {
       final firestore = MockFirestore();
       final collection = MockCollectionReference();
       final snapshot = MockDocumentSnapshot(task.toFirestoreMap());
@@ -152,7 +152,21 @@ main() {
       when(document.snapshots()).thenAnswer((_) => snapshots);
       when(snapshot.documentID).thenReturn(task.id);
 
-      expectLater(provider.getTask('1'), emits(task));
+      expectLater(provider.getTaskObservable('1'), emits(task));
+    });
+
+    test('should retrieve a task', () {
+      final firestore = MockFirestore();
+      final reference = MockDocumentReference();
+      final snapshot = MockDocumentSnapshot(task.toFirestoreMap());
+      final provider = FirestoreProvider(firestore);
+
+      when(firestore.document('tasks/1')).thenReturn(reference);
+      when(reference.get())
+          .thenAnswer((_) => Future<DocumentSnapshot>.value(snapshot));
+      when(snapshot.documentID).thenReturn(task.id);
+
+      expect(provider.getTask('1'), completion(equals(task)));
     });
 
     test('should delete a task', () {
