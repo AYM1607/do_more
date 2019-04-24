@@ -143,7 +143,6 @@ class FirestoreProvider {
     return Observable(mappedStream);
   }
 
-  //TODO: Add tests for this method.
   /// Returns a task from an id.
   Future<TaskModel> getTask(String id) async {
     final documentSnapshot = await _firestore.document('tasks/$id').get();
