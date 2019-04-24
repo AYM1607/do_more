@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../mixins/tile_mixin.dart';
 import '../models/task_model.dart';
 import '../utils.dart';
 import '../widgets/action_button.dart';
 
 /// A card that visually represents a task.
-class TaskListTile extends StatelessWidget {
+class TaskListTile extends StatelessWidget with Tile {
   /// Task model which this card represents.
   final TaskModel task;
 
@@ -79,19 +80,11 @@ class TaskListTile extends StatelessWidget {
           ),
           Text(
             task.event,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
+            style: kTileBigTextStyle,
           ),
           Text(
             task.text,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 10,
-              fontWeight: FontWeight.w300,
-            ),
+            style: kTileSubtitleStyle,
           ),
         ],
       ),
@@ -166,16 +159,6 @@ class TaskListTile extends StatelessWidget {
               fontSize: 13,
               color: Colors.white,
             )),
-      ),
-    );
-  }
-
-  BoxDecoration tileDecoration(BuildContext context) {
-    return BoxDecoration(
-      color: Theme.of(context).cardColor,
-      borderRadius: BorderRadius.only(
-        topRight: Radius.circular(8),
-        bottomRight: Radius.circular(8),
       ),
     );
   }

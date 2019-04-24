@@ -20,6 +20,19 @@ const kSmallTextStyle = TextStyle(
   fontSize: 16,
   fontWeight: FontWeight.w500,
 );
+
+const kTileBigTextStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 24,
+  fontWeight: FontWeight.bold,
+);
+
+const kTileSubtitleStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 10,
+  fontWeight: FontWeight.w300,
+);
+
 const kBlueGradient = LinearGradient(
   begin: Alignment.topLeft,
   end: Alignment.bottomRight,

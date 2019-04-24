@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart' hide AppBar;
 
 import '../blocs/events_bloc.dart';
+import '../models/event_model.dart';
 import '../widgets/app_bar.dart';
+import '../widgets/event_list_tile.dart';
 import '../widgets/populated_drawer.dart';
 
 class EventsScreen extends StatefulWidget {
@@ -24,6 +26,7 @@ class _EventsScreenState extends State<EventsScreen> {
           userDisplayName = userSnap.data.displayName;
           userEmail = userSnap.data.email;
         }
+
         return Scaffold(
           drawer: PopulatedDrawer(
             userAvatarUrl: userAvatarUrl,
@@ -34,6 +37,23 @@ class _EventsScreenState extends State<EventsScreen> {
           appBar: AppBar(
             title: 'My Events',
             hasDrawer: true,
+          ),
+          body: ListView(
+            padding: EdgeInsets.only(top: 15),
+            children: <Widget>[
+              EventListTile(
+                event: EventModel(
+                  id: '1',
+                  name: 'Math',
+                  pendigTasks: 3,
+                  media: <String>[],
+                  when: <bool>[],
+                  highPriority: 2,
+                  mediumPriority: 1,
+                  lowPriority: 0,
+                ),
+              )
+            ],
           ),
         );
       },
