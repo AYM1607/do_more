@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 import '../utils.dart' show kTaskListPriorityTransforemer;
+import '../mixins/upload_status_mixin.dart';
 import '../models/task_model.dart';
 import '../resources/firestore_provider.dart';
 import '../services/auth_service.dart';
@@ -10,7 +11,7 @@ import '../services/auth_service.dart';
 export '../services/auth_service.dart' show FirebaseUser;
 
 /// A business logic component that manages the state of the home screen.
-class HomeBloc {
+class HomeBloc extends Object with UploadStatusMixin {
   /// An instance of the auth service.
   final AuthService _auth = authService;
 
@@ -46,6 +47,10 @@ class HomeBloc {
 
   /// An observable of the current logged in user.
   Observable<FirebaseUser> get userStream => _auth.userStream;
+
+  HomeBloc() {
+    initializeSnackBarStatus();
+  }
 
   // TODO: Include the priority in the filtering.
   /// Returns a stream transformer that filters the task with the text from
@@ -106,6 +111,7 @@ class HomeBloc {
   }
 
   void dispose() async {
+    await disposeUploadStatusMixin();
     await _searchBoxText.drain();
     _searchBoxText.close();
     await _tasks.drain();

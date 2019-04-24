@@ -41,12 +41,25 @@ class _EventScreenState extends State<EventScreen>
   /// Needed for showing snackbars.
   BuildContext _scaffoldContext;
 
+  StreamSubscription _snackBarStatusSubscription;
+
   initState() {
     super.initState();
     bloc = EventBloc(eventName: widget.eventName);
     bloc.fetchTasks();
     bloc.fetchImagesPaths();
     _tabController = TabController(vsync: this, length: 2);
+    _snackBarStatusSubscription = bloc.snackBarStatus.listen((bool visible) {
+      if (visible) {
+        showUploadStatusSnackBar(
+          _scaffoldContext,
+          bloc.uploadStatus,
+          bloc.updateSnackBarStatus,
+        );
+      } else {
+        Scaffold.of(_scaffoldContext).hideCurrentSnackBar();
+      }
+    });
   }
 
   Widget build(BuildContext context) {
@@ -164,7 +177,8 @@ class _EventScreenState extends State<EventScreen>
   Widget buildAddPictureButton() {
     return GradientTouchableContainer(
       radius: 8,
-      onTap: onAddPicturePressed,
+      onTap: () =>
+          Navigator.of(context).pushNamed('newImage/${bloc.eventName}'),
       child: Icon(
         Icons.camera_alt,
         color: Colors.white,
@@ -190,19 +204,8 @@ class _EventScreenState extends State<EventScreen>
     );
   }
 
-  // TODO: use a block provider instead of passing callbacks
-  Future<void> onAddPicturePressed() async {
-    await Navigator.of(context).pushNamed('newImage/${bloc.eventName}');
-    if (bloc.snackBarStatus.value == false) {
-      showUploadStatusSnackBar(
-        _scaffoldContext,
-        bloc.uploadStatus,
-        bloc.updateSnackBarStatus,
-      );
-    }
-  }
-
   void dispose() {
+    _snackBarStatusSubscription.cancel();
     bloc.dispose();
     super.dispose();
   }

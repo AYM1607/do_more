@@ -4,18 +4,18 @@ import 'dart:io';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../mixins/upload_status_mixin.dart';
 import '../models/event_model.dart';
 import '../models/task_model.dart';
 import '../models/user_model.dart';
 import '../resources/firestore_provider.dart';
 import '../resources/firebase_storage_provider.dart';
 import '../services/auth_service.dart';
-import '../services/upload_status_service.dart';
 import '../utils.dart'
     show kTaskListPriorityTransforemer, getImageThumbnailPath;
 
 /// A business logic component that manages the state for an event screen.
-class EventBloc {
+class EventBloc extends Object with UploadStatusMixin {
   /// The name of the event being shown.
   final String eventName;
 
@@ -27,9 +27,6 @@ class EventBloc {
 
   /// An instace of the auth service.
   final AuthService _auth = authService;
-
-  /// An instance of the upload status service.
-  final UploadStatusService _uploadStatus = uploadStatusService;
 
   /// A subject of list of task model.
   final _tasks = BehaviorSubject<List<TaskModel>>();
@@ -48,9 +45,6 @@ class EventBloc {
 
   /// A subject of a cache that contains the image files.
   final _images = BehaviorSubject<Map<String, Future<File>>>();
-
-  /// A subject of a flag that indicates if there is a snack bar showing.
-  final _snackBarStatus = BehaviorSubject<bool>(seedValue: false);
 
   /// The event being managed by this bloc.
   EventModel _event;
@@ -74,13 +68,6 @@ class EventBloc {
   /// An observable of a cache of the images files.
   Observable<Map<String, Future<File>>> get images => _images.stream;
 
-  /// An observable of a flag that indicates whether or not a snackBar is
-  /// currently showing.
-  ValueObservable<bool> get snackBarStatus => _snackBarStatus.stream;
-
-  /// An observable of the status of files being uploaded.
-  Observable<UploadStatus> get uploadStatus => _uploadStatus.status;
-
   // Sinks getters.
   /// Starts the fetching process for an image given its path.
   Function(String) get fetchImage => _imagesFetcher.sink.add;
@@ -88,12 +75,10 @@ class EventBloc {
   /// Starts the fetching process for an image thumbail given its path.
   Function(String) get fetchThumbnail => _imagesThumbnailsFetcher.sink.add;
 
-  /// Updates the snack bar status.
-  Function(bool) get updateSnackBarStatus => _snackBarStatus.sink.add;
-
   EventBloc({
     @required this.eventName,
   }) {
+    initializeSnackBarStatus();
     _ready = _initUserAndEvent();
     _imagesFetcher.transform(_imagesTransformer()).pipe(_images);
     _imagesThumbnailsFetcher
@@ -159,8 +144,7 @@ class EventBloc {
   }
 
   void dispose() async {
-    await _snackBarStatus.drain();
-    _snackBarStatus.close();
+    await disposeUploadStatusMixin();
     await _imagesThumbnailsFetcher.drain();
     _imagesThumbnailsFetcher.close();
     await _imagesFetcher.drain();
