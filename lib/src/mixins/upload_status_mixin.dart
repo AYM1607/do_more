@@ -22,11 +22,17 @@ mixin UploadStatusMixin {
   /// An observable of the status of files being uploaded.
   Observable<UploadStatus> get uploadStatus => uploadStatusSer.status;
 
+  /// Disposes instance variables that are part of the mixin.
   Future<void> disposeUploadStatusMixin() async {
     await snackBarStatusSubject.drain();
     snackBarStatusSubject.close();
   }
 
+  /// Initializes the [snacBarStatusSubject].
+  ///
+  /// The raw status coming from the [UploadStatusService] is transformed and
+  /// turned into a stream that emits [true] when the snackbar should be visible
+  /// and false otherwise. This is piped to [the snackBarStatusSubject].
   void initializeSnackBarStatus() {
     uploadStatusService.status
         .transform(StreamTransformer<UploadStatus, bool>.fromHandlers(

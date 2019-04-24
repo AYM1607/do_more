@@ -41,6 +41,7 @@ class _EventScreenState extends State<EventScreen>
   /// Needed for showing snackbars.
   BuildContext _scaffoldContext;
 
+  /// A stream subscription to the snackbar status.
   StreamSubscription _snackBarStatusSubscription;
 
   initState() {
@@ -49,17 +50,7 @@ class _EventScreenState extends State<EventScreen>
     bloc.fetchTasks();
     bloc.fetchImagesPaths();
     _tabController = TabController(vsync: this, length: 2);
-    _snackBarStatusSubscription = bloc.snackBarStatus.listen((bool visible) {
-      if (visible) {
-        showUploadStatusSnackBar(
-          _scaffoldContext,
-          bloc.uploadStatus,
-          bloc.updateSnackBarStatus,
-        );
-      } else {
-        Scaffold.of(_scaffoldContext).hideCurrentSnackBar();
-      }
-    });
+    initializeSnackBarListener();
   }
 
   Widget build(BuildContext context) {
@@ -202,6 +193,20 @@ class _EventScreenState extends State<EventScreen>
         },
       ),
     );
+  }
+
+  void initializeSnackBarListener() {
+    _snackBarStatusSubscription = bloc.snackBarStatus.listen((bool visible) {
+      if (visible) {
+        showUploadStatusSnackBar(
+          _scaffoldContext,
+          bloc.uploadStatus,
+          bloc.updateSnackBarStatus,
+        );
+      } else {
+        Scaffold.of(_scaffoldContext).hideCurrentSnackBar();
+      }
+    });
   }
 
   void dispose() {

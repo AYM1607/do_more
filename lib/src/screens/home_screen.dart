@@ -28,23 +28,14 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Needed for showing snackbars.
   BuildContext _scaffoldContext;
 
+  /// A stream subscription to the snackbar status.
   StreamSubscription _snackBarStatusSubscription;
 
   @override
   initState() {
     super.initState();
     bloc.fetchTasks();
-    _snackBarStatusSubscription = bloc.snackBarStatus.listen((bool visible) {
-      if (visible) {
-        showUploadStatusSnackBar(
-          _scaffoldContext,
-          bloc.uploadStatus,
-          bloc.updateSnackBarStatus,
-        );
-      } else {
-        Scaffold.of(_scaffoldContext).hideCurrentSnackBar();
-      }
-    });
+    initializeSnackBarListener();
   }
 
   Widget build(BuildContext context) {
@@ -136,6 +127,20 @@ class _HomeScreenState extends State<HomeScreen> {
           .toList()
             ..add(Container(height: 70)),
     );
+  }
+
+  void initializeSnackBarListener() {
+    _snackBarStatusSubscription = bloc.snackBarStatus.listen((bool visible) {
+      if (visible) {
+        showUploadStatusSnackBar(
+          _scaffoldContext,
+          bloc.uploadStatus,
+          bloc.updateSnackBarStatus,
+        );
+      } else {
+        Scaffold.of(_scaffoldContext).hideCurrentSnackBar();
+      }
+    });
   }
 
   @override
