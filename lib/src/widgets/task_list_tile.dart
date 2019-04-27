@@ -63,7 +63,7 @@ class TaskListTile extends StatelessWidget with Tile {
             ),
           ],
         ),
-        decoration: tileDecoration(context),
+        decoration: tileDecoration(Theme.of(context).cardColor),
       ),
     );
   }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 mixin Tile {
-  BoxDecoration tileDecoration(BuildContext context) {
+  BoxDecoration tileDecoration(Color color) {
     return BoxDecoration(
-      color: Theme.of(context).cardColor,
+      color: color,
       borderRadius: BorderRadius.only(
         topRight: Radius.circular(8),
         bottomRight: Radius.circular(8),

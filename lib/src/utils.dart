@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
+import './models/event_model.dart';
 import './models/task_model.dart';
 import './services/upload_status_service.dart';
 
@@ -54,6 +55,15 @@ Color getColorFromPriority(TaskPriority priority) {
     default:
       return Colors.white;
   }
+}
+
+Color getColorFromEvent(EventModel event) {
+  if (event.highPriority != 0) {
+    return kHighPriorityColor;
+  } else if (event.mediumPriority != 0) {
+    return kMediumPriorityColor;
+  }
+  return kLowPriorityColor;
 }
 
 class Validators {

@@ -34,6 +34,8 @@ class EventModel {
   /// The amount of low priority pending tasks linked to this event.
   final int lowPriority;
 
+  int get pendingTasks => highPriority + mediumPriority + lowPriority;
+
   EventModel({
     this.id,
     @required this.name,
