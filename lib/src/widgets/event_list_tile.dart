@@ -36,34 +36,29 @@ class EventListTile extends StatelessWidget with Tile {
                       _OcurranceIdicator(ocurrance: event.when),
                     ],
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          SizedBox(
-                            width: 80,
-                          ),
-                          ActionButton(
-                            color: Colors.white,
-                            textColor: Colors.black,
-                            text: 'Resources',
-                            leadingIconData: FontAwesomeIcons.listAlt,
-                            onPressed: () => Navigator.of(context)
-                                .pushNamed('event/${event.name}'),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
+            getResourcesButton(context),
             getPriorityIndicator(),
             getTasksIndicator(),
           ],
         ),
         decoration: tileDecoration(Theme.of(context).cardColor),
+      ),
+    );
+  }
+
+  Widget getResourcesButton(BuildContext context) {
+    return Positioned(
+      bottom: 8,
+      right: 23,
+      child: ActionButton(
+        color: Colors.white,
+        textColor: Colors.black,
+        text: 'Resources',
+        leadingIconData: FontAwesomeIcons.listAlt,
+        onPressed: () => Navigator.of(context).pushNamed('event/${event.name}'),
       ),
     );
   }

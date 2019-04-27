@@ -4,6 +4,7 @@ import '../blocs/events_bloc.dart';
 import '../models/event_model.dart';
 import '../widgets/app_bar.dart';
 import '../widgets/event_list_tile.dart';
+import '../widgets/loading_indicator.dart';
 import '../widgets/populated_drawer.dart';
 
 class EventsScreen extends StatefulWidget {
@@ -14,6 +15,11 @@ class EventsScreen extends StatefulWidget {
 class _EventsScreenState extends State<EventsScreen> {
   /// An instance of the bloc for this screen.
   final EventsBloc bloc = EventsBloc();
+
+  initState() {
+    super.initState();
+    bloc.fetchEvents();
+  }
 
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -38,28 +44,28 @@ class _EventsScreenState extends State<EventsScreen> {
             title: 'My Events',
             hasDrawer: true,
           ),
-          body: ListView(
-            padding: EdgeInsets.only(top: 15),
-            children: <Widget>[
-              EventListTile(
-                event: EventModel(
-                  id: '1',
-                  name: 'Math',
-                  pendigTasks: 3,
-                  media: <String>[],
-                  when: <bool>[
-                    true,
-                    true,
-                    false,
-                    false,
-                    true,
-                  ],
-                  highPriority: 2,
-                  mediumPriority: 1,
-                  lowPriority: 0,
-                ),
-              )
-            ],
+          body: StreamBuilder(
+            stream: bloc.events,
+            builder: (context, AsyncSnapshot<List<EventModel>> eventsSnap) {
+              if (!eventsSnap.hasData) {
+                return Center(
+                  child: LoadingIndicator(),
+                );
+              }
+              return ListView(
+                padding: EdgeInsets.only(top: 15),
+                children: eventsSnap.data
+                    .map(
+                      (event) => Padding(
+                            padding: EdgeInsets.only(bottom: 15),
+                            child: EventListTile(
+                              event: event,
+                            ),
+                          ),
+                    )
+                    .toList(),
+              );
+            },
           ),
         );
       },

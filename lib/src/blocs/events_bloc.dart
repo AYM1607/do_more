@@ -22,6 +22,9 @@ class EventsBloc {
   /// An observable of the current logged in user.
   Observable<FirebaseUser> get userStream => _auth.userStream;
 
+  /// An observable of the events linked to the current user.
+  Observable<List<EventModel>> get events => _events.stream;
+
   /// Initiates the fetching process of events linked to the current user.
   Future<void> fetchEvents() async {
     final userModel = await _auth.getCurrentUserModel();
