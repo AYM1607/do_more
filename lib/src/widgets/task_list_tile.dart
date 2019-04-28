@@ -20,6 +20,9 @@ class TaskListTile extends StatelessWidget with Tile {
   /// Function to be called when the "event" button is pressed.
   final VoidCallback onEventPressed;
 
+  /// Function to be called when the "undo" button is pressed.
+  final VoidCallback onUndo;
+
   /// Whether or not the event button should be hidden.
   final bool hideEventButton;
 
@@ -35,6 +38,7 @@ class TaskListTile extends StatelessWidget with Tile {
   TaskListTile({
     @required this.task,
     this.onDone,
+    this.onUndo,
     this.onEditPressed,
     this.onEventPressed,
     this.hideEventButton = false,
@@ -93,34 +97,49 @@ class TaskListTile extends StatelessWidget with Tile {
 
   /// Builds the section that contains the 3 buttons for the tile.
   Widget buildButtonSection() {
-    final bottomRowChildren = <Widget>[];
+    final columnChildren = <Widget>[];
+    if (task.done) {
+      columnChildren.addAll(
+        [
+          SizedBox(
+            height: 25,
+          ),
+          ActionButton(
+            onPressed: onUndo,
+            text: 'Undo',
+            trailingIconData: FontAwesomeIcons.timesCircle,
+            color: Colors.white,
+            textColor: Colors.black,
+            radius: 14,
+            width: 72,
+          ),
+        ],
+      );
+    } else {
+      final bottomRowChildren = <Widget>[];
 
-    bottomRowChildren.add(
-      ActionButton(
-        onPressed: onEditPressed,
-        text: 'Edit',
-        leadingIconData: Icons.edit,
-      ),
-    );
-
-    if (!hideEventButton) {
-      bottomRowChildren.addAll([
-        SizedBox(
-          width: 4,
-        ),
+      bottomRowChildren.add(
         ActionButton(
-          onPressed: onEventPressed,
-          text: 'Event',
-          leadingIconData: FontAwesomeIcons.calendar,
+          onPressed: onEditPressed,
+          text: 'Edit',
+          leadingIconData: Icons.edit,
         ),
-      ]);
-    }
-    return Expanded(
-      flex: 5,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
+      );
+
+      if (!hideEventButton) {
+        bottomRowChildren.addAll([
+          SizedBox(
+            width: 4,
+          ),
+          ActionButton(
+            onPressed: onEventPressed,
+            text: 'Event',
+            leadingIconData: FontAwesomeIcons.calendar,
+          ),
+        ]);
+      }
+      columnChildren.addAll(
+        [
           ActionButton(
             onPressed: onDone,
             text: 'Done',
@@ -135,6 +154,16 @@ class TaskListTile extends StatelessWidget with Tile {
             children: bottomRowChildren,
           ),
         ],
+      );
+    }
+
+    return Expanded(
+      flex: 5,
+      child: Column(
+        mainAxisAlignment:
+            task.done ? MainAxisAlignment.start : MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: columnChildren,
       ),
     );
   }

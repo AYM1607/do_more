@@ -55,6 +55,12 @@ class PopulatedDrawer extends StatelessWidget {
                   .pushNamedAndRemoveUntil('home/', (_) => false),
             ),
             buildDrawerTile(
+              text: 'Archive',
+              isSelected: selectedScreen == Screen.archive,
+              action: () => Navigator.of(context)
+                  .pushNamedAndRemoveUntil('archive/', (_) => false),
+            ),
+            buildDrawerTile(
               text: 'Events',
               isSelected: selectedScreen == Screen.events,
               action: () => Navigator.of(context)
@@ -124,4 +130,5 @@ class PopulatedDrawer extends StatelessWidget {
 enum Screen {
   home,
   events,
+  archive,
 }

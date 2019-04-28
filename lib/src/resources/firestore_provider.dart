@@ -197,11 +197,15 @@ class FirestoreProvider {
   ///
   /// The [event] parameter is used to query tasks that are part of a certain
   /// event.
-  Observable<List<TaskModel>> getUserTasks(String username, {String event}) {
+  Observable<List<TaskModel>> getUserTasks(
+    String username, {
+    String event,
+    bool done = false,
+  }) {
     Query query = _firestore
         .collection('tasks')
         .where('ownerUsername', isEqualTo: username)
-        .where('done', isEqualTo: false);
+        .where('done', isEqualTo: done);
 
     if (event != null) {
       query = query.where('event', isEqualTo: event);

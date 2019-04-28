@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'screens/archive_screen.dart';
 import 'screens/event_screen.dart';
 import 'screens/events_screen.dart';
 import 'screens/home_screen.dart';
@@ -89,6 +90,12 @@ class App extends StatelessWidget {
       return MaterialPageRoute(
         builder: (BuildContext contex) {
           return NewEventScreen();
+        },
+      );
+    } else if (routeTokens.first == 'archive') {
+      return MaterialPageRoute(
+        builder: (BuildContext context) {
+          return ArchiveScreen();
         },
       );
     }
