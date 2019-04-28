@@ -93,7 +93,7 @@ export const pendingTasksUpdater: functions.CloudFunction<functions.Change<Fireb
         if (change.after.exists && change.before.exists) {
             /// Exit the funciton if case this is an update operation and the
             /// event and priority of the taks haven't changed.
-            if (before.get('priority') === after.get('priority') || before.get('event') === after.get('event')) {
+            if (before.get('priority') === after.get('priority') || before.get('event') === after.get('event') || before.get('done') === after.get('done')) {
                 console.log('Nothing to update, exiting function');
                 return true;
             }
