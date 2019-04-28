@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:rxdart/rxdart.dart';
 
 import '../utils.dart' show kTaskListPriorityTransforemer;
