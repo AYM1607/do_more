@@ -52,23 +52,27 @@ class _EventsScreenState extends State<EventsScreen> {
                   child: LoadingIndicator(),
                 );
               }
-              return ListView(
-                padding: EdgeInsets.only(top: 15),
-                children: eventsSnap.data
-                    .map(
-                      (event) => Padding(
-                            padding: EdgeInsets.only(bottom: 15),
-                            child: EventListTile(
-                              event: event,
-                            ),
-                          ),
-                    )
-                    .toList(),
-              );
+              return buildList(eventsSnap.data);
             },
           ),
         );
       },
+    );
+  }
+
+  Widget buildList(List<EventModel> events) {
+    return ListView(
+      padding: EdgeInsets.only(top: 15),
+      children: events
+          .map(
+            (event) => Padding(
+                  padding: EdgeInsets.only(bottom: 15),
+                  child: EventListTile(
+                    event: event,
+                  ),
+                ),
+          )
+          .toList(),
     );
   }
 }

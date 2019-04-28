@@ -121,6 +121,11 @@ export const pendingTasksUpdater: functions.CloudFunction<functions.Change<Fireb
                 await incrementPendingTasks(eventDocument, decrementValue);
                 break;
             case 'update':
+                if (before.get('done') !== after.get('done')) {
+                    const value = after.get('done') ? decrementValue : incrementValue;
+                    await incrementFromPriority(after.get('priority'), eventDocument, userDocument, value);
+                    await incrementPendingTasks(eventDocument, value);
+                }
                 if (before.get('priority') !== after.get('priority')) {
                     await incrementFromPriority(before.get('priority'), eventDocumentBefore!, userDocument, decrementValue);
                     await incrementFromPriority(after.get('priority'), eventDocument, userDocument, incrementValue);
