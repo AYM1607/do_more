@@ -80,4 +80,10 @@ class _EventsScreenState extends State<EventsScreen> {
           .toList(),
     );
   }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
 }

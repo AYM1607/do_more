@@ -65,4 +65,10 @@ class _NewEventScreenState extends State<NewEventScreen> {
     await bloc.submit();
     Navigator.of(context).pop();
   }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
 }
