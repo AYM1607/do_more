@@ -17,13 +17,21 @@ class BigTextInput extends StatefulWidget {
   /// The initial value for the input.
   final String initialValue;
 
+  /// Hint to be shown in the input.
+  final String hint;
+
+  /// The maximum amount of character to be allowed on the input.
+  final int maxCharacters;
+
   BigTextInput({
     @required this.onChanged,
     this.height,
     this.width,
     this.elevated = true,
     this.initialValue = '',
-  });
+    this.hint = '',
+    @required this.maxCharacters,
+  }) : assert(maxCharacters != null);
 
   @override
   _BigTextInputState createState() => _BigTextInputState();
@@ -81,7 +89,7 @@ class _BigTextInputState extends State<BigTextInput> {
           child: TextField(
             controller: _controller,
             maxLines: 3,
-            maxLength: 220,
+            maxLength: widget.maxCharacters,
             maxLengthEnforced: true,
             cursorColor: Theme.of(context).cursorColor,
             textInputAction: TextInputAction.done,
@@ -93,7 +101,7 @@ class _BigTextInputState extends State<BigTextInput> {
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(left: 5.0, right: 5.0, top: 5.0),
               counterStyle: TextStyle(color: Colors.white),
-              hintText: 'Do something...',
+              hintText: widget.hint,
               hintStyle: TextStyle(
                 color: Theme.of(context).cursorColor,
               ),

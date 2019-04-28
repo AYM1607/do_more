@@ -55,7 +55,7 @@ class TaskBloc extends Object with Validators {
   ///
   /// Emits an error if the string added is empty.
   Observable<String> get taskText =>
-      _taskText.stream.transform(validateStringNotEmpty);
+      _taskText.stream.transform(stringNotEmptyValidator);
 
   /// An observable of the submit enabled flag.
   ///

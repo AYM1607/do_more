@@ -55,20 +55,22 @@ class _TaskScreenState extends State<TaskScreen> {
             child: Column(
               children: <Widget>[
                 StreamBuilder(
-                    stream: bloc.textInitialvalue,
-                    builder:
-                        (BuildContext context, AsyncSnapshot<String> snapshot) {
-                      String textFieldInitialValue = '';
-                      if (snapshot.hasData) {
-                        textFieldInitialValue = snapshot.data;
-                      }
-                      return BigTextInput(
-                        initialValue:
-                            widget.isEdit ? textFieldInitialValue : '',
-                        height: 95,
-                        onChanged: bloc.changeTaskText,
-                      );
-                    }),
+                  stream: bloc.textInitialvalue,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<String> snapshot) {
+                    String textFieldInitialValue = '';
+                    if (snapshot.hasData) {
+                      textFieldInitialValue = snapshot.data;
+                    }
+                    return BigTextInput(
+                      initialValue: widget.isEdit ? textFieldInitialValue : '',
+                      height: 95,
+                      onChanged: bloc.changeTaskText,
+                      maxCharacters: 220,
+                      hint: 'Do something...',
+                    );
+                  },
+                ),
                 SizedBox(
                   height: 15,
                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart' hide AppBar;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../blocs/events_bloc.dart';
 import '../models/event_model.dart';
@@ -34,6 +35,10 @@ class _EventsScreenState extends State<EventsScreen> {
         }
 
         return Scaffold(
+          floatingActionButton: FloatingActionButton(
+            child: Icon(FontAwesomeIcons.plus),
+            onPressed: () => Navigator.of(context).pushNamed('newEvent/'),
+          ),
           drawer: PopulatedDrawer(
             userAvatarUrl: userAvatarUrl,
             userDisplayName: userDisplayName,

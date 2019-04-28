@@ -66,13 +66,25 @@ Color getColorFromEvent(EventModel event) {
   return kLowPriorityColor;
 }
 
-class Validators {
-  final validateStringNotEmpty = StreamTransformer<String, String>.fromHandlers(
+mixin Validators {
+  final stringNotEmptyValidator =
+      StreamTransformer<String, String>.fromHandlers(
     handleData: (String string, EventSink<String> sink) {
       if (string.isEmpty) {
         sink.addError('Text cannot be empty');
       } else {
         sink.add(string);
+      }
+    },
+  );
+
+  final occuranceArrayValidator =
+      StreamTransformer<List<bool>, List<bool>>.fromHandlers(
+    handleData: (List<bool> array, EventSink<List<bool>> sink) {
+      if (array.length == 5 && array.contains(true)) {
+        sink.add(array);
+      } else {
+        sink.addError('Event has to ocurr at least once');
       }
     },
   );
