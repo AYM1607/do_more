@@ -2,6 +2,12 @@
 
 A glorified todo list with a beautiful ui.
 
+## Login with Google
+
+<figure class="video_container">
+  <iframe src="https://drive.google.com/file/d/1JIsa3rbcNXdQYOJioVauJu5zayo3uPNB/preview" frameborder="0" allowfullscreen="true"> </iframe>
+</figure>
+
 ## Roadmap
 
 https://trello.com/b/zdKMw2JL/do
