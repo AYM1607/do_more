@@ -38,7 +38,7 @@ Gallery screen for every event with thumbnails of all your images.
 
 Full screen gallery.
 
-![](https://j.gifs.com/WL83nE.gif)
+![](https://j.gifs.com/OMZAJr.gif)
 
 ## Roadmap
 
